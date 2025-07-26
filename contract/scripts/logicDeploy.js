@@ -1,13 +1,14 @@
-const { ethers, upgrades } = require("hardhat")
+const { ethers, upgrades } = require("hardhat");
+require("dotenv").config();
 
 const logicUtility = async () => {
-    const baseContractProxyAddress = ""
+    const baseContractProxyAddress = process.env.MAIN_CONTRACT_PROXY_ADDRESS;
     const logicContract = await ethers.getContractFactory("LogicUtilityUpgradable");
     const logicProxy = await upgrades.deployProxy(logicContract, [baseContractProxyAddress], {
         initializer: "initialize"
     });
     await logicProxy.waitForDeployment();
-    console.log("✅ Proxy deployed at: ", logicProxy.getAddress());
+    console.log("✅ Proxy deployed at: ", await logicProxy.getAddress());
 }
 logicUtility()
     .then(() => console.log("Deployed Logic proxy"))

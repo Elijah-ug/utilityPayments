@@ -110,5 +110,4 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
        }
 
     receive() external payable{}
-
 }
