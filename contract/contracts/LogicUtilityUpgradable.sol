@@ -2,7 +2,7 @@
 pragma solidity ^0.8.28;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 interface ICompanyManager {
     function isCompanyActive(address company) external view returns (bool);
@@ -15,7 +15,7 @@ interface ICompanyManager {
     );
 }
 
-contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, ReentrancyGuard {
+contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, ReentrancyGuardUpgradeable {
     ICompanyManager public companyManager;
     uint256 public feePercentage;
     uint256 public totalFeesCollected;
@@ -42,6 +42,7 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
 
     function initialize(address _baseUtility) public initializer{
         __Ownable_init(msg.sender);
+        __ReentrancyGuard_init();
         companyManager = ICompanyManager(_baseUtility);
     }
 

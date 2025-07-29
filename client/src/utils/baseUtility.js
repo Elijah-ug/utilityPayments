@@ -17,7 +17,9 @@ const getSigner = async () => {
 const getBaseUtilityContract = async () => {
     try {
         const signer = await getSigner();
-        const contract = await ethers.Contract(baseProxyAddress, BaseUtilityUpgradeableABI.abi, signer)
+        const contract = new ethers.Contract(baseProxyAddress, BaseUtilityUpgradeableABI.abi, signer);
+        // console.log(contract.target)
+        return contract
     } catch (error) {
         console.log(error.message || "Failed to connect ")
     }

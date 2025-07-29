@@ -17,7 +17,7 @@ const getLogicSigner = async () => {
 const getLogicUtilityContract = async () => {
     try {
         const signer = await getLogicSigner();
-        const contract = await ethers.Contract(logicProxyAddress, logicUtilityUpgradeableABI.abi, signer)
+        const contract = new ethers.Contract(logicProxyAddress, logicUtilityUpgradeableABI.abi, signer)
         return contract;
     } catch (error) {
         console.log(error.message || "Failed to connect ")
