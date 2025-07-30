@@ -2,20 +2,20 @@
   "manifestVersion": "3.2",
   "proxies": [
     {
-      "address": "0xaD2E46CBBA77bE61E0BA7a8C8CaCc25eA4784a0F",
-      "txHash": "0xb4779331ec8e72a7fb38f22f8b0b441364716f17b7d40eb3fc8da0df9841cdd0",
+      "address": "0xe8923e1AC8D21c6292efa27f8899201665c21352",
+      "txHash": "0x61ce0d593e5b22c53c61f6b6630659c8942e4837bd1e410fd37ca3beb49aad0c",
       "kind": "transparent"
     },
     {
-      "address": "0x3fCf074Ba76b3b702D9f8B8E0F8E593DF181cd9f",
-      "txHash": "0x07620a196acdda48c2242056ee5eed14b9d6c87dee7284635a25d893e1874e25",
+      "address": "0xbFE8d1C20393d0d03b84bD3341e3707b341f64E0",
+      "txHash": "0x0f7a8ac891bf91ccbb930569194a2eb12f72d123c8864d2137539187c82a8cb1",
       "kind": "transparent"
     }
   ],
   "impls": {
-    "ac89e030df58bca5406cbed1c1d27dd722c85d659b3ea0620bb2f8feb3149258": {
-      "address": "0x14c8741C80Adb5A25FE0C4A2a7470cd08382bC95",
-      "txHash": "0xabc58fda6fe6faee1c408f67928a526c16bb2042fcb450fbd388ab2ef4693b48",
+    "5fa65d0d42ae7b3bc7932616f2263d2c0962c22f8431a7faaece179fdf7fbf77": {
+      "address": "0x0AAF483320Df3A8d3d5EA7cf767eF1bCbd2fc377",
+      "txHash": "0x425ca29bdbb7695a399730c93bc9422f0201ba25d72568ab0f64461352126acd",
       "layout": {
         "solcVersion": "0.8.28",
         "storage": [
@@ -23,9 +23,17 @@
             "label": "companies",
             "offset": 0,
             "slot": "0",
-            "type": "t_mapping(t_address,t_struct(Company)596_storage)",
+            "type": "t_mapping(t_address,t_struct(Company)656_storage)",
             "contract": "BaseUtilityUpgradeable",
             "src": "contracts/BaseUtilityUpgradeable.sol:15"
+          },
+          {
+            "label": "registerdCompanies",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_struct(Company)656_storage)dyn_storage",
+            "contract": "BaseUtilityUpgradeable",
+            "src": "contracts/BaseUtilityUpgradeable.sol:19"
           }
         ],
         "types": {
@@ -71,7 +79,11 @@
             "label": "uint64",
             "numberOfBytes": "8"
           },
-          "t_mapping(t_address,t_struct(Company)596_storage)": {
+          "t_array(t_struct(Company)656_storage)dyn_storage": {
+            "label": "struct BaseUtilityUpgradeable.Company[]",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(Company)656_storage)": {
             "label": "mapping(address => struct BaseUtilityUpgradeable.Company)",
             "numberOfBytes": "32"
           },
@@ -79,7 +91,7 @@
             "label": "string",
             "numberOfBytes": "32"
           },
-          "t_struct(Company)596_storage": {
+          "t_struct(Company)656_storage": {
             "label": "struct BaseUtilityUpgradeable.Company",
             "members": [
               {
@@ -153,8 +165,8 @@
       }
     },
     "3800ae26448ed5f603f86ffee84be5bbc19f5da80a702961e5c07c8fb7759dd1": {
-      "address": "0xE7c1EC4b519F3155b9630494004461ec9283741d",
-      "txHash": "0x249f00295c63cbabf270ea29c88044d56b5a4bb443934cbf70789baf80f02015",
+      "address": "0x4C07383F8aE507f72A8880F6503902e4461cC32b",
+      "txHash": "0x79b085577c672825ef0e12f350f5521f45d57c07bbbcf3615b3da96c2e2345da",
       "layout": {
         "solcVersion": "0.8.28",
         "storage": [
@@ -162,7 +174,7 @@
             "label": "companyManager",
             "offset": 0,
             "slot": "0",
-            "type": "t_contract(ICompanyManager)665",
+            "type": "t_contract(ICompanyManager)863",
             "contract": "LogicUtilityUpgradable",
             "src": "contracts/LogicUtilityUpgradable.sol:19"
           },
@@ -210,7 +222,7 @@
             "label": "receipt",
             "offset": 0,
             "slot": "6",
-            "type": "t_mapping(t_address,t_struct(Receipt)701_storage)",
+            "type": "t_mapping(t_address,t_struct(Receipt)899_storage)",
             "contract": "LogicUtilityUpgradable",
             "src": "contracts/LogicUtilityUpgradable.sol:36"
           },
@@ -282,11 +294,11 @@
             "label": "uint64",
             "numberOfBytes": "8"
           },
-          "t_contract(ICompanyManager)665": {
+          "t_contract(ICompanyManager)863": {
             "label": "contract ICompanyManager",
             "numberOfBytes": "20"
           },
-          "t_mapping(t_address,t_struct(Receipt)701_storage)": {
+          "t_mapping(t_address,t_struct(Receipt)899_storage)": {
             "label": "mapping(address => struct LogicUtilityUpgradable.Receipt)",
             "numberOfBytes": "32"
           },
@@ -294,7 +306,7 @@
             "label": "mapping(address => uint256)",
             "numberOfBytes": "32"
           },
-          "t_struct(Receipt)701_storage": {
+          "t_struct(Receipt)899_storage": {
             "label": "struct LogicUtilityUpgradable.Receipt",
             "members": [
               {

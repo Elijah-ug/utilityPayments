@@ -19,8 +19,9 @@ export function UpdateRates() {
             console.log(typeof(fee))
         }
         fee = fee.toString();
-        dispatch(updateFees({fees: fee}))
-        console.log(typeof (fee), fee)
+      dispatch(updateFees({ fees: fee }));
+      console.log(typeof (fee), fee);
+      setFees("")
     }
   return (
     <Card className="w-md">

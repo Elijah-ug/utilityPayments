@@ -15,13 +15,16 @@ contract BaseUtilityUpgradeable is Initializable, OwnableUpgradeable {
     mapping(address => Company) public companies;
     event CompanyRegistered(address indexed company, string name);
     event CompanyDeactivated(address indexed company);
-
+    // added after dep 1
+    Company[] public registerdCompanies;
 function initialize() public initializer{
     __Ownable_init(msg.sender);
 }
 function registerCompany(address _companyAddr, string memory _name, string memory _utilityService) external onlyOwner{
     require(!companies[_companyAddr].isActive, "Company Registered");
-    companies[_companyAddr] = Company(_companyAddr, 0, true, _name, _utilityService);
+    Company memory newCompany = Company(_companyAddr, 0, true, _name, _utilityService);
+    companies[_companyAddr] = newCompany;
+    registerdCompanies.push(newCompany);
     emit CompanyRegistered(_companyAddr, _name);
 }
 // deactivation
@@ -40,5 +43,8 @@ function isCompanyActive(address _companyAddr) external view returns(bool){
 }
 function getCompany(address _companyAddr) external view returns (Company memory){
     return companies[_companyAddr];
+}
+function getRegisteredCompanies() external view returns (Company[] memory){
+    return registerdCompanies;
 }
 }

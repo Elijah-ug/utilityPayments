@@ -6,7 +6,7 @@ const baseUtility = async () => {
     initializer: "initialize"
   });
   await proxy.waitForDeployment();
-  console.log("✅ Base Proxy deployed at: ", proxy.getAddress());
+  console.log("✅ Base Proxy deployed at: ", proxy.target);
 }
 baseUtility()
   .then(() => console.log("Deployed"))

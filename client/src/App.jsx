@@ -9,6 +9,7 @@ import NavBar from "./navigation/NavBar";
 import Footer from "./ui/Footer";
 import { RegisterCompany } from "./ui/RegisterCompany";
 import { UpdateRates } from "./ui/UpdateRates";
+import { ToastContainer } from "react-toastify";
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
@@ -26,7 +27,17 @@ export default function App() {
         <Route path="company-dashboard" element={<CompanyDashboard />} />
       </Routes>
       </div>
-      <Footer/>
+      <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </div>
   )
 }

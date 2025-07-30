@@ -8,7 +8,7 @@ const logicUtility = async () => {
         initializer: "initialize"
     });
     await logicProxy.waitForDeployment();
-    console.log("✅ Proxy deployed at: ", await logicProxy.getAddress());
+    console.log("✅ Proxy deployed at: ", logicProxy.target);
 }
 logicUtility()
     .then(() => console.log("Deployed Logic proxy"))
