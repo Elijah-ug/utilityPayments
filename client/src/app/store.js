@@ -4,7 +4,8 @@ import getCompanySliceReducer from "../global/company/profile/getCompanySlice";
 import getCompanyBalanceSliceReducer from "../global/company/public/balance/companyBalanceSlice";
 import getPlatformTransactionsSliceReducer from "../global/public/balances/transactionsSlice.js";
 import listedCompaniesSliceReducer from "../global/public/companies/listedCompaniesSlice";
-import platTotalTransactionsSlice from "../global/admin/dashboard/platformTransactionsSlice";
+import platTotalTransactionsReducer from "../global/admin/dashboard/platformTransactionsSlice";
+import platformRateSliceReducer from "../global/public/rates/platformRateSlice"
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
         "companyBalance": getCompanyBalanceSliceReducer,
         "sum": getPlatformTransactionsSliceReducer,
         "listedCompanies": listedCompaniesSliceReducer,
-        "sumTransactions": platTotalTransactionsSlice,
+        "sumTransactions": platTotalTransactionsReducer,
+        "rate": platformRateSliceReducer,
     }
 })

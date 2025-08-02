@@ -5,7 +5,7 @@ import { FaXTwitter } from "react-icons/fa6";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-950 text-gray-300 py-6 mt-16">
+    <footer className="w-full bg-gray-950 text-gray-300 mt-16 py-6 px-4 text-sm">
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
 
               {/* Left side */}

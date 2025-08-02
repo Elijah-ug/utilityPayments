@@ -27,7 +27,9 @@ export default function App() {
         <Route path="company-dashboard" element={<CompanyDashboard />} />
       </Routes>
       </div>
-      <Footer />
+      <div className="">
+         <Footer />
+     </div>
       <ToastContainer
         position="top-right"
         autoClose={4000}

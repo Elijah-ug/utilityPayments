@@ -29,7 +29,7 @@ export function PayUtility() {
   return (
     <Card className="w-md bg-gray-800 border-none text-gray-300 h-4/5">
       <CardHeader>
-        <CardTitle>Register Utility Service Provider</CardTitle>
+        <CardTitle>Pay for Utility Service</CardTitle>
       </CardHeader>
       <CardContent>
         <form>
