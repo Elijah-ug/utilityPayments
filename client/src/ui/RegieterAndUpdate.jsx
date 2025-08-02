@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger,
 } from "@/components/ui/tabs"
 import { registerCompany } from "@/global/admin/settings/registerCompanyThunk"
 import { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { updateFees } from "@/global/admin/settings/updateFeesThunk"
 
 export function RegisterAndEdit() {
@@ -17,7 +17,8 @@ export function RegisterAndEdit() {
     const [companyAddr, setCompanyAddr] = useState("");
     const [companyName, setCompanyName] = useState("");
     const [utilityService, setUtilityService] = useState("");
-    const [fees, setFees] = useState("");
+  const [fees, setFees] = useState("");
+  const { receipts } = useSelector((state) => state.receipt);
 
     const handleAddCompany = () => {
         if (!companyAddr || !companyName || !utilityService) {

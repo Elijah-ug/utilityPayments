@@ -5,7 +5,8 @@ import getCompanyBalanceSliceReducer from "../global/company/public/balance/comp
 import getPlatformTransactionsSliceReducer from "../global/public/balances/transactionsSlice.js";
 import listedCompaniesSliceReducer from "../global/public/companies/listedCompaniesSlice";
 import platTotalTransactionsReducer from "../global/admin/dashboard/platformTransactionsSlice";
-import platformRateSliceReducer from "../global/public/rates/platformRateSlice"
+import platformRateSliceReducer from "../global/public/rates/platformRateSlice";
+import getReceiptsSliceReducer from "../global/company/public/receipt/receiptSlice";
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
         "listedCompanies": listedCompaniesSliceReducer,
         "sumTransactions": platTotalTransactionsReducer,
         "rate": platformRateSliceReducer,
+        "receipt": getReceiptsSliceReducer,
     }
 })

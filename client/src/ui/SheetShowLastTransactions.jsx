@@ -1,28 +1,22 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet"
 import { getCompanyProfiles } from "@/global/company/profile/getCompanyThunk";
+import { getReceiptThunk } from "@/global/company/public/receipt/receiptThunk";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export function SheetShowLastTransactions() {
     const { profile } = useSelector((state) => state.company);
     const { address } = useSelector((state) => state.wallet);
-    console.log(address)
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(getCompanyProfiles({ address }));
-    }, [address])
+    // console.log(address)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCompanyProfiles({ address }));
+    dispatch(getReceiptThunk());
+  }, [address]);
   return (
     <Sheet>
       <SheetTrigger asChild>

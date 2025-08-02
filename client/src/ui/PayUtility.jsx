@@ -4,6 +4,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { payUtilityThunk } from "@/global/public/payment/payUtilityThunk"
 import { parseEther } from "ethers"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
@@ -19,10 +20,7 @@ export function PayUtility() {
       alert("Some input missing");
     }
     const parsedAmount = parseEther(amount)
-    console.log(typeof (parsedAmount), parsedAmount);
-    console.log(typeof (companyAddr), companyAddr);
-
-
+    dispatch(payUtilityThunk({companyAddr, amount: parsedAmount}));
     setCompanyAddr("");
     setAmount("");
     }

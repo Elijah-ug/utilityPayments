@@ -1,9 +1,7 @@
 import { registerCompany } from '@/global/admin/settings/registerCompanyThunk';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RegisterCompany } from './RegisterCompany';
 import Analytics from './Analytics';
-import { Link, Outlet } from 'react-router-dom';
 import { RegisterAndEdit } from './RegieterAndUpdate';
 
 export default function Admin() {

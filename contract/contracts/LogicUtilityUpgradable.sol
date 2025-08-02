@@ -100,8 +100,11 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
 
         emit PlatformFeeWithdrawn(msg.sender, _amount);
     }
-    function getReceipt() external view returns(Receipt memory){
-            return receipt[msg.sender];
+    function getReceipt(address user) external view returns(Receipt memory){
+        require(
+            msg.sender == receipt[msg.sender].company ||
+             msg.sender == receipt[msg.sender].payer, "Not authorised!" );
+            return receipt[user];
     }
     function getCompanyBalance(address _company) external view returns (uint256) {
     return companyBalances[_company];

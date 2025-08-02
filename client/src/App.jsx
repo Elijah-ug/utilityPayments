@@ -4,11 +4,8 @@ import Home from "./ui/Home";
 import Admin from "./ui/Admin";
 import CompanyDashboard from "./ui/CompanyDashboard";
 import UtilityPayments from "./ui/UtilityPayments";
-import UtilityServiceProviders from "./ui/UtilityServiceProviders";
 import NavBar from "./navigation/NavBar";
 import Footer from "./ui/Footer";
-import { RegisterCompany } from "./ui/RegisterCompany";
-import { UpdateRates } from "./ui/UpdateRates";
 import { ToastContainer } from "react-toastify";
 export default function App() {
   return (
@@ -18,8 +15,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
           <Route path="admin" element={<Admin />}>
-            <Route path="register-company" element={<RegisterCompany />} />
-            <Route path="update-fees" element={<UpdateRates />} />
           </Route>
         <Route path="utility-payments" element={<UtilityPayments />}>
           {/* <Route path="service-providers" element={<UtilityServiceProviders/>}/> */}
