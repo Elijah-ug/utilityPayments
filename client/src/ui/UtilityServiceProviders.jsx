@@ -14,7 +14,7 @@ export default function UtilityServiceProviders() {
   return (
     <div>
       <Card
-          className="w-md bg-gray-800 border-none text-gray-300 max-h-4/5 ">
+          className="w-md bg-gray-800 border-none text-gray-300 h-5/6 ">
       <CardHeader>
         <CardTitle>Utility Service Providers</CardTitle>
       </CardHeader>

@@ -22,7 +22,7 @@ export default function App() {
             <Route path="update-fees" element={<UpdateRates />} />
           </Route>
         <Route path="utility-payments" element={<UtilityPayments />}>
-          <Route path="service-providers" element={<UtilityServiceProviders/>}/>
+          {/* <Route path="service-providers" element={<UtilityServiceProviders/>}/> */}
         </Route>
         <Route path="company-dashboard" element={<CompanyDashboard />} />
       </Routes>

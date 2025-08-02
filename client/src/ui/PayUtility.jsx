@@ -4,27 +4,30 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { registerCompany } from "@/global/admin/settings/registerCompanyThunk"
+import { parseEther } from "ethers"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 
-export function RegisterCompany() {
+export function PayUtility() {
     const dispatch = useDispatch();
     const [companyAddr, setCompanyAddr] = useState("");
-    const [companyName, setCompanyName] = useState("");
-    const [utilityService, setUtilityService] = useState("");
+    const [amount, setAmount] = useState("");
 
-  const handleAddCompany = () => {
-    if (!companyAddr || !companyName || !utilityService) {
+  const handlePayUtility = () => {
+    console.log(typeof (amount), amount);
+    if (!companyAddr || !amount || isNaN(amount)) {
       alert("Some input missing");
-      }
-    dispatch(registerCompany({ companyAddr, companyName, utilityService }));
+    }
+    const parsedAmount = parseEther(amount)
+    console.log(typeof (parsedAmount), parsedAmount);
+    console.log(typeof (companyAddr), companyAddr);
+
+
     setCompanyAddr("");
-    setCompanyName("");
-    setUtilityService("");
+    setAmount("");
     }
   return (
-    <Card className="w-md">
+    <Card className="w-md bg-gray-800 border-none text-gray-300 h-4/5">
       <CardHeader>
         <CardTitle>Register Utility Service Provider</CardTitle>
       </CardHeader>
@@ -38,24 +41,18 @@ export function RegisterCompany() {
             </div>
 
              <div className="grid gap-2">
-              <Label htmlFor="name">Company Name</Label>
-              <Input value={companyName} onChange={(e) => setCompanyName(e.target.value)}
-                id="name" type="text" placeholder="MTN Worknet" required />
+              <Label htmlFor="name">Amount</Label>
+              <Input value={amount} onChange={(e) => setAmount(e.target.value)}
+                id="amount" type="number" placeholder="0.01" required />
             </div>
-
-              <div className="grid gap-2">
-              <Label htmlFor="utility">Utility Service</Label>
-              <Input value={utilityService} onChange={(e) => setUtilityService(e.target.value)}
-                id="utility" type="text" placeholder="Internet" required />
-                      </div>
 
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex-col gap-2">
-            <Button onClick={handleAddCompany}
+      <CardFooter className="">
+            <Button onClick={handlePayUtility}
             type="submit" className="w-full">
-            Add Company
+            Pay Utility
            </Button>
       </CardFooter>
     </Card>
