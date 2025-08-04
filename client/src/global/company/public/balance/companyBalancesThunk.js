@@ -1,6 +1,6 @@
 import { getLogicUtilityContract } from "@/utils/logicUtility";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { parseEther } from "ethers";
+import { formatEther, parseEther } from "ethers";
 
 export const getCompanyBalance = createAsyncThunk(
     "balance/getCompanyBalance",
@@ -8,7 +8,7 @@ export const getCompanyBalance = createAsyncThunk(
         try {
             const contract = await getLogicUtilityContract();
             const bal = await contract.getCompanyBalance(address);
-            const balance = parseEther(bal.toString()).toString();
+            const balance = formatEther(bal.toString()).toString();
             console.log(balance)
             return balance;
         } catch (error) {

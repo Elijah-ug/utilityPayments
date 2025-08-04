@@ -7,6 +7,7 @@ export const payUtilityThunk = createAsyncThunk(
     async ({companyAddr, amount}, { rejectWithValue }) => {
         try {
             const contract = await getLogicUtilityContract();
+            console.log(contract.target)
             const tx = await contract.payUtility(companyAddr, {value: amount});
             await tx.wait();
             toast.success("Payment made successfully!");

@@ -38,12 +38,24 @@ function updateCompany( string memory _name, string memory _utilityService) exte
     companies[msg.sender].name = _name;
     companies[msg.sender].utilityService = _utilityService;
 }
-function isCompanyActive(address _companyAddr) external view returns(bool){
-    return companies[_companyAddr].isActive;
+
+function getCompany(address _companyAddr) external view returns (
+    address companyAddr,
+    uint256 balance,
+    bool isActive,
+    string memory name,
+    string memory utilityService
+) {
+    Company memory company = companies[_companyAddr];
+    return (
+        company.companyAddr,
+        company.balance,
+        company.isActive,
+        company.name,
+        company.utilityService
+    );
 }
-function getCompany(address _companyAddr) external view returns (Company memory){
-    return companies[_companyAddr];
-}
+
 function getRegisteredCompanies() external view returns (Company[] memory){
     return registerdCompanies;
 }

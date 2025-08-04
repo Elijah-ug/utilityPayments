@@ -1,2 +1,2 @@
-export const baseProxyAddress = "0xe8923e1AC8D21c6292efa27f8899201665c21352";
-export const logicProxyAddress = "0xbFE8d1C20393d0d03b84bD3341e3707b341f64E0";
+export const baseProxyAddress = "0x57f6083DCDb05669da6B2f765C25D73FC9ad69C9";
+export const logicProxyAddress = "0x81B1336E883EE73Ce843abBD07935aEcfbB7D848";

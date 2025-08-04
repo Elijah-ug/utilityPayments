@@ -5,7 +5,6 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
 interface ICompanyManager {
-    function isCompanyActive(address company) external view returns (bool);
     function getCompany(address company) external view returns (
         address companyAddr,
         uint256 balance,
@@ -45,6 +44,16 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
         __ReentrancyGuard_init();
         companyManager = ICompanyManager(_baseUtility);
     }
+    function viewImportedCompany(address _compAddr) external view returns(address, bool, string memory){
+        try companyManager.getCompany(_compAddr) returns (
+            address companyAddr, uint256 , bool isActive, string memory name, string memory 
+             ) {
+                return (companyAddr,  isActive, name);
+        } catch  {
+            revert("Not found or Inactive");
+        }
+    }
+
 
     function updateFees(uint256 _fee) external onlyOwner {
         require(_fee < 1000, "High fee");
@@ -54,10 +63,10 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
     // pay utility function
     function payUtility(address _company) external payable{
         require(msg.value > 0, "Invalid Amount");
-        require(companyManager.isCompanyActive(_company), "Company Not Found");
         // get company's receiving address
-        (address companyAddr, , , , ) = companyManager.getCompany(_company);
+        (address companyAddr, ,bool isActive , , ) = companyManager.getCompany(_company);
         require(companyAddr != address(0), "Address Not Found");
+        require(isActive, "Inactive Company");
         // calculate platform fee and net amount
        uint256 transactionFee = ( msg.value * feePercentage) / 1000;
        uint256 netReceived = msg.value - transactionFee;

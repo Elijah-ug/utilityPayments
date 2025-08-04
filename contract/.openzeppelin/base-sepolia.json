@@ -2,20 +2,20 @@
   "manifestVersion": "3.2",
   "proxies": [
     {
-      "address": "0xe8923e1AC8D21c6292efa27f8899201665c21352",
-      "txHash": "0x61ce0d593e5b22c53c61f6b6630659c8942e4837bd1e410fd37ca3beb49aad0c",
+      "address": "0x57f6083DCDb05669da6B2f765C25D73FC9ad69C9",
+      "txHash": "0xf319c565f54385073efc34820c6aafaddc62c92513e4606c3a9572d3e9459a69",
       "kind": "transparent"
     },
     {
-      "address": "0xbFE8d1C20393d0d03b84bD3341e3707b341f64E0",
-      "txHash": "0x0f7a8ac891bf91ccbb930569194a2eb12f72d123c8864d2137539187c82a8cb1",
+      "address": "0x81B1336E883EE73Ce843abBD07935aEcfbB7D848",
+      "txHash": "0xbbe6ec2b3191269c34a8028309131c4697b3b1f986fe591a5c807d60a44ef84a",
       "kind": "transparent"
     }
   ],
   "impls": {
-    "5fa65d0d42ae7b3bc7932616f2263d2c0962c22f8431a7faaece179fdf7fbf77": {
-      "address": "0x0AAF483320Df3A8d3d5EA7cf767eF1bCbd2fc377",
-      "txHash": "0x425ca29bdbb7695a399730c93bc9422f0201ba25d72568ab0f64461352126acd",
+    "b95c4ed7aa2ea879887ee2ada3058b915b19c86663abf50eebd52a5c49d451e8": {
+      "address": "0x035Cf35B03ec527cB3bC196D96aa05896718F8D0",
+      "txHash": "0x67700cb73519947676d0ce8f7584261e12569f6f7d3863a0d2173164ee86df7c",
       "layout": {
         "solcVersion": "0.8.28",
         "storage": [
@@ -164,9 +164,9 @@
         }
       }
     },
-    "3800ae26448ed5f603f86ffee84be5bbc19f5da80a702961e5c07c8fb7759dd1": {
-      "address": "0x4C07383F8aE507f72A8880F6503902e4461cC32b",
-      "txHash": "0x79b085577c672825ef0e12f350f5521f45d57c07bbbcf3615b3da96c2e2345da",
+    "2738e13844b393807e303680a25e2f62dea31dd208df88c55dd7a1c7340f9808": {
+      "address": "0x2DE4ed6af8276FB5af893c5Dd3f6635807eEeE62",
+      "txHash": "0x8d599bda21f97117affb2bc355b8bc44493b2c97aeb8292c83ab4101d21e7e37",
       "layout": {
         "solcVersion": "0.8.28",
         "storage": [
@@ -174,9 +174,9 @@
             "label": "companyManager",
             "offset": 0,
             "slot": "0",
-            "type": "t_contract(ICompanyManager)863",
+            "type": "t_contract(ICompanyManager)865",
             "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:19"
+            "src": "contracts/LogicUtilityUpgradable.sol:18"
           },
           {
             "label": "feePercentage",
@@ -184,7 +184,7 @@
             "slot": "1",
             "type": "t_uint256",
             "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:20"
+            "src": "contracts/LogicUtilityUpgradable.sol:19"
           },
           {
             "label": "totalFeesCollected",
@@ -192,7 +192,7 @@
             "slot": "2",
             "type": "t_uint256",
             "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:21"
+            "src": "contracts/LogicUtilityUpgradable.sol:20"
           },
           {
             "label": "totalTransactedAmount",
@@ -200,7 +200,7 @@
             "slot": "3",
             "type": "t_uint256",
             "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:22"
+            "src": "contracts/LogicUtilityUpgradable.sol:21"
           },
           {
             "label": "companyBalances",
@@ -208,7 +208,7 @@
             "slot": "4",
             "type": "t_mapping(t_address,t_uint256)",
             "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:25"
+            "src": "contracts/LogicUtilityUpgradable.sol:24"
           },
           {
             "label": "feeCollector",
@@ -216,15 +216,15 @@
             "slot": "5",
             "type": "t_address",
             "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:26"
+            "src": "contracts/LogicUtilityUpgradable.sol:25"
           },
           {
             "label": "receipt",
             "offset": 0,
             "slot": "6",
-            "type": "t_mapping(t_address,t_struct(Receipt)899_storage)",
+            "type": "t_mapping(t_address,t_struct(Receipt)901_storage)",
             "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:36"
+            "src": "contracts/LogicUtilityUpgradable.sol:35"
           },
           {
             "label": "receiptCounter",
@@ -232,7 +232,7 @@
             "slot": "7",
             "type": "t_uint32",
             "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:37"
+            "src": "contracts/LogicUtilityUpgradable.sol:36"
           }
         ],
         "types": {
@@ -294,11 +294,11 @@
             "label": "uint64",
             "numberOfBytes": "8"
           },
-          "t_contract(ICompanyManager)863": {
+          "t_contract(ICompanyManager)865": {
             "label": "contract ICompanyManager",
             "numberOfBytes": "20"
           },
-          "t_mapping(t_address,t_struct(Receipt)899_storage)": {
+          "t_mapping(t_address,t_struct(Receipt)901_storage)": {
             "label": "mapping(address => struct LogicUtilityUpgradable.Receipt)",
             "numberOfBytes": "32"
           },
@@ -306,248 +306,7 @@
             "label": "mapping(address => uint256)",
             "numberOfBytes": "32"
           },
-          "t_struct(Receipt)899_storage": {
-            "label": "struct LogicUtilityUpgradable.Receipt",
-            "members": [
-              {
-                "label": "company",
-                "type": "t_address",
-                "offset": 0,
-                "slot": "0"
-              },
-              {
-                "label": "payer",
-                "type": "t_address",
-                "offset": 0,
-                "slot": "1"
-              },
-              {
-                "label": "amount",
-                "type": "t_uint96",
-                "offset": 20,
-                "slot": "1"
-              },
-              {
-                "label": "platformFee",
-                "type": "t_uint96",
-                "offset": 0,
-                "slot": "2"
-              },
-              {
-                "label": "netPaid",
-                "type": "t_uint96",
-                "offset": 12,
-                "slot": "2"
-              },
-              {
-                "label": "timestamp",
-                "type": "t_uint64",
-                "offset": 24,
-                "slot": "2"
-              },
-              {
-                "label": "id",
-                "type": "t_uint32",
-                "offset": 0,
-                "slot": "3"
-              }
-            ],
-            "numberOfBytes": "128"
-          },
-          "t_uint32": {
-            "label": "uint32",
-            "numberOfBytes": "4"
-          },
-          "t_uint96": {
-            "label": "uint96",
-            "numberOfBytes": "12"
-          }
-        },
-        "namespaces": {
-          "erc7201:openzeppelin.storage.ReentrancyGuard": [
-            {
-              "contract": "ReentrancyGuardUpgradeable",
-              "label": "_status",
-              "type": "t_uint256",
-              "src": "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol:43",
-              "offset": 0,
-              "slot": "0"
-            }
-          ],
-          "erc7201:openzeppelin.storage.Ownable": [
-            {
-              "contract": "OwnableUpgradeable",
-              "label": "_owner",
-              "type": "t_address",
-              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
-              "offset": 0,
-              "slot": "0"
-            }
-          ],
-          "erc7201:openzeppelin.storage.Initializable": [
-            {
-              "contract": "Initializable",
-              "label": "_initialized",
-              "type": "t_uint64",
-              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
-              "offset": 0,
-              "slot": "0"
-            },
-            {
-              "contract": "Initializable",
-              "label": "_initializing",
-              "type": "t_bool",
-              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
-              "offset": 8,
-              "slot": "0"
-            }
-          ]
-        }
-      }
-    },
-    "b236021a9da4bc194814ba958d2a80f59a8a1ee3ac6b7490209ca2947bf79165": {
-      "address": "0x38C31D177ED184B9a9881b543388B52331F88413",
-      "txHash": "0x8f39cf0f1c8875e5fb0e6a4d581367ab44c2f147fd03e8a0ecd3a30d82e950b6",
-      "layout": {
-        "solcVersion": "0.8.28",
-        "storage": [
-          {
-            "label": "companyManager",
-            "offset": 0,
-            "slot": "0",
-            "type": "t_contract(ICompanyManager)665",
-            "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:19"
-          },
-          {
-            "label": "feePercentage",
-            "offset": 0,
-            "slot": "1",
-            "type": "t_uint256",
-            "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:20"
-          },
-          {
-            "label": "totalFeesCollected",
-            "offset": 0,
-            "slot": "2",
-            "type": "t_uint256",
-            "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:21"
-          },
-          {
-            "label": "totalTransactedAmount",
-            "offset": 0,
-            "slot": "3",
-            "type": "t_uint256",
-            "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:22"
-          },
-          {
-            "label": "companyBalances",
-            "offset": 0,
-            "slot": "4",
-            "type": "t_mapping(t_address,t_uint256)",
-            "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:25"
-          },
-          {
-            "label": "feeCollector",
-            "offset": 0,
-            "slot": "5",
-            "type": "t_address",
-            "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:26"
-          },
-          {
-            "label": "receipt",
-            "offset": 0,
-            "slot": "6",
-            "type": "t_mapping(t_address,t_struct(Receipt)701_storage)",
-            "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:36"
-          },
-          {
-            "label": "receiptCounter",
-            "offset": 0,
-            "slot": "7",
-            "type": "t_uint32",
-            "contract": "LogicUtilityUpgradable",
-            "src": "contracts/LogicUtilityUpgradable.sol:37"
-          }
-        ],
-        "types": {
-          "t_address": {
-            "label": "address",
-            "numberOfBytes": "20"
-          },
-          "t_bool": {
-            "label": "bool",
-            "numberOfBytes": "1"
-          },
-          "t_struct(InitializableStorage)73_storage": {
-            "label": "struct Initializable.InitializableStorage",
-            "members": [
-              {
-                "label": "_initialized",
-                "type": "t_uint64",
-                "offset": 0,
-                "slot": "0"
-              },
-              {
-                "label": "_initializing",
-                "type": "t_bool",
-                "offset": 8,
-                "slot": "0"
-              }
-            ],
-            "numberOfBytes": "32"
-          },
-          "t_struct(OwnableStorage)13_storage": {
-            "label": "struct OwnableUpgradeable.OwnableStorage",
-            "members": [
-              {
-                "label": "_owner",
-                "type": "t_address",
-                "offset": 0,
-                "slot": "0"
-              }
-            ],
-            "numberOfBytes": "32"
-          },
-          "t_struct(ReentrancyGuardStorage)163_storage": {
-            "label": "struct ReentrancyGuardUpgradeable.ReentrancyGuardStorage",
-            "members": [
-              {
-                "label": "_status",
-                "type": "t_uint256",
-                "offset": 0,
-                "slot": "0"
-              }
-            ],
-            "numberOfBytes": "32"
-          },
-          "t_uint256": {
-            "label": "uint256",
-            "numberOfBytes": "32"
-          },
-          "t_uint64": {
-            "label": "uint64",
-            "numberOfBytes": "8"
-          },
-          "t_contract(ICompanyManager)665": {
-            "label": "contract ICompanyManager",
-            "numberOfBytes": "20"
-          },
-          "t_mapping(t_address,t_struct(Receipt)701_storage)": {
-            "label": "mapping(address => struct LogicUtilityUpgradable.Receipt)",
-            "numberOfBytes": "32"
-          },
-          "t_mapping(t_address,t_uint256)": {
-            "label": "mapping(address => uint256)",
-            "numberOfBytes": "32"
-          },
-          "t_struct(Receipt)701_storage": {
+          "t_struct(Receipt)901_storage": {
             "label": "struct LogicUtilityUpgradable.Receipt",
             "members": [
               {

@@ -1,15 +1,19 @@
 import { getTotalTransactions } from '@/global/public/balances/totalTransactionsThunk';
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 export default function Home() {
   const dispatch = useDispatch();
+  const { totalTransactedAmount } = useSelector((state) => state.transactions);
+  console.log("totalTransactedAmount: ", totalTransactedAmount)
   useEffect(() => {
-    dispatch(getTotalTransactions())
-  })
+    dispatch(getTotalTransactions());
+    console.log("totalTransactedAmount: ", totalTransactedAmount)
+  }, [])
+  console.log("totalTransactedAmount: ", totalTransactedAmount)
   return (
-    <div className="w-full flex justify-center px-4 my-8">
+    <div className="w-full flex justify-center items-center flex-col gap-12 px-4 my-8">
       <div className="bg-gray-800 text-gray-300 p-8 rounded-2xl max-w-5xl w-full transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
         <h2 className="font-bold mb-4 text-2xl">UtilityBlocks, The Decentralized Utility Payment System</h2>
         <h2 className=" font-semibold mb-4 text-amber-400">
@@ -35,6 +39,10 @@ export default function Home() {
           registered service providers here:
           <Link to="/" className="text-green-400 ml-2">All Registered Service Providers</Link>
         </p>
+      </div>
+      <div className="flex flex-col items-center justify-center">
+        <p>Platform Transaction Volume </p>
+        <p>{ totalTransactedAmount}</p>
       </div>
     </div>
   )

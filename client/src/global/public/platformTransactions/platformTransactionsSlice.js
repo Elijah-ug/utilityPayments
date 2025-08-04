@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getPlatformTransactions } from "./platformTransactionsThunk";
 
 const initialState = {
-    totalTransactedAmount: null,
+    totalTransactedAmount: "0",
     loading: false,
     error: null,
 }
 const platTotalTransactionsSlice = createSlice({
-    name: "sumTransactions",
+    name: "transactions",
     initialState,
     extraReducers: (builder) => {
         builder
@@ -20,7 +20,7 @@ const platTotalTransactionsSlice = createSlice({
         })
         .addCase(getPlatformTransactions.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload;
+            state.error = action.payload || "Unclear Error" ;
         })
     }
 })

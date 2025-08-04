@@ -32,7 +32,7 @@ export function RegisterAndEdit() {
     // fees updates
 
         const handleUpdateFees = () => {
-            let fee = parseInt(fees)
+          let fee = parseInt(fees);
             if (isNaN(fee) || fee <= 0) {
                 console.log("Little fee or isNaN");
                 console.log(typeof(fee))
@@ -46,8 +46,8 @@ export function RegisterAndEdit() {
     <div className="flex flex-col w-full max-w-sm gap-6">
       <Tabs defaultValue="account" className="w-md ">
         <TabsList className="bg-gray-400">
-          <TabsTrigger value="account">Account</TabsTrigger>
-          <TabsTrigger value="password">Password</TabsTrigger>
+          <TabsTrigger value="account">Register</TabsTrigger>
+          <TabsTrigger value="password">Rate Update</TabsTrigger>
         </TabsList>
         <TabsContent value="account" className="h-[50vh]">
           <Card className="bg-gray-600 border-none h-full text-white">

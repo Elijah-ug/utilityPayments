@@ -4,9 +4,10 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { checkDataFromAcrossThunk } from "@/global/public/debug/checkDataFromAcrossThunk"
 import { payUtilityThunk } from "@/global/public/payment/payUtilityThunk"
 import { parseEther } from "ethers"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 
 export function PayUtility() {
@@ -20,10 +21,15 @@ export function PayUtility() {
       alert("Some input missing");
     }
     const parsedAmount = parseEther(amount)
-    dispatch(payUtilityThunk({companyAddr, amount: parsedAmount}));
+    dispatch(payUtilityThunk({ companyAddr, amount: parsedAmount }));
+    dispatch(checkDataFromAcrossThunk({ companyAddr: "0x34a579280ab83994Bc97E93189a30526160C20F9" }));
     setCompanyAddr("");
     setAmount("");
-    }
+  }
+  // useEffect(() => {
+  //   dispatch(checkDataFromAcrossThunk({ companyAddr }))
+  //   console.log(companyAddr)
+  // }, [companyAddr]);
   return (
     <Card className="w-md bg-gray-800 border-none text-gray-300 h-4/5">
       <CardHeader>
