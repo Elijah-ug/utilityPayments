@@ -1,5 +1,5 @@
-const { createSlice } = require("@reduxjs/toolkit")
-const { getCompanyReceiptThunk } = require("./companyReceiptsThunk")
+import { createSlice } from "@reduxjs/toolkit";
+import { getCompanyReceiptThunk } from "./companyReceiptsThunk";
 
 const initialState = {
     mappedReceipts: [],

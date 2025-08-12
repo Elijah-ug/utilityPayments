@@ -17,7 +17,11 @@ export const getCompanyReceiptThunk = createAsyncThunk(
             amount: formatUnits(amount, 18),
             platformFee: formatUnits(platformFee, 18),
             netPaid: formatUnits(netPaid, 18),
-            timestamp: format(new Date(Number(timestamp) * 1000), "yyyy-MMM-dd HH:mm:ss"),
+                timestamp: new Date(Number(timestamp) * 1000).toLocaleDateString("en-us", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric"
+            }),
             id: id.toString(),
         }))
 

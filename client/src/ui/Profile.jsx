@@ -44,23 +44,19 @@ export default function Profile() {
 
                   <div className="flex items-center gap-2">
                       <span className="text-lg ">Name:</span>
-                      <span className="text-sm ">{profile.name}</span>
+                      <span className="text-sm ">{profile.name ? (profile.name) : "N/A"}</span>
                   </div>
 
                   <div className="flex items-center gap-2">
                       <span className="text-lg ">Service:</span>
-                      <span className="text-sm ">{profile.utilityService}</span>
+                          <span className="text-sm ">
+                              {profile.utilityService ? (profile.utilityService) : "N/A"}
+                          </span>
                   </div>
 
               </div>)
 }
       </CardContent>
-      {/* <CardFooter className="flex-col gap-2">
-            <Button onClick={handleUpdateFees}
-            type="submit" className="w-full">
-            Update Rates
-           </Button>
-      </CardFooter> */}
     </Card>
   )
 }
