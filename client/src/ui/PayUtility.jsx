@@ -20,9 +20,8 @@ export function PayUtility() {
     if (!companyAddr || !amount || isNaN(amount)) {
       alert("Some input missing");
     }
-    const parsedAmount = parseEther(amount)
+    const parsedAmount = parseEther(amount).toString();
     dispatch(payUtilityThunk({ companyAddr, amount: parsedAmount }));
-    dispatch(checkDataFromAcrossThunk({ companyAddr: "0x34a579280ab83994Bc97E93189a30526160C20F9" }));
     setCompanyAddr("");
     setAmount("");
   }

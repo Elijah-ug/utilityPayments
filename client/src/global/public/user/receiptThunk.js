@@ -5,10 +5,11 @@ import {format} from "date-fns"
 
 export const getReceiptThunk = createAsyncThunk(
     "receipt/getReceiptThunk",
-    async (_, { rejectWithValue }) => {
+    async ({address}, { rejectWithValue }) => {
         try {
+            const parsedAddr = await address.toLowerCase();
             const contract = await getLogicUtilityContract();
-            const receipt = await contract.getReceipt();
+            const receipt = await contract.getReceipt(parsedAddr);
             const receipts = {
                 company: receipt[0],
                 payer: receipt[1],

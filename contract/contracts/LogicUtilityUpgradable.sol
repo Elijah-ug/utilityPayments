@@ -38,7 +38,8 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
     event PaymentMode(address indexed payer, address indexed company, uint256 amount);
     event CompanyWithdrawn( address indexed company, uint256 amount);
     event PlatformFeeWithdrawn( address indexed to, uint256 amount);
-
+// new
+mapping(address => Receipt[]) public companyReceipts;
     function initialize(address _baseUtility) public initializer{
         __Ownable_init(msg.sender);
         __ReentrancyGuard_init();
@@ -46,7 +47,7 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
     }
     function viewImportedCompany(address _compAddr) external view returns(address, bool, string memory){
         try companyManager.getCompany(_compAddr) returns (
-            address companyAddr, uint256 , bool isActive, string memory name, string memory 
+            address companyAddr, uint256 , bool isActive, string memory name, string memory
              ) {
                 return (companyAddr,  isActive, name);
         } catch  {
@@ -70,7 +71,7 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
         // calculate platform fee and net amount
        uint256 transactionFee = ( msg.value * feePercentage) / 1000;
        uint256 netReceived = msg.value - transactionFee;
-       receipt[msg.sender] = Receipt({
+       Receipt memory newReceipt = Receipt({
         company: companyAddr,
         payer: msg.sender,
         amount: uint96(msg.value),
@@ -78,7 +79,9 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
         netPaid: uint96(netReceived),
         timestamp: uint64(block.timestamp),
         id: uint32(receiptCounter ++)
-        });
+       });
+       receipt[msg.sender] = newReceipt;
+       companyReceipts[companyAddr].push(newReceipt);
         // update
         totalFeesCollected += transactionFee;
         // total transactions on platform
@@ -110,17 +113,21 @@ contract LogicUtilityUpgradable is Initializable, OwnableUpgradeable, Reentrancy
         emit PlatformFeeWithdrawn(msg.sender, _amount);
     }
     function getReceipt(address user) external view returns(Receipt memory){
-        require(
-            msg.sender == receipt[msg.sender].company ||
-             msg.sender == receipt[msg.sender].payer, "Not authorised!" );
-            return receipt[user];
+        Receipt memory r = receipt[user];
+        require(msg.sender == r.company || msg.sender == r.payer, "Not authorised!" );
+            return r;
     }
     function getCompanyBalance(address _company) external view returns (uint256) {
     return companyBalances[_company];
        }
+
        function totalPlatformTransactions() external view returns(uint256){
         return totalTransactedAmount;
        }
-
     receive() external payable{}
+    function getCompanyReceipts() external view returns(Receipt[] memory){
+    (address companyAddr, , , ,) = companyManager.getCompany(msg.sender);
+    require(msg.sender == companyAddr, "Not Authorized!");
+    return companyReceipts[companyAddr];
+    }
 }

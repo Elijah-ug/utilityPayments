@@ -8,8 +8,8 @@ export default function Analytics() {
   const dispatch = useDispatch();
   const { parsedplatformRate } = useSelector((state) => state.rate);
   const { totalCharges } = useSelector((state) => state.charges);
-  const { totalTransactedAmount } = useSelector((state) => state.transactions);
-  console.log("totalTransactedAmount: ", totalTransactedAmount);
+  const { totalTransactions } = useSelector((state) => state.volumeTx);
+  // console.log("totalTransactions: ", totalTransactions);
   useEffect(() => {
     dispatch(getPlatformTransactions());
     dispatch(fetchPlatformRate());

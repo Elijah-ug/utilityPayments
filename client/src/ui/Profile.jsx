@@ -13,7 +13,7 @@ export default function Profile() {
     const { profile } = useSelector((state) => state.company);
     const {balance} = useSelector((state) => state.companyBalance)
 
-    console.log(profile);
+    // console.log(profile);
     useEffect(() => {
         dispatch(getCompanyProfiles({ address }));
         dispatch(getCompanyBalance({ address }));

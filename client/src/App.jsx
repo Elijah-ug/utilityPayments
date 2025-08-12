@@ -7,7 +7,17 @@ import UtilityPayments from "./ui/UtilityPayments";
 import NavBar from "./navigation/NavBar";
 import Footer from "./ui/Footer";
 import { ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { autoConnectWallet } from "./global/auth/autoConnectWalletThunk";
 export default function App() {
+  const { address } = useSelector((state) => state.wallet)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    if (window.ethereum) {
+      dispatch(autoConnectWallet());
+    }
+  }, [address])
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex-grow">

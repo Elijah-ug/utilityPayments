@@ -3,10 +3,11 @@ import connectWalletSliceReducer from "../global/auth/walletSlice";
 import getCompanySliceReducer from "../global/company/profile/getCompanySlice";
 import getCompanyBalanceSliceReducer from "../global/company/public/balance/companyBalanceSlice";
 import listedCompaniesSliceReducer from "../global/public/companies/listedCompaniesSlice";
-import platTotalTransactionsSliceReducer from "../global/public/balances/transactionsSlice.js";
+import getPlatformTransactionsSliceReducer from "../global/public/balances/transactionsSlice.js";
 import platformRateSliceReducer from "../global/public/rates/platformRateSlice";
-import getReceiptsSliceReducer from "../global/company/public/receipt/receiptSlice";
+import getReceiptsSliceReducer from "../global/public/user/receiptSlice";
 import platChargesSliceReducer from "../global/admin/dashboard/platformChargesSlice";
+import companyReceiptsSliceReducer from "../global/company/public/receipts/companyReceiptsSlice";
 
 export const store = configureStore({
     reducer: {
@@ -14,9 +15,10 @@ export const store = configureStore({
         "company": getCompanySliceReducer,
         "companyBalance": getCompanyBalanceSliceReducer,
         "listedCompanies": listedCompaniesSliceReducer,
-        "transactions": platTotalTransactionsSliceReducer,
+        "volumeTx": getPlatformTransactionsSliceReducer,
         "rate": platformRateSliceReducer,
         "receipt": getReceiptsSliceReducer,
-        "charges": platChargesSliceReducer
+        "charges": platChargesSliceReducer,
+        "companyReceipts": companyReceiptsSliceReducer,
     }
 })

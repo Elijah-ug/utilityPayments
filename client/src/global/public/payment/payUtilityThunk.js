@@ -11,7 +11,7 @@ export const payUtilityThunk = createAsyncThunk(
             const tx = await contract.payUtility(companyAddr, {value: amount});
             await tx.wait();
             toast.success("Payment made successfully!");
-            return companies;
+            return tx;
         } catch (error) {
             console.log(error || "Unknown error happened");
             toast.error("Payment Failed");

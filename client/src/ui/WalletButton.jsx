@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { connectWallet } from '@/global/auth/walletThunk';
-import { Copy } from 'lucide-react';
+import { Copy, Ticket } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
+import { FaCheck } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux'
 
 export default function WalletButton() {
@@ -28,10 +29,12 @@ export default function WalletButton() {
           : "Connect Wallet"}
     {address && (
       <>
-        <Copy className="w-4 h-4" />
-        <span className={`text-xs transition-opacity duration-300 ${copied ? 'opacity-100' : 'opacity-0'}`}>
-          Copied!
-        </span>
+            {copied ?
+               ( <span className={`font-light transition-opacity duration-300 opacity-100 text-green-400 `}>
+          <FaCheck/>
+        </span>):
+              (<Copy className="w-4 h-4" />)}
+
       </>
     )}
   </Button>

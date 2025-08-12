@@ -16,7 +16,7 @@ const getReceiptsSlice = createSlice({
             })
             .addCase(getReceiptThunk.fulfilled, (state, action) => {
                 state.loading = false;
-                state.balance = action.payload;
+                state.receipts = action.payload;
             })
             .addCase(getReceiptThunk.rejected, (state, action) => {
                 state.loading = false;

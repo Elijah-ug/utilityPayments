@@ -1,8 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { listedCompanies } from '@/global/public/companies/listedCompaniesThunk';
+import { getReceiptThunk } from '@/global/public/user/receiptThunk';
+import { getAddress } from 'ethers';
 import { Copy } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import { FaCheck } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function UtilityServiceProviders() {
@@ -10,17 +13,23 @@ export default function UtilityServiceProviders() {
   const [copied, setCopied] = useState(false);
   const [copiedAddress, setCopiedAddress] = useState("")
   const { registeredCompanies } = useSelector((state) => state.listedCompanies);
-  console.log(typeof(registeredCompanies))
+  const { address } = useSelector((state) => state.wallet);
+  const { receipts } = useSelector((state) => state.receipt);
+  const same = receipts?.company && address ? receipts?.company === address : false;
+
     useEffect(() => {
-        dispatch(listedCompanies());
-    }, []);
+      dispatch(listedCompanies());
+      if (address) {
+        dispatch(getReceiptThunk( {address: getAddress(address)} ));
+      }
+
+    }, [address]);
   const handleCopyAddress = (companyAddress) => {
     setCopiedAddress(companyAddress)
     navigator.clipboard.writeText(companyAddress);
     setCopied(true);
-    setTimeout(()=>setCopied(false), 1500)
+    setTimeout(() => setCopied(false), 1500);
   }
-
 
   return (
     <div>
@@ -43,8 +52,9 @@ export default function UtilityServiceProviders() {
                   <span className="text-sm ">{company?.companyAddr?.slice(0, 7)}...{company?.companyAddr?.slice(-5)}</span>
                   <Button onClick={() => handleCopyAddress(company.companyAddr)}
                     className="bg-gray-600 hover:bg-gray-600" >
-                    <Copy />
-                    {copiedAddress === company.companyAddr && copied && (<span>Copied!</span>) }
+
+                    {copiedAddress === company.companyAddr && copied ?
+                      (<FaCheck className="text-green-400 text-sm font-extralight" />) : (<Copy />)}
                    </Button>
                   </div>
                   </div>

@@ -7,12 +7,12 @@ export const autoConnectWallet = createAsyncThunk(
         try {
             if (!window.ethereum) return console.log("Metamask not detected");
 
-            const alfajoresChainId = "0xaef3";
+            const baseSepoliaChainId = "0x14a34";
             const network = await window.ethereum.request({ method: "eth_chainId" });
-            if (network !== alfajoresChainId) {
+            if (network !== baseSepoliaChainId) {
                 await window.ethereum.request({
                     method: "wallet_switchEthereumChain",
-                    params: [{chainId: alfajoresChainId}]
+                    params: [{chainId: baseSepoliaChainId}]
                 })
             }
             const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });

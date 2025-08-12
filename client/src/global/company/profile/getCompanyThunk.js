@@ -15,7 +15,6 @@ export const getCompanyProfiles = createAsyncThunk(
                 name: prof[3],
                 utilityService: prof[4]
             }
-            // console.log("profprof: ", profile);
             return profile;
         } catch (error) {
             console.log(error.message);

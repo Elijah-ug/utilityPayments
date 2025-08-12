@@ -4,18 +4,19 @@ import { Label } from "@/components/ui/label"
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger,
 } from "@/components/ui/sheet"
 import { getCompanyProfiles } from "@/global/company/profile/getCompanyThunk";
-import { getReceiptThunk } from "@/global/company/public/receipt/receiptThunk";
+import { getCompanyReceiptThunk } from "@/global/company/public/receipts/companyReceiptsThunk";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export function SheetShowLastTransactions() {
     const { profile } = useSelector((state) => state.company);
-    const { address } = useSelector((state) => state.wallet);
-    // console.log(address)
+  const { address } = useSelector((state) => state.wallet);
+  // const { receipts } = useSelector((state) => state.receipt);
+
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(getCompanyReceiptThunk());
     dispatch(getCompanyProfiles({ address }));
-    dispatch(getReceiptThunk());
   }, [address]);
   return (
     <Sheet>
@@ -25,8 +26,9 @@ export function SheetShowLastTransactions() {
       <SheetContent  className="bg-gray-700 border-none w-full sm:w-1/2 lg:w-[700px] max-w-none sm:max-w-none">
         <SheetHeader>
           <SheetTitle className="text-white">Transactions History</SheetTitle>
-          <SheetDescription className="text-white text-md">
-            Payments made to {profile.companyAddr}
+          <SheetDescription className="text-white text-md flex gap-3">
+            <span>Payments made to:</span>
+            <span className="">{profile.companyAddr}</span>
           </SheetDescription>
         </SheetHeader>
         <div className="grid flex-1 auto-rows-min gap-6 px-4">

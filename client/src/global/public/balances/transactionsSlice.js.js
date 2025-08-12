@@ -7,7 +7,7 @@ const initialState = {
     error: null,
 }
 const getPlatformTransactionsSlice = createSlice({
-    name: "sum",
+    name: "volumeTx",
     initialState,
     extraReducers: (builder) => {
         builder

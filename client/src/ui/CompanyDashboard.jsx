@@ -4,20 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCompanyProfiles } from '@/global/company/profile/getCompanyThunk';
 import { listedCompanies } from '@/global/public/companies/listedCompaniesThunk';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import Receipts from './Receipts';
 import { SheetShowLastTransactions } from './SheetShowLastTransactions';
+import { getCompanyReceiptThunk } from '@/global/company/public/receipts/companyReceiptsThunk';
 
 export default function CompanyDashboard() {
   const { profile } = useSelector((state) => state.company);
-  const dispatch = useDispatch();
   const { address } = useSelector((state) => state.wallet);
-  const [isOpen, setIsOpen] = useState(false)
 
-      console.log(profile);
-      useEffect(() => {
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false)
+  useEffect(() => {
         dispatch(getCompanyProfiles({ address }));
         dispatch(listedCompanies());
+    dispatch(getCompanyReceiptThunk());
       }, [address]);
   const handleShowReceipts = () => {
       setIsOpen(!isOpen);

@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom'
 
 export default function Home() {
   const dispatch = useDispatch();
-  const { totalTransactedAmount } = useSelector((state) => state.transactions);
-  console.log("totalTransactedAmount: ", totalTransactedAmount)
+  const { totalTransactions } = useSelector((state) => state.volumeTx);
+
   useEffect(() => {
     dispatch(getTotalTransactions());
-    console.log("totalTransactedAmount: ", totalTransactedAmount)
-  }, [])
-  console.log("totalTransactedAmount: ", totalTransactedAmount)
+    // console.log("totalTransactions: ", totalTransactions)
+  }, [dispatch])
+  // console.log("totalTransactions: ", totalTransactions)
   return (
     <div className="w-full flex justify-center items-center flex-col gap-12 px-4 my-8">
       <div className="bg-gray-800 text-gray-300 p-8 rounded-2xl max-w-5xl w-full transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
@@ -42,7 +42,7 @@ export default function Home() {
       </div>
       <div className="flex flex-col items-center justify-center">
         <p>Platform Transaction Volume </p>
-        <p>{ totalTransactedAmount}</p>
+        <p>{ totalTransactions && (totalTransactions + " ETH")}</p>
       </div>
     </div>
   )
