@@ -11,12 +11,12 @@ export const getCompanyReceiptThunk = createAsyncThunk(
             console.log(contract.target)
             const receipt = await contract.getCompanyReceipts();
 
-            const mappedReceipts = receipt.map(([company, payer, amount, platformFee, netPaid, timestamp, id]) => ({
+            const mappedReceipts = receipt.map(({company, payer, amount, platformFee, netPaid, timestamp, id}) => ({
             company,
             payer,
-            amount: formatUnits(amount, 18),
-            platformFee: formatUnits(platformFee, 18),
-            netPaid: formatUnits(netPaid, 18),
+            amount: formatEther(amount, 18),
+            platformFee: formatEther(platformFee, 18),
+            netPaid: formatEther(netPaid, 18),
                 timestamp: new Date(Number(timestamp) * 1000).toLocaleDateString("en-us", {
                     year: "numeric",
                     month: "short",

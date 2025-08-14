@@ -14,6 +14,7 @@ import { GoCopy } from "react-icons/go";
 
 export function SheetShowLastTransactions() {
   const [copied, setCopied] = useState(false);
+  const [selectedId, setSelectedId] = useState("")
   const [copiedAddress, setCopiedAddress] = useState("");
   const { profile } = useSelector((state) => state.company);
   const { address } = useSelector((state) => state.wallet);
@@ -26,9 +27,10 @@ export function SheetShowLastTransactions() {
     dispatch(getCompanyProfiles({ address }));
   }, [address]);
 
-  const handleCopyAddress = (selectedAddr) => {
-    if (selectedAddr) {
-       setCopiedAddress(selectedAddr)
+  const handleCopyAddress = (selectedAddr, receiptId) => {
+    if (selectedAddr && receiptId) {
+      setCopiedAddress(selectedAddr);
+      setSelectedId(receiptId);
       navigator.clipboard.writeText(selectedAddr);
       setCopied(true);
       setTimeout(() => setCopied(false), 1000);
@@ -49,12 +51,13 @@ export function SheetShowLastTransactions() {
             <span className="">{profile.companyAddr}</span>
           </SheetDescription>
         </SheetHeader>
-        <div>
+        <div className="">
           {mappedReceipts.length > 0 ? mappedReceipts.map((receipt, index) =>
-          (<div key={index} className="rounded grid flex-1 auto-rows-min gap-2 mx-4 bg-blue-500 py-2 transition-all duration-300 hover:scale-103 ease-in-out">
+          (<div key={index} className="rounded grid my-2 auto-rows-min  mx-4 bg-blue-500 py-2 transition-all duration-300 hover:scale-103 ease-in-out">
+            <div className="">
             {/* first */}
             <div className="flex items-center justify-around">
-              <div className="">
+              <div className="grid gap-2.5">
               <div className="flex gap-2">
               <span>Index:</span>
               <span>{ receipt.id}</span>
@@ -67,7 +70,7 @@ export function SheetShowLastTransactions() {
               </div>
 
                {/* charge + net */}
-            <div className="">
+            <div className="grid gap-2.5">
               <div className="flex gap-2">
               <span>Platform Fee:</span>
               <span>{ receipt.platformFee}</span>
@@ -80,14 +83,14 @@ export function SheetShowLastTransactions() {
               </div>
 
 {/* addresses */}
-            <div className="">
+            <div className="grid gap-2.5">
               <div className="flex gap-2">
               <span>Payer:</span>
               <span className="flex gap-1.5">
                 {receipt?.payer?.slice(0, 7)}...{receipt?.payer?.slice(-5)}
                 <span className="cursor-pointer">
-                  {copied && copiedAddress === receipt.payer ?
-                  (<FaCheck className="text-green-400" />) : <GoCopy onClick={() => handleCopyAddress(receipt.payer)} />}
+                  {copied && copiedAddress === receipt.payer && selectedId === receipt.id ?
+                  (<FaCheck className="text-green-400" />) : <GoCopy onClick={() => handleCopyAddress(receipt.payer, receipt.id)} />}
                 </span>
               </span>
             </div>
@@ -97,19 +100,19 @@ export function SheetShowLastTransactions() {
               <span className="flex gap-1">
                 {receipt?.company?.slice(0, 7)}...{receipt?.company?.slice(-5)}
                 <span className="cursor-pointer">
-                  {copied && copiedAddress === receipt.company?
-                  (<FaCheck className="text-green-400" />) : <GoCopy onClick={() => handleCopyAddress(receipt.company)} />}
+                  {copied && copiedAddress === receipt.company && selectedId === receipt.id ?
+                  (<FaCheck className="text-green-400" />) : <GoCopy onClick={() => handleCopyAddress(receipt.company, receipt.id)} />}
                 </span>
               </span>
             </div>
             </div>
 
-
             </div>
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-900">
               <span>Time:</span>
               <span>{ receipt.timestamp}</span>
             </div>
+              </div>
             </div>)
           ): (<div className="flex items-center justify-center text-lg">You have an Empty Ledger</div>) }
         </div>

@@ -8,12 +8,13 @@ import { checkDataFromAcrossThunk } from "@/global/public/debug/checkDataFromAcr
 import { payUtilityThunk } from "@/global/public/payment/payUtilityThunk"
 import { parseEther } from "ethers"
 import { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 export function PayUtility() {
     const dispatch = useDispatch();
     const [companyAddr, setCompanyAddr] = useState("");
-    const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState("");
+  const { blockchainData } = useSelector((state) => state.payment);
 
   const handlePayUtility = () => {
     console.log(typeof (amount), amount);
@@ -27,10 +28,9 @@ export function PayUtility() {
   }
   // useEffect(() => {
   //   dispatch(checkDataFromAcrossThunk({ companyAddr }))
-  //   console.log(companyAddr)
   // }, [companyAddr]);
   return (
-    <Card className="w-md bg-gray-800 border-none text-gray-300 h-4/5">
+    <Card className="w-md bg-gray-800 border-none text-gray-300 ">
       <CardHeader>
         <CardTitle>Pay for Utility Service</CardTitle>
       </CardHeader>

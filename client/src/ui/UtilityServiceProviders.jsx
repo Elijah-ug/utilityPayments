@@ -14,13 +14,12 @@ export default function UtilityServiceProviders() {
   const [copiedAddress, setCopiedAddress] = useState("")
   const { registeredCompanies } = useSelector((state) => state.listedCompanies);
   const { address } = useSelector((state) => state.wallet);
-  const { receipts } = useSelector((state) => state.receipt);
-  const same = receipts?.company && address ? receipts?.company === address : false;
+
 
     useEffect(() => {
       dispatch(listedCompanies());
       if (address) {
-        dispatch(getReceiptThunk( {address: getAddress(address)} ));
+        dispatch(getReceiptThunk( { address} ));
       }
 
     }, [address]);
@@ -34,7 +33,7 @@ export default function UtilityServiceProviders() {
   return (
     <div>
       <Card
-          className="w-md bg-gray-800 border-none text-gray-300 h-5/6 ">
+          className="w-md bg-gray-800 border-none text-gray-300 h-6/7 ">
       <CardHeader>
         <CardTitle>Utility Service Providers</CardTitle>
       </CardHeader>

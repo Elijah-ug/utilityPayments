@@ -13,8 +13,8 @@ export const getReceiptThunk = createAsyncThunk(
             const receipts = {
                 company: receipt[0],
                 payer: receipt[1],
-                amount: formatUnits(receipt[2].toString()),
-                platformFee: formatUnits(receipt[3].toString()),
+                amount: formatEther(receipt[2].toString()),
+                platformFee: formatEther(receipt[3].toString()),
                 netPaid: formatUnits(receipt[4].toString()).toString(),
                 timestamp: format(new Date(receipt[5].toString() * 1000), "yyy-MMM-dd HH:mm:ss"),
                 id: receipt[6].toString(),
