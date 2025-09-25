@@ -9,7 +9,7 @@ interface ICompanyManager {
         address companyAddr,
         uint256 balance,
         bool isActive,
-        string memory name,
+        string memory name, 
         string memory utilityService
     );
 }
