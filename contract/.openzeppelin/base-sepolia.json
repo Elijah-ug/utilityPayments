@@ -10,6 +10,11 @@
       "address": "0x81B1336E883EE73Ce843abBD07935aEcfbB7D848",
       "txHash": "0xbbe6ec2b3191269c34a8028309131c4697b3b1f986fe591a5c807d60a44ef84a",
       "kind": "transparent"
+    },
+    {
+      "address": "0x9848Ca1a06aA9eFf4C0c36B8Aa0823F459A01EE1",
+      "txHash": "0x68461f4d3bd8cf0ed9836327a228cf66af5d179c570be20ee2c91f6a8aea4ab9",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -872,6 +877,157 @@
               "slot": "0"
             }
           ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "f3ae50583d48e8a9b0650f9a6eb7f951bb36ed4a7efea40a60cec6974a368131": {
+      "address": "0x6dd3Da5538d1c840c1Bded7e9C133F1A66eAA4aD",
+      "txHash": "0xeff5e7c64570170c8104c8958b9578acb309b60f51d66f9537af8e0afd6f9023",
+      "layout": {
+        "solcVersion": "0.8.28",
+        "storage": [
+          {
+            "label": "companies",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_address,t_struct(Company)656_storage)",
+            "contract": "BaseUtilityUpgradeable",
+            "src": "contracts/BaseUtilityUpgradeable.sol:15"
+          },
+          {
+            "label": "registerdCompanies",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_struct(Company)656_storage)dyn_storage",
+            "contract": "BaseUtilityUpgradeable",
+            "src": "contracts/BaseUtilityUpgradeable.sol:19"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)73_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)13_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_struct(Company)656_storage)dyn_storage": {
+            "label": "struct BaseUtilityUpgradeable.Company[]",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(Company)656_storage)": {
+            "label": "mapping(address => struct BaseUtilityUpgradeable.Company)",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Company)656_storage": {
+            "label": "struct BaseUtilityUpgradeable.Company",
+            "members": [
+              {
+                "label": "companyAddr",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "isActive",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "name",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "utilityService",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
           "erc7201:openzeppelin.storage.Ownable": [
             {
               "contract": "OwnableUpgradeable",

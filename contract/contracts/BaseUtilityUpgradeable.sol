@@ -17,46 +17,51 @@ contract BaseUtilityUpgradeable is Initializable, OwnableUpgradeable {
     event CompanyDeactivated(address indexed company);
     // added after dep 1
     Company[] public registerdCompanies;
-function initialize() public initializer{
-    __Ownable_init(msg.sender);
-}
-function registerCompany(address _companyAddr, string memory _name, string memory _utilityService) external onlyOwner{
-    require(!companies[_companyAddr].isActive, "Company Registered");
-    Company memory newCompany = Company(_companyAddr, 0, true, _name, _utilityService);
-    companies[_companyAddr] = newCompany;
-    registerdCompanies.push(newCompany);
-    emit CompanyRegistered(_companyAddr, _name);
-}
-// deactivation
-function deactivateCompany(address _companyAddr) external onlyOwner {
-    require(companies[_companyAddr].isActive, "Company Not found");
-    companies[_companyAddr].isActive = false;
-    emit CompanyDeactivated(_companyAddr);
-}
-function updateCompany( string memory _name, string memory _utilityService) external{
-    require(msg.sender == companies[msg.sender].companyAddr, "Not Recognised");
-    companies[msg.sender].name = _name;
-    companies[msg.sender].utilityService = _utilityService;
-}
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
+    }
+    function registerCompany(
+        address _companyAddr,
+        string memory _name,
+        string memory _utilityService
+    ) external onlyOwner {
+        require(!companies[_companyAddr].isActive, "Company Registered");
+        Company memory newCompany = Company(
+            _companyAddr,
+            0,
+            true,
+            _name,
+            _utilityService
+        );
+        companies[_companyAddr] = newCompany;
+        registerdCompanies.push(newCompany);
+        emit CompanyRegistered(_companyAddr, _name);
+    }
+    // deactivation
+    function deactivateCompany(address _companyAddr) external onlyOwner {
+        require(companies[_companyAddr].isActive, "Company Not found");
+        companies[_companyAddr].isActive = false;
+        emit CompanyDeactivated(_companyAddr);
+    }
+    function updateCompany(
+        string memory _name,
+        string memory _utilityService
+    ) external {
+        require(
+            msg.sender == companies[msg.sender].companyAddr,
+            "Not Recognised"
+        );
+        companies[msg.sender].name = _name;
+        companies[msg.sender].utilityService = _utilityService;
+    }
 
-function getCompany(address _companyAddr) external view returns (
-    address companyAddr,
-    uint256 balance,
-    bool isActive,
-    string memory name,
-    string memory utilityService
-) {
-    Company memory company = companies[_companyAddr];
-    return (
-        company.companyAddr,
-        company.balance,
-        company.isActive,
-        company.name,
-        company.utilityService
-    );
-}
+    function getCompany(
+        address _companyAddr
+    ) external view returns (Company memory) {
+        return companies[_companyAddr];
+    }
 
-function getRegisteredCompanies() external view returns (Company[] memory){
-    return registerdCompanies;
-}
+    function getRegisteredCompanies() external view returns (Company[] memory) {
+        return registerdCompanies;
+    }
 }

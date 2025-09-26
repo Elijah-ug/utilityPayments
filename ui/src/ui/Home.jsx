@@ -8,7 +8,7 @@ import { formatEther } from "ethers";
 export default function Home() {
   // const dispatch = useDispatch();
   // const { totalTransactions } = useSelector((state) => state.volumeTx);
-
+// 
   // useEffect(() => {
   //   dispatch(getTotalTransactions());
   //   // console.log("totalTransactions: ", totalTransactions)
@@ -23,7 +23,7 @@ export default function Home() {
     functionName: "totalPlatformTransactions",
     args: [],
   });
-  console.log("totalTransactions: ", formatEther(totalTransactions.toString()));
+  // console.log("totalTransactions: ", formatEther(totalTransactions.toString()));
   return (
     <div className="w-full flex justify-center items-center flex-col gap-12 px-4 my-8">
       <div className="bg-gray-800 text-gray-300 p-8 rounded-2xl max-w-5xl w-full transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
@@ -51,7 +51,7 @@ export default function Home() {
       </div>
       <div className="flex flex-col items-center justify-center">
         <p>Platform Transaction Volume </p>
-        <p>{totalTransactions && formatEther(totalTransactions.toString()) + " ETH"}</p>
+        <p>{totalTransactions && formatEther(totalTransactions?.toString()) + " ETH"}</p>
       </div>
     </div>
   );
