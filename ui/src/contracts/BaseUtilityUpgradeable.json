@@ -162,29 +162,36 @@
       "name": "getCompany",
       "outputs": [
         {
-          "internalType": "address",
-          "name": "companyAddr",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "balance",
-          "type": "uint256"
-        },
-        {
-          "internalType": "bool",
-          "name": "isActive",
-          "type": "bool"
-        },
-        {
-          "internalType": "string",
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "utilityService",
-          "type": "string"
+          "components": [
+            {
+              "internalType": "address",
+              "name": "companyAddr",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isActive",
+              "type": "bool"
+            },
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "utilityService",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct BaseUtilityUpgradeable.Company",
+          "name": "",
+          "type": "tuple"
         }
       ],
       "stateMutability": "view",
@@ -350,5 +357,7 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ]
+  ],
+  "linkReferences": {},
+  "deployedLinkReferences": {}
 }

@@ -13,8 +13,8 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider } from "wagmi";
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { config } from "./wagmiConfig";
-import "@rainbow-me/rainbowkit/styles.css"
+import { chains, config } from "./wagmiConfig";
+import "@rainbow-me/rainbowkit/styles.css";
 export default function App() {
   // const { address } = useSelector((state) => state.wallet);
   // const dispatch = useDispatch();
@@ -27,7 +27,7 @@ export default function App() {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider config={config.chains}>
+        <RainbowKitProvider chains={chains}>
           <div className="min-h-screen flex flex-col">
             <div className="flex-grow">
               <NavBar />
