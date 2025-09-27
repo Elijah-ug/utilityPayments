@@ -3,6 +3,8 @@ pragma solidity ^0.8.28;
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 interface ICompanyManager {
     function getCompany(
@@ -24,6 +26,8 @@ contract LogicUtilityUpgradable is
     OwnableUpgradeable,
     ReentrancyGuardUpgradeable
 {
+    IERC20 public stableToken;
+    using SafeERC20 for IERC20;
     ICompanyManager public companyManager;
     uint256 public feePercentage;
     uint256 public totalFeesCollected;
@@ -38,12 +42,15 @@ contract LogicUtilityUpgradable is
         uint96 amount;
         uint96 platformFee;
         uint96 netPaid;
-        uint64 timestamp;
         uint32 id;
     }
     mapping(address => Receipt) public receipt;
     uint32 public receiptCounter;
-
+    struct Client {
+        address user;
+        uint256 balance;
+    }
+    mapping(address => Client) client;
     event PaymentMode(
         address indexed payer,
         address indexed company,
@@ -51,12 +58,18 @@ contract LogicUtilityUpgradable is
     );
     event CompanyWithdrawn(address indexed company, uint256 amount);
     event PlatformFeeWithdrawn(address indexed to, uint256 amount);
+
     // new
-    function initialize(address _baseUtility) public initializer {
+    function initialize(
+        address _baseUtility,
+        address _tokenUsed
+    ) public initializer {
         __Ownable_init(msg.sender);
         __ReentrancyGuard_init();
         companyManager = ICompanyManager(_baseUtility);
+        stableToken = IERC20(_tokenUsed);
     }
+
     function viewImportedCompany(
         address _compAddr
     ) external view returns (address, bool, string memory) {
@@ -78,60 +91,73 @@ contract LogicUtilityUpgradable is
         feePercentage = _fee;
     }
 
+    function clientDeposit(uint256 _amount) external {
+        require(_amount > 0, "Invalid amount");
+        stableToken.safeTransferFrom(msg.sender, address(this), _amount);
+        client[msg.sender].balance += _amount;
+    }
+
     // pay utility function
-    function payUtility(address _company) external payable {
-        require(msg.value > 0, "Invalid Amount");
+    function payUtility(address _company, uint256 _amount) external {
+        require(_amount > 0, "Invalid amount");
         // get company's receiving address
         (address companyAddr, , bool isActive, , ) = companyManager.getCompany(
             _company
         );
-        require(companyAddr != address(0), "Address Not Found");
         require(isActive, "Inactive Company");
         // calculate platform fee and net amount
-        uint256 transactionFee = (msg.value * feePercentage) / 1000;
-        uint256 netReceived = msg.value - transactionFee;
+        uint256 transactionFee = (_amount * feePercentage) / 1000;
+        uint256 netReceived = _amount - transactionFee;
+        stableToken.safeTransferFrom(msg.sender, companyAddr, _amount);
         Receipt memory newReceipt = Receipt({
             company: companyAddr,
             payer: msg.sender,
-            amount: uint96(msg.value),
+            amount: uint96(_amount),
             platformFee: uint96(transactionFee),
             netPaid: uint96(netReceived),
-            timestamp: uint64(block.timestamp),
             id: uint32(receiptCounter++)
         });
         receipt[msg.sender] = newReceipt;
         // update
         totalFeesCollected += transactionFee;
         // total transactions on platform
-        totalTransactedAmount += msg.value;
+        totalTransactedAmount += _amount;
         // increament company balances
         companyBalances[companyAddr] += netReceived;
 
-        emit PaymentMode(msg.sender, companyAddr, msg.value);
+        emit PaymentMode(msg.sender, companyAddr, _amount);
     }
 
-    function withdraw() external nonReentrant {
+    function withdraw(uint256 _amount) external nonReentrant {
         (address companyAddr, , , , ) = companyManager.getCompany(msg.sender);
         require(msg.sender == companyAddr, "Not recognised");
-        uint256 balance = companyBalances[msg.sender];
-        require(balance > 0, "Not enough balance");
-        uint256 withdrawFee = (balance * feePercentage) / 1000;
-        uint256 finalAmount = balance - withdrawFee;
-        payable(msg.sender).transfer(finalAmount);
-        companyBalances[msg.sender] = 0;
+        require(companyBalances[msg.sender] > _amount, "Invalid amount");
+        uint256 withdrawFee = (_amount * feePercentage) / 1000;
+        uint256 finalAmount = _amount - withdrawFee;
+        stableToken.safeTransfer(msg.sender, finalAmount);
+        companyBalances[msg.sender] -= _amount;
         totalFeesCollected += withdrawFee;
 
-        emit CompanyWithdrawn(msg.sender, balance);
+        emit CompanyWithdrawn(msg.sender, _amount);
     }
+
+    function clientWithdraw(uint256 _amount) external nonReentrant {
+        Client storage newClient = client[msg.sender];
+        require(newClient.user == msg.sender, "Unauthorized");
+        require(newClient.balance > _amount, "Invalid amount");
+    }
+
     function withdrawPlatformFee(
         uint256 _amount
     ) external onlyOwner nonReentrant {
-        require(msg.sender == owner(), "Not Owner");
-        payable(msg.sender).transfer(_amount);
-        totalFeesCollected -= _amount;
+        uint256 withdrawFee = (_amount * feePercentage) / 1000;
+        uint256 net = _amount - withdrawFee;
+        stableToken.safeTransfer(msg.sender, net);
+        totalFeesCollected += withdrawFee;
 
         emit PlatformFeeWithdrawn(msg.sender, _amount);
     }
+
     function getReceipt(address user) external view returns (Receipt memory) {
         Receipt memory r = receipt[user];
         require(
@@ -140,14 +166,19 @@ contract LogicUtilityUpgradable is
         );
         return r;
     }
+
     function getCompanyBalance(
         address _company
     ) external view returns (uint256) {
         return companyBalances[_company];
     }
 
+    function getClient(address _client) external view returns (Client memory) {
+        return client[_client];
+    }
+
     function totalPlatformTransactions() external view returns (uint256) {
         return totalTransactedAmount;
     }
-    receive() external payable {}
+    // receive() external payable {}
 }
