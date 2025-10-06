@@ -15,6 +15,16 @@
       "address": "0x9848Ca1a06aA9eFf4C0c36B8Aa0823F459A01EE1",
       "txHash": "0x68461f4d3bd8cf0ed9836327a228cf66af5d179c570be20ee2c91f6a8aea4ab9",
       "kind": "transparent"
+    },
+    {
+      "address": "0x6c3240411923C2710839fD4D44b82d240267b6F5",
+      "txHash": "0x4a203705a8ac0effcbe216998d160f54545f2c3fccc037b8f5f310c69ad8f9a0",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x05e8F7402d946eC554E0813A36B761ADac314483",
+      "txHash": "0x1c0508a39aa55dec9dc6f8542f70a298ce00b131836db5f43b4946576806eaf6",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -1034,6 +1044,688 @@
               "label": "_owner",
               "type": "t_address",
               "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "5a68234a33838b860a915e78cd7889c41bf34ca6f5ecddff2b4d9f85253db2c4": {
+      "address": "0xedE35Bb829E073391Da6Cb7a85E201416Aa9E453",
+      "txHash": "0xe50d0fba8152d9fe62424e6312086c33d859514d4b022efe15246d8837b269e3",
+      "layout": {
+        "solcVersion": "0.8.28",
+        "storage": [
+          {
+            "label": "stableToken",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_contract(IERC20)805",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:10"
+          },
+          {
+            "label": "school",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_address,t_struct(School)1862_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:40"
+          },
+          {
+            "label": "payer",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_struct(Payer)1867_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:41"
+          },
+          {
+            "label": "receipt",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_address,t_struct(Receipt)1884_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:42"
+          },
+          {
+            "label": "schoolWithdraw",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_address,t_struct(SchoolWithdraw)1893_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:43"
+          },
+          {
+            "label": "percentageFee",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint32",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:44"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:45"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)73_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)13_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(ReentrancyGuardStorage)163_storage": {
+            "label": "struct ReentrancyGuardUpgradeable.ReentrancyGuardStorage",
+            "members": [
+              {
+                "label": "_status",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_contract(IERC20)805": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_struct(Payer)1867_storage)": {
+            "label": "mapping(address => struct Tution.Payer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(Receipt)1884_storage)": {
+            "label": "mapping(address => struct Tution.Receipt)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(School)1862_storage)": {
+            "label": "mapping(address => struct Tution.School)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(SchoolWithdraw)1893_storage)": {
+            "label": "mapping(address => struct Tution.SchoolWithdraw)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Payer)1867_storage": {
+            "label": "struct Tution.Payer",
+            "members": [
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "client",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Receipt)1884_storage": {
+            "label": "struct Tution.Receipt",
+            "members": [
+              {
+                "label": "time",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "payer",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "cleared",
+                "type": "t_bool",
+                "offset": 20,
+                "slot": "4"
+              },
+              {
+                "label": "student",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "class",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "6"
+              }
+            ],
+            "numberOfBytes": "224"
+          },
+          "t_struct(School)1862_storage": {
+            "label": "struct Tution.School",
+            "members": [
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tution",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "isRegistered",
+                "type": "t_bool",
+                "offset": 20,
+                "slot": "2"
+              },
+              {
+                "label": "isActive",
+                "type": "t_bool",
+                "offset": 21,
+                "slot": "2"
+              },
+              {
+                "label": "name",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(SchoolWithdraw)1893_storage": {
+            "label": "struct Tution.SchoolWithdraw",
+            "members": [
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "net",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "fee",
+                "type": "t_uint32",
+                "offset": 20,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_uint32": {
+            "label": "uint32",
+            "numberOfBytes": "4"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.ReentrancyGuard": [
+            {
+              "contract": "ReentrancyGuardUpgradeable",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol:43",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "6da64607732b598a3323dc514be1b0241423087d72f00fb232ed3608bbd4c56b": {
+      "address": "0x6fA8dF21672CC922A4cC244fe1b3B98381130445",
+      "txHash": "0x1003d7c3ef0ca4da8f2254dad00102d37123c900b3d493d6635a8d4d5062333e",
+      "layout": {
+        "solcVersion": "0.8.28",
+        "storage": [
+          {
+            "label": "stableToken",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_contract(IERC20)805",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:10"
+          },
+          {
+            "label": "school",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_address,t_struct(School)1314_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:40"
+          },
+          {
+            "label": "payer",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_struct(Payer)1319_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:41"
+          },
+          {
+            "label": "receipt",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_address,t_struct(Receipt)1336_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:42"
+          },
+          {
+            "label": "schoolWithdraw",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_address,t_struct(SchoolWithdraw)1345_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:43"
+          },
+          {
+            "label": "percentageFee",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint32",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:44"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:45"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)73_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)13_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(ReentrancyGuardStorage)163_storage": {
+            "label": "struct ReentrancyGuardUpgradeable.ReentrancyGuardStorage",
+            "members": [
+              {
+                "label": "_status",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_contract(IERC20)805": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_struct(Payer)1319_storage)": {
+            "label": "mapping(address => struct Tution.Payer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(Receipt)1336_storage)": {
+            "label": "mapping(address => struct Tution.Receipt)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(School)1314_storage)": {
+            "label": "mapping(address => struct Tution.School)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(SchoolWithdraw)1345_storage)": {
+            "label": "mapping(address => struct Tution.SchoolWithdraw)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Payer)1319_storage": {
+            "label": "struct Tution.Payer",
+            "members": [
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "client",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Receipt)1336_storage": {
+            "label": "struct Tution.Receipt",
+            "members": [
+              {
+                "label": "time",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "payer",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "cleared",
+                "type": "t_bool",
+                "offset": 20,
+                "slot": "4"
+              },
+              {
+                "label": "student",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "class",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "6"
+              }
+            ],
+            "numberOfBytes": "224"
+          },
+          "t_struct(School)1314_storage": {
+            "label": "struct Tution.School",
+            "members": [
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tution",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "isRegistered",
+                "type": "t_bool",
+                "offset": 20,
+                "slot": "2"
+              },
+              {
+                "label": "isActive",
+                "type": "t_bool",
+                "offset": 21,
+                "slot": "2"
+              },
+              {
+                "label": "name",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(SchoolWithdraw)1345_storage": {
+            "label": "struct Tution.SchoolWithdraw",
+            "members": [
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "net",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "fee",
+                "type": "t_uint32",
+                "offset": 20,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_uint32": {
+            "label": "uint32",
+            "numberOfBytes": "4"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.ReentrancyGuard": [
+            {
+              "contract": "ReentrancyGuardUpgradeable",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol:43",
               "offset": 0,
               "slot": "0"
             }
