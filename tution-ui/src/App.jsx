@@ -1,0 +1,41 @@
+import "./App.css";
+import { WagmiProvider } from "wagmi";
+import { chains, config } from "./contract/utils/wagmiConfig";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { NavBar } from "./ui-components/nav/NavBar";
+import { Routes, Route } from "react-router-dom";
+import { SchoolDashboard } from "./ui-components/school/SchoolDashboard";
+import { Home } from "./ui-components/home/Home";
+import { ClientDashboard } from "./ui-components/client/ClientDashboard";
+import "@rainbow-me/rainbowkit/styles.css";
+import { Admin } from "./ui-components/admin/Admin";
+import { Footer } from "./ui-components/footer/Footer";
+import { MobileNavBar } from "./ui-components/nav/MobileNavBar";
+
+export const App = () => {
+  const queryClient = new QueryClient();
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider chains={chains}>
+          <div className="min-h-screen flex flex-col  bg-gray-700">
+            <div className="flex-grow">
+              <NavBar />
+              <MobileNavBar />
+              <div className="px-3 sm:px-10 py-4">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="school" element={<SchoolDashboard />} />
+                  <Route path="client" element={<ClientDashboard />} />
+                  <Route path="admin" element={<Admin />} />
+                </Routes>
+              </div>
+            </div>
+            <Footer />
+          </div>
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+};

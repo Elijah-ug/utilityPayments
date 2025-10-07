@@ -31,7 +31,7 @@ contract Tution is Initializable, ReentrancyGuardUpgradeable, OwnableUpgradeable
         bytes32 student;
         bytes32 class;
     }
-    struct SchoolWithdraw{
+    struct SchoolWithdraw {
         uint256 amount;
         uint256 net;
         address school;
@@ -51,14 +51,16 @@ contract Tution is Initializable, ReentrancyGuardUpgradeable, OwnableUpgradeable
 
     function initialize(address _tokenUsed) public initializer {
         require(_tokenUsed != address(0), "Invalid address");
-        __Ownable_init(msg.sender);
         __ReentrancyGuard_init();
+        __Ownable_init(msg.sender);
         stableToken = IERC20(_tokenUsed);
     }
-function updateTxFee(uint32 _percentage)external onlyOwner{
-    require(_percentage < 50, "Much fee");
-    percentageFee = _percentage;
-}
+
+    function updateTxFee(uint32 _percentage) external onlyOwner {
+        require(_percentage < 50, "Much fee");
+        percentageFee = _percentage;
+    }
+
     // register school
     function registerSchool(address _school, bytes32 _name, uint256 _tution) external onlyOwner {
         school[msg.sender] = School({
@@ -114,7 +116,7 @@ function updateTxFee(uint32 _percentage)external onlyOwner{
         require(_school != address(0), "Invalid schoolAddr");
         require(newSchool.isRegistered, "Unregistered");
         require(newSchool.isActive, "Innactive");
-        newPayer.balance -= _amount; 
+        newPayer.balance -= _amount;
         newSchool.balance += _amount;
         receipt[msg.sender] = Receipt({
             time: block.timestamp,
@@ -126,7 +128,6 @@ function updateTxFee(uint32 _percentage)external onlyOwner{
             student: _student,
             class: _class
         });
-       
     }
 
     // withdraw
@@ -136,32 +137,35 @@ function updateTxFee(uint32 _percentage)external onlyOwner{
         require(newSchool.isActive, "Innactive");
         require(newSchool.balance > _amount, "Much amount");
         newSchool.balance -= _amount;
-         uint256 _fee =  (_amount * percentageFee) / 1000;
-         uint256 netWithdraw = _amount - _fee;
+        uint256 _fee = (_amount * percentageFee) / 1000;
+        uint256 netWithdraw = _amount - _fee;
         schoolWithdraw[msg.sender] = SchoolWithdraw({
-            amount: _amount, net: netWithdraw, school: msg.sender, fee: uint32(_fee)
+            amount: _amount,
+            net: netWithdraw,
+            school: msg.sender,
+            fee: uint32(_fee)
         });
         stableToken.safeTransfer(msg.sender, netWithdraw);
     }
 
     // client withdraw
-    function clientWithdraw(uint256 _amount) external nonReentrant{
+    function clientWithdraw(uint256 _amount) external nonReentrant {
         Payer storage newPayer = payer[msg.sender];
         require(newPayer.balance >= _amount, "Much");
         newPayer.balance -= _amount;
-        stableToken.safeTransfer( msg.sender, _amount);
+        stableToken.safeTransfer(msg.sender, _amount);
     }
 
     // view
-    function getSchoolInfo(address _school) external onlySchool view returns (School memory) {
-return school[_school];
+    function getSchoolInfo(address _school) external view onlySchool returns (School memory) {
+        return school[_school];
     }
 
     function getClient() external view returns (Payer memory) {
         return payer[msg.sender];
     }
 
-    function getReceipt(address _user) external view returns(Receipt memory) {
+    function getReceipt(address _user) external view returns (Receipt memory) {
         return receipt[_user];
     }
 }
