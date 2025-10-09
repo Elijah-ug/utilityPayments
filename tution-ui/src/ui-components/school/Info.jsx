@@ -4,13 +4,13 @@ import { Label } from "@/components/ui/label";
 
 export const Info = () => {
   return (
-    <div>
-      <Card className="w-full max-w-sm bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white">
+    <div className="flex items-center justify-center w-full max-w-sm">
+      <Card className="w-full bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white h-[360px]">
         <CardHeader>
           <CardTitle>School Profile For Address </CardTitle>
         </CardHeader>
         <CardDescription className="px-2 text-amber-400">
-          <CardTitle>0x28Aa098cB391622716755425A7C125BAFE5A0220</CardTitle>
+          <CardTitle>0x28Aa0...A0220</CardTitle>
         </CardDescription>
         <CardContent>
           <form>

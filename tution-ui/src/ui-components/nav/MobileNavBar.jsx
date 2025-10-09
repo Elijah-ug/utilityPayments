@@ -1,40 +1,66 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useState } from "react";
-import { FaBars } from "react-icons/fa6";
-import { MdClose } from "react-icons/md";
+import { Button } from "@/components/ui/button";
 
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { FaBars } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 
 export const MobileNavBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleHideShowLinks = () => {};
   return (
     <div className="sm:hidden flex items-center justify-between p-3">
-      <div className="">
-        <ConnectButton />
-      </div>
-      <div className="relative ">
-        <div onClick={() => setIsOpen(!isOpen)} className="text-2xl">
-          {isOpen ? <MdClose /> : <FaBars />}
-        </div>
+      <Sheet className="bg-gray-600">
+        <SheetTrigger asChild>
+          {/* <Button >Open</Button> */}
+          <FaBars variant="outline" className="text-2xl" />
+        </SheetTrigger>
+        <SheetContent
+          onCloseAutoFocus={(e) => e.preventDefault()}
+          side="left"
+          className="bg-gray-800 text-white overflow-y-auto max-h-screen  "
+        >
+          <SheetHeader>
+            <SheetTitle className="sr-only">Mobile Navigation</SheetTitle>
+            <SheetDescription>TutionBlocks</SheetDescription>
+          </SheetHeader>
+          <div className="flex flex-col ml-10 gap-8 mt-4 text-md pb-5 ">
+            <NavLink to="/">
+              <SheetClose replace asChild>
+                <span>Home</span>
+              </SheetClose>
+            </NavLink>
 
-        {isOpen && (
-          <div className=" absolute rounded top-8 right-0 flex flex-col items-center gap-5 bg-purple-400 p-2 px-6 text-blue-600 font-semibold ">
-            <NavLink onClick={() => setIsOpen(false)} to="/">
-              Home
+            <NavLink to="school">
+              <SheetClose replace asChild>
+                <span>School Dashboard</span>
+              </SheetClose>
             </NavLink>
-            <NavLink onClick={() => setIsOpen(false)} to="school">
-              School Dashboard
+
+            <NavLink to="client">
+              <SheetClose asChild>
+                <span> Client Dashboard</span>
+              </SheetClose>
             </NavLink>
-            <NavLink onClick={() => setIsOpen(false)} to="client">
-              Client Dashboard
-            </NavLink>
-            <NavLink onClick={() => setIsOpen(false)} to="admin">
-              {" "}
-              Admin Dashboard
+
+            <NavLink to="client">
+              <SheetClose asChild>
+                <span> Admin Dashboard</span>
+              </SheetClose>
             </NavLink>
           </div>
-        )}
+        </SheetContent>
+      </Sheet>
+
+      <div className="">
+        <ConnectButton />
       </div>
     </div>
   );
