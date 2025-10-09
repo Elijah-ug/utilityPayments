@@ -6,7 +6,7 @@ import { FinancialMgt } from "./FinancialMgt";
 export const ClientDashboard = () => {
   return (
     <div className="min-h-screen py-10">
-      <div className="flex justify-around">
+      <div className="flex flex-col gap-11 sm:flex-row sm:justify-around">
         <ClientInfo />
         <FinancialMgt />
       </div>
