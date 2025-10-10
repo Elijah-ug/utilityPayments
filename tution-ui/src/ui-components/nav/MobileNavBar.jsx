@@ -50,7 +50,7 @@ export const MobileNavBar = () => {
               </SheetClose>
             </NavLink>
 
-            <NavLink to="client">
+            <NavLink to="admin">
               <SheetClose asChild>
                 <span> Admin Dashboard</span>
               </SheetClose>

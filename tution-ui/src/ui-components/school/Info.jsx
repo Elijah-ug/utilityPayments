@@ -1,8 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { wagmiContractConfig } from "@/contract/utils/contractAbs";
+import { useAccount, useReadContract } from "wagmi";
 
 export const Info = () => {
+  const { address } = useAccount();
+
+  const school = useReadContract({
+    ...wagmiContractConfig,
+    functionName: "getSchoolInfo",
+    args: [address],
+  });
+  console.log("school==>", school.error, address);
   return (
     <div className="flex items-center justify-center w-full max-w-sm">
       <Card className="w-full bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white h-[360px]">
