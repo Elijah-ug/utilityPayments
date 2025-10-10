@@ -1,5 +1,7 @@
+import { AFB_ABI } from "../abi/tokenabi";
 import contractabi from "../abi/Tution.json";
-import { address } from "../address/address";
-const { abi } = contractabi;
-console.log("abi ==>", abi);
-export const wagmiContractConfig = { address, abi };
+import { contractAddress, tokenAddr } from "../address/address";
+
+export const wagmiContractConfig = { address: contractAddress, abi: contractabi.abi };
+
+export const tokenContractConfig = { address: tokenAddr, abi: AFB_ABI };

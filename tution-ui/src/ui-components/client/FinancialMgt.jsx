@@ -5,8 +5,22 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect } from "react";
+import { contractAddress } from "@/contract/address/address";
+import { tokenContractConfig, wagmiContractConfig } from "@/contract/utils/contractAbs";
+import { useReadContract } from "wagmi";
 
 export const FinancialMgt = () => {
+    const { address } = useAccount();
+  
+  const { data: allowance, refetch: refetchAllowance } = useReadContract({
+      ...tokenContractConfig,
+      functionName: "allowance",
+      args: [address, contractAddress],
+    });
+    useEffect(() => {
+      refetchAllowance();
+    }, []);
   return (
     <div className="flex w-full max-w-sm flex-col gap-6 ">
       <Tabs defaultValue="deposit">

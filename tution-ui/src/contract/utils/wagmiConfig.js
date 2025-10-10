@@ -12,7 +12,12 @@ const transports = {
 
 export const config = getDefaultConfig({
   appName: "TutionPayment",
-  projectId: import.meta.env.VITE_PROJECT_ID,
+  projectId: "ea849bc418841fcb7207cc89c7e909fe",
   chains,
   transports,
 });
+// console.log("project id==>", import.meta.env.VITE_PROJECT_ID);
+console.log("project config==>", config);
+// console.log("project projectId==>", config.projectId);
+// console.log("project chains==>", config.chains);
+// console.log("project transports==>", config.transports);

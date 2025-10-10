@@ -6,8 +6,8 @@ export const SchoolDashboard = () => {
   return (
     <div className="min-h-screen  py-10 ">
       <div className="flex flex-col sm:flex-row gap-9 items-center justify-around ">
-        <SchoolAccess />
         <Info />
+        <SchoolAccess />
       </div>
     </div>
   );

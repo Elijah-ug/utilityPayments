@@ -1,52 +1,89 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useWriteContract } from "wagmi";
+import { contractAddress } from "@/contract/address/address";
+import { tokenContractConfig, wagmiContractConfig } from "@/contract/utils/contractAbs";
+import { config } from "@/contract/utils/wagmiConfig";
+import { useEffect, useState } from "react";
+import { parseEther, stringToHex } from "viem";
+import { waitForTransactionReceipt } from "viem/actions";
+import { useAccount, useReadContract, useWriteContract } from "wagmi";
 
 export const RegisterSchool = () => {
-    const {writeContractAsync: register, pending: registerPending} = useWriteContract()
+  const [schoolAddr, setSchoolAddr] = useState("");
+  const [schoolName, setSchoolName] = useState("");
+  const [tution, setTution] = useState("");
+  const { address } = useAccount();
+
+  const { writeContractAsync } = useWriteContract();
+  const handleRegisterSchool = async (e) => {
+    e.preventDefault();
+    try {
+      const parsetTution = parseEther(tution.toString());
+      const paddedName = stringToHex(schoolName, { size: 32 });
+      const register = await writeContractAsync({
+        ...wagmiContractConfig,
+        functionName: "registerSchool",
+        args: [schoolAddr, paddedName, parsetTution],
+      });
+      console.log(register, "Registered successfully");
+      return register;
+    } catch (error) {
+      console.error("Registration error:", error, error.message);
+    }
+  };
+  // console.log("configss==>", config.chains);
   return (
     <Card className="w-full max-w-sm bg-gray-600 border-none text-white">
       <CardHeader>
         <CardTitle>School registration</CardTitle>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleRegisterSchool}>
           <div className="flex flex-col gap-6">
-
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" type="text" placeholder="Enter school name" required />
+              <Input
+                value={schoolName}
+                onChange={(e) => setSchoolName(e.target.value)}
+                id="name"
+                type="text"
+                placeholder="Enter school name"
+                required
+              />
             </div>
 
             <div className="grid gap-2">
               <Label htmlFor="address">Wallet Address</Label>
-              <Input id="address" type="text" placeholder="Enter school wallet address" required />
+              <Input
+                value={schoolAddr}
+                onChange={(e) => setSchoolAddr(e.target.value)}
+                id="address"
+                type="text"
+                placeholder="Enter school wallet address"
+                required
+              />
             </div>
 
             <div className="grid gap-2">
               <Label htmlFor="tution">Tution</Label>
-              <Input id="tution" type="number" placeholder="Enter school tution" required />
+              <Input
+                value={tution}
+                onChange={(e) => setTution(e.target.value)}
+                id="tution"
+                type="number"
+                placeholder="Enter school tution"
+                required
+              />
             </div>
-           
+            <Button type="submit" className="w-full">
+              Add school
+            </Button>
           </div>
         </form>
       </CardContent>
-      <CardFooter className="flex-col gap-2">
-        <Button type="button" className="w-full">
-          Add school
-        </Button>
-       
-      </CardFooter>
+      {/* <CardFooter className="flex-col gap-2"></CardFooter> */}
     </Card>
   );
 };

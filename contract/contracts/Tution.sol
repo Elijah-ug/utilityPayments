@@ -80,7 +80,8 @@ contract Tution is
 
     // register school
     function registerSchool(address _school, bytes32 _name, uint256 _tution) external onlyOwner {
-        school[msg.sender] = School({
+        require(!school[_school].isRegistered, "Registered");
+        school[_school] = School({
             balance: 0,
             tution: _tution,
             school: _school,
@@ -181,10 +182,9 @@ contract Tution is
         newPayer.balance -= _amount;
         stableToken.safeTransfer(msg.sender, _amount);
     }
-    // reset new term
-    function resetStateForNewTerm() internal {
 
-    }
+    // reset new term
+    function resetStateForNewTerm() internal {}
 
     // automation
     function checkUpkeep(
@@ -206,7 +206,7 @@ contract Tution is
                 !newTerm.hasEnded &&
                 checkText == "beginTerm"
             ) {
-               checkText = END_TERM;
+                checkText = END_TERM;
                 passCheck = true;
                 break;
             }
@@ -235,7 +235,7 @@ contract Tution is
             ) {
                 newTerm.hasEnded = true;
             }
-            if(newTerm.hasEnded && block.timestamp > newTerm.end + 1 hours){
+            if (newTerm.hasEnded && block.timestamp > newTerm.end + 1 hours) {
                 newTerm.tution = 0;
                 newTerm.hasStarted = false;
                 newTerm.hasEnded = false;
@@ -247,9 +247,8 @@ contract Tution is
 
     // view functions
     function getSchoolInfo(address _school) external view onlySchool returns (School memory) {
-    return school[_school];
-}
-
+        return school[_school];
+    }
 
     function getClient() external view returns (Payer memory) {
         return payer[msg.sender];
@@ -259,7 +258,7 @@ contract Tution is
         return receipt[_user];
     }
 
-    function getacademicTerm(uint128 _termId) external view returns(AcademicTerm memory){
+    function getacademicTerm(uint128 _termId) external view returns (AcademicTerm memory) {
         return academicTerm[_termId];
     }
 }
