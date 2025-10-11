@@ -111,8 +111,11 @@ contract Tution is
     // client deposit
     function clientDeposit(uint256 _amount) external nonReentrant {
         require(_amount > 0, "Invalid deposit");
+        Payer storage newPayer = payer[msg.sender];
         stableToken.safeTransferFrom(msg.sender, address(this), _amount);
-        payer[msg.sender].balance += _amount;
+        newPayer.balance += _amount;
+        newPayer.client = msg.sender;
+
     }
 
     // ====== shcool triggers ====
@@ -203,8 +206,8 @@ contract Tution is
                 newTerm.start < block.timestamp &&
                 newTerm.end <= block.timestamp &&
                 newTerm.hasStarted &&
-                !newTerm.hasEnded &&
-                checkText == "beginTerm"
+                !newTerm.hasEnded &&    
+                checkText == BEGIN_TERM
             ) {
                 checkText = END_TERM;
                 passCheck = true;

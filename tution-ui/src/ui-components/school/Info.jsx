@@ -2,17 +2,23 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { wagmiContractConfig } from "@/contract/utils/contractAbs";
+import { formatEther, hexToString } from "viem";
 import { useAccount, useReadContract } from "wagmi";
 
 export const Info = () => {
   const { address } = useAccount();
-
-  const school = useReadContract({
+  const addr = address?.toLowerCase();
+  const {
+    data: school,
+    error,
+    isPending,
+  } = useReadContract({
     ...wagmiContractConfig,
     functionName: "getSchoolInfo",
     args: [address],
+    account: address,
   });
-  console.log("school==>", school.error, address);
+  console.log("tution==>", formatEther(school.tution));
   return (
     <div className="flex items-center justify-center w-full max-w-sm">
       <Card className="w-full bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white h-[360px]">
@@ -20,29 +26,29 @@ export const Info = () => {
           <CardTitle>School Profile For Address </CardTitle>
         </CardHeader>
         <CardDescription className="px-2 text-amber-400">
-          <CardTitle>0x28Aa0...A0220</CardTitle>
+          <CardTitle>{`${school?.school.slice(0, 7)}...${school?.school.slice(-5)}`}</CardTitle>
         </CardDescription>
         <CardContent>
           <form>
             <div className="flex flex-col gap-6">
               <div className="flex items-center gap-2">
                 <span>Name:</span>
-                <span>Kigezi High School</span>
+                <span>{school && hexToString(school.name)}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <span>Activated:</span>
-                <span>✅</span>
+                <span>{school?.isActive ? "✅" : ""}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <span>Balance:</span>
-                <span>100 AFB</span>
+                <span>{school && `${formatEther(school.balance)} AFB`}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <span>Tution Fee:</span>
-                <span>3 AFB</span>
+                <span>{school && `${formatEther(school.tution)} AFB`}</span>
               </div>
             </div>
           </form>

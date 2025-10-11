@@ -16,24 +16,27 @@ export const RegisterSchool = () => {
   const [tution, setTution] = useState("");
   const { address } = useAccount();
 
-  const { writeContractAsync } = useWriteContract();
+  const { writeContractAsync: schoolRegistration, error: registrationError, isError } = useWriteContract();
   const handleRegisterSchool = async (e) => {
     e.preventDefault();
     try {
       const parsetTution = parseEther(tution.toString());
       const paddedName = stringToHex(schoolName, { size: 32 });
-      const register = await writeContractAsync({
+      const register = await schoolRegistration({
         ...wagmiContractConfig,
         functionName: "registerSchool",
         args: [schoolAddr, paddedName, parsetTution],
       });
-      console.log(register, "Registered successfully");
-      return register;
+      console.log("waiting for mining");
+      const receipt = await waitForTransactionReceipt(config, { hash: register });
+      console.log("✅ Transaction confirmed:", receipt);
+
+      return receipt;
     } catch (error) {
       console.error("Registration error:", error, error.message);
+      console.error("Registration error:", error.cause ?? error);
     }
   };
-  // console.log("configss==>", config.chains);
   return (
     <Card className="w-full max-w-sm bg-gray-600 border-none text-white">
       <CardHeader>
