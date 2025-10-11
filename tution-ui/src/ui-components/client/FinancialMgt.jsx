@@ -47,21 +47,23 @@ export const FinancialMgt = () => {
           functionName: "approve",
           args: [contractAddress, parsedAmount],
         });
+
         console.log("waiting for the tx to be approved");
         const txHash = await waitForTransactionReceipt(publicClient, { hash: approveTx });
         await refetchAllowance();
         console.log("approveTx: ==> ", txHash);
-
         // deposit
         const depositTx = await transactionHandler({
           ...wagmiContractConfig,
           functionName: "clientDeposit",
           args: [parsedAmount],
         });
+        setDepositAmount("");
         console.log("waiting for the deposit tx to be mined");
         const depositHash = await waitForTransactionReceipt(config, { hash: depositTx });
         await refetchAllowance();
         console.log("depositHash: ==> ", depositHash);
+
         return depositHash;
       } else if (name === "withdraw") {
         console.log(name);
@@ -85,12 +87,41 @@ export const FinancialMgt = () => {
         };
 
         console.log("withdrawReceipt successful:", txDetails);
-        // setWithdrawAmount("");
+        setWithdrawAmount("");
         return txDetails;
       } else if (name === "paymet") {
         console.log(name);
+        const parsedTution = parseEther(payAmount.toString());
+        if (!parsedTution || isNaN(parseFloat(payAmount)) || !schoolAddr || !studentName || !studentClass) {
+          console.log("some invalid input");
+          return;
+        }
+        const payTution = await transactionHandler({
+          ...wagmiContractConfig,
+          functionName: "tutionPayment",
+          args: [parsedTution, schoolAddr, studentName, studentClass],
+          account: address,
+        });
+        const tutionTx = await waitForTransactionReceipt(config, { hash: payTution });
+        const txDetails = {
+          txHash: String(tutionTx.transactionHash),
+          gasUsed: tutionTx.gasUsed?.toString(),
+          to: String(tutionTx.to),
+          from: String(tutionTx.from),
+        };
+        setPayAmount("");
+        setSchoolAddr("");
+        setStudentClass("");
+        setStudentName("");
+        await refetchAllowance();
+        console.log(" ✅ Tution Payment successful:", txDetails);
+
+        return txDetails;
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      console.error("Error ==>", error.message);
+    }
   };
   return (
     <div className="flex items-center justify-center w-full max-w-sm flex-col gap-6">
