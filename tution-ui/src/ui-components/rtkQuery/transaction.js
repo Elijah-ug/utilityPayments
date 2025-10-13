@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const transactionApi = createApi({
   reducerPath: 'transactions',
@@ -10,9 +10,8 @@ export const transactionApi = createApi({
     }),
 
     getOneTransaction: build.query({
-      query: (id) => {
-        `${id}`;
-      },
+      query: (id) => `${id}`,
+      providesTags: (result, error, id) => [{ type: 'Transaction', id }],
     }),
 
     addTransaction: build.mutation({
@@ -21,6 +20,11 @@ export const transactionApi = createApi({
         method: 'POST',
         body: newTx,
       }),
+      // invalidate the LIST so getAllTransactions refetches
+      invalidatesTags: [{ type: 'Transaction', id: 'LIST' }],
     }),
   }),
 });
+
+export const { useGetAllTransactionsQuery, useGetTransactionQuery, useAddTransactionMutation } =
+  transactionApi;
