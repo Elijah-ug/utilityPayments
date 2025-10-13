@@ -1,20 +1,17 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Download } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Download } from 'lucide-react';
 
 export const Receipt = () => {
   return (
     <div>
-      <div className="flex items-center gap-2">
-        <span className="text-sm">Download your receipt here</span>
-        <Download className="cursor-pointer" />
-      </div>
-      {/* <Card className="w-full max-w-lg bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white">
+
+      <Card className="w-full max-w-lg bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white">
         <CardHeader>
           <CardTitle>Client Receipt </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col gap-6 relative">
+          <div className="flex flex-col gap-1 relative">
             <div className="flex items-center gap-2">
               <span>Payer Address:</span>
               <span>0x28Aa0...A0220</span>
@@ -60,7 +57,7 @@ export const Receipt = () => {
             </div>
           </div>
         </CardContent>
-      </Card> */}
+      </Card>
     </div>
   );
 };

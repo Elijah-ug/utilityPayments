@@ -1,4 +1,4 @@
-import { prisma } from "../prisma/client";
+import { prisma } from "../prisma/client.js";
 
 export const addTx = async (req, res) => {
   try {
@@ -30,8 +30,8 @@ export const tx = async (req, res) => {
   try {
     const txId = parseInt(req.params.tx);
     const oneTx = await prisma.onChainTxReceipts.findUnique({
-      where:{id: txId}
-    })
+      where: { id: txId },
+    });
     console.log("Tx gotten ✅");
     res.status(200).json(oneTx);
   } catch (error) {

@@ -1,80 +1,88 @@
-import { AppWindowIcon, CodeIcon } from "lucide-react";
+import { AppWindowIcon, CodeIcon } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
-import { contractAddress } from "@/contract/address/address";
-import { tokenContractConfig, wagmiContractConfig } from "@/contract/utils/contractAbs";
-import { useAccount, usePublicClient, useReadContract, useWriteContract } from "wagmi";
-import { parseEther } from "viem";
-import { config } from "@/contract/utils/wagmiConfig";
-import { waitForTransactionReceipt } from "viem/actions";
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useState } from 'react';
+import { contractAddress } from '@/contract/address/address';
+import { tokenContractConfig, wagmiContractConfig } from '@/contract/utils/contractAbs';
+import { useAccount, usePublicClient, useReadContract, useWriteContract } from 'wagmi';
+import { parseEther, stringToHex } from 'viem';
+import { config } from '@/contract/utils/wagmiConfig';
+import { waitForTransactionReceipt } from 'viem/actions';
+import { useAddTransactionMutation } from '../rtkQuery/transaction';
 
 export const FinancialMgt = () => {
-  const [depositAmount, setDepositAmount] = useState("");
-  const [withdrawAmount, setWithdrawAmount] = useState("");
-  const [payAmount, setPayAmount] = useState("");
+  const [depositAmount, setDepositAmount] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [payAmount, setPayAmount] = useState('');
   const [currentAllowance, setCurrentAllowance] = useState(0n);
-  const [schoolAddr, setSchoolAddr] = useState("");
-  const [studentName, setStudentName] = useState("");
-  const [studentClass, setStudentClass] = useState("");
+  const [schoolAddr, setSchoolAddr] = useState('');
+  const [studentName, setStudentName] = useState('');
+  const [studentClass, setStudentClass] = useState('');
 
   const { address } = useAccount();
   const publicClient = usePublicClient();
+  const [addTransaction, { isLoading, isSuccess, error }] = useAddTransactionMutation();
 
   const { data: allowance, refetch: refetchAllowance } = useReadContract({
     ...tokenContractConfig,
-    functionName: "allowance",
+    functionName: 'allowance',
     args: [address, contractAddress],
   });
 
   const { writeContractAsync: transactionHandler, pending } = useWriteContract();
   const handleFinancialMgt = async (name) => {
+    console.log('name==>', name);
     try {
-      console.log(name);
-      if (name === "deposit") {
+      if (name === 'deposit') {
         const parsedAmount = parseEther(depositAmount.toString());
         if (!depositAmount || isNaN(parseFloat(depositAmount))) {
-          console.log("Invalid deposit amount");
+          console.log('Invalid deposit amount');
           return;
         }
 
         const approveTx = await transactionHandler({
           ...tokenContractConfig,
-          functionName: "approve",
+          functionName: 'approve',
           args: [contractAddress, parsedAmount],
         });
 
-        console.log("waiting for the tx to be approved");
+        console.log('waiting for the tx to be approved');
         const txHash = await waitForTransactionReceipt(publicClient, { hash: approveTx });
         await refetchAllowance();
-        console.log("approveTx: ==> ", txHash);
+        console.log('approveTx: ==> ', txHash);
         // deposit
         const depositTx = await transactionHandler({
           ...wagmiContractConfig,
-          functionName: "clientDeposit",
+          functionName: 'clientDeposit',
           args: [parsedAmount],
         });
-        setDepositAmount("");
-        console.log("waiting for the deposit tx to be mined");
+        setDepositAmount('');
+        console.log('waiting for the deposit tx to be mined');
         const depositHash = await waitForTransactionReceipt(config, { hash: depositTx });
         await refetchAllowance();
-        console.log("depositHash: ==> ", depositHash);
+        console.log('depositHash: ==> ', depositHash);
 
         return depositHash;
-      } else if (name === "withdraw") {
-        console.log(name);
+      } else if (name === 'withdraw') {
         const parsedWithdraw = parseEther(withdrawAmount.toString());
         if (!withdrawAmount || isNaN(parseFloat(withdrawAmount))) {
-          console.log("Invalid withdrawAmount");
+          console.log('Invalid withdrawAmount');
           return;
         }
         const withdrawTx = await transactionHandler({
           ...wagmiContractConfig,
-          functionName: "clientWithdraw",
+          functionName: 'clientWithdraw',
           args: [parsedWithdraw],
         });
         const withdraw = await waitForTransactionReceipt(publicClient, { hash: withdrawTx });
@@ -86,41 +94,53 @@ export const FinancialMgt = () => {
           from: String(withdraw.from),
         };
 
-        console.log("withdrawReceipt successful:", txDetails);
-        setWithdrawAmount("");
+        console.log('withdrawReceipt successful:', txDetails);
+        setWithdrawAmount('');
         return txDetails;
-      } else if (name === "paymet") {
-        console.log(name);
+      } else if (name === 'payment') {
+        // console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
         const parsedTution = parseEther(payAmount.toString());
-        if (!parsedTution || isNaN(parseFloat(payAmount)) || !schoolAddr || !studentName || !studentClass) {
-          console.log("some invalid input");
-          return;
+        const parsedName = stringToHex(studentName, { size: 32 });
+        const parsedClass = stringToHex(studentClass, { size: 32 });
+
+        if (
+          !payAmount ||
+          isNaN(parseFloat(payAmount)) ||
+          !schoolAddr ||
+          !studentName ||
+          !studentClass
+        ) {
+          return console.log('some invalid input');
         }
+        console.log('wait');
         const payTution = await transactionHandler({
           ...wagmiContractConfig,
-          functionName: "tutionPayment",
-          args: [parsedTution, schoolAddr, studentName, studentClass],
+          functionName: 'tutionPayment',
+          args: [parsedTution, schoolAddr, parsedName, parsedClass],
           account: address,
         });
+
         const tutionTx = await waitForTransactionReceipt(config, { hash: payTution });
-        const txDetails = {
-          txHash: String(tutionTx.transactionHash),
-          gasUsed: tutionTx.gasUsed?.toString(),
-          to: String(tutionTx.to),
-          from: String(tutionTx.from),
-        };
-        setPayAmount("");
-        setSchoolAddr("");
-        setStudentClass("");
-        setStudentName("");
+        const txHash = String(tutionTx.transactionHash);
+        const gasUsed = tutionTx.gasUsed?.toString();
+        const to = String(tutionTx.to);
+        const from = String(tutionTx.from);
+
+        await addTransaction({ txHash, gasUsed, to, from });
+        const txDetails = { txHash, gasUsed, to, from };
+        console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
+        setPayAmount('');
+        setSchoolAddr('');
+        setStudentClass('');
+        setStudentName('');
         await refetchAllowance();
-        console.log(" ✅ Tution Payment successful:", txDetails);
+        console.log(' ✅ Tution Payment successful:', txDetails);
 
         return txDetails;
       }
     } catch (error) {
       console.log(error);
-      console.error("Error ==>", error.message);
+      console.error('Error ==>', error.message);
     }
   };
   return (
@@ -149,7 +169,10 @@ export const FinancialMgt = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={() => handleFinancialMgt("deposit")} className="bg-gray-500 hover:bg-gray-400">
+              <Button
+                onClick={() => handleFinancialMgt('deposit')}
+                className="bg-gray-500 hover:bg-gray-400"
+              >
                 Deposit
               </Button>
             </CardFooter>
@@ -173,7 +196,10 @@ export const FinancialMgt = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={() => handleFinancialMgt("withdraw")} className="bg-gray-500 hover:bg-gray-400">
+              <Button
+                onClick={() => handleFinancialMgt('withdraw')}
+                className="bg-gray-500 hover:bg-gray-400"
+              >
                 Withdraw
               </Button>
             </CardFooter>
@@ -200,7 +226,7 @@ export const FinancialMgt = () => {
                   onChange={(e) => setSchoolAddr(e.target.value)}
                   id="tabs-demo-address"
                   type="text"
-                  placeholder="Enter amount school wallet address"
+                  placeholder="Enter school wallet address"
                 />
 
                 <Input
@@ -215,11 +241,14 @@ export const FinancialMgt = () => {
                   value={studentClass}
                   onChange={(e) => setStudentClass(e.target.value)}
                   id="tabs-demo-class"
-                  type="number"
+                  type="text"
                   placeholder="Enter student's class/level"
                 />
 
-                <Button onClick={() => handleFinancialMgt("payment")} className="bg-gray-500 hover:bg-gray-400">
+                <Button
+                  onClick={() => handleFinancialMgt('payment')}
+                  className="bg-gray-500 hover:bg-gray-400"
+                >
                   Pay Tution
                 </Button>
               </div>
