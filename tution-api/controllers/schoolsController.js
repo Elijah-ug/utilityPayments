@@ -1,7 +1,6 @@
 import { prisma } from "../prisma/client.js";
 
 export const addSchool = async (req, res) => {
-  console.log("waiting");
   try {
     const { name, location, tution, school, isRegistered, isActive, schoolId } = req.body;
     const newSchool = await prisma.school.create({
@@ -53,7 +52,7 @@ export const updateSchool = async (req, res) => {
       create: { name, location, tution, school, isRegistered, isActive, schoolId },
     });
     console.log("school updated ✅");
-    res.status(200).json({ message: "✅ School update connected" });
+    res.status(200).json(schoolUpdate);
   } catch (error) {
     console.log("Error==>" + error.message);
     res.status(500).json({ error: error });

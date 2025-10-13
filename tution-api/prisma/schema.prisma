@@ -15,7 +15,7 @@ model School {
   school       String
   isRegistered Boolean
   isActive     Boolean
-  schoolId     String   @unique
+  schoolId     String?   @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
