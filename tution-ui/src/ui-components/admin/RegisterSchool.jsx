@@ -1,22 +1,28 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { contractAddress } from "@/contract/address/address";
-import { tokenContractConfig, wagmiContractConfig } from "@/contract/utils/contractAbs";
-import { config } from "@/contract/utils/wagmiConfig";
-import { useEffect, useState } from "react";
-import { parseEther, stringToHex } from "viem";
-import { waitForTransactionReceipt } from "viem/actions";
-import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { contractAddress } from '@/contract/address/address';
+import { tokenContractConfig, wagmiContractConfig } from '@/contract/utils/contractAbs';
+import { config } from '@/contract/utils/wagmiConfig';
+import { useEffect, useState } from 'react';
+import { parseEther, stringToHex } from 'viem';
+import { waitForTransactionReceipt } from 'viem/actions';
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import { useAddSchoolMutation } from '../rtkQuery/school';
 
 export const RegisterSchool = () => {
-  const [schoolAddr, setSchoolAddr] = useState("");
-  const [schoolName, setSchoolName] = useState("");
-  const [tution, setTution] = useState("");
+  const [schoolAddr, setSchoolAddr] = useState('');
+  const [schoolName, setSchoolName] = useState('');
+  const [tution, setTution] = useState('');
   const { address } = useAccount();
 
-  const { writeContractAsync: schoolRegistration, error: registrationError, isError } = useWriteContract();
+  const [newSchool, { isLoading, isSuccess, error }] = useAddSchoolMutation();
+  const {
+    writeContractAsync: schoolRegistration,
+    error: registrationError,
+    isError,
+  } = useWriteContract();
   const handleRegisterSchool = async (e) => {
     e.preventDefault();
     try {
@@ -24,17 +30,26 @@ export const RegisterSchool = () => {
       const paddedName = stringToHex(schoolName, { size: 32 });
       const register = await schoolRegistration({
         ...wagmiContractConfig,
-        functionName: "registerSchool",
+        functionName: 'registerSchool',
         args: [schoolAddr, paddedName, parsetTution],
       });
-      console.log("waiting for mining");
+      console.log('waiting for mining');
+      // send schools to db
+      await newSchool({
+        school: schoolAddr,
+        name: schoolName,
+        tution: tution,
+        isActive: false,
+        isRegistered: true,
+      });
+      console.log('✅ Transaction confirmed:');
       const receipt = await waitForTransactionReceipt(config, { hash: register });
-      console.log("✅ Transaction confirmed:", receipt);
+      console.log('✅ Transaction confirmed:', receipt);
 
       return receipt;
     } catch (error) {
-      console.error("Registration error:", error, error.message);
-      console.error("Registration error:", error.cause ?? error);
+      console.error('Registration error:', error, error.message);
+      console.error('Registration error:', error.cause ?? error);
     }
   };
   return (
