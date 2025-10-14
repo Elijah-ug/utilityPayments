@@ -1,17 +1,18 @@
-import "./App.css";
-import { WagmiProvider } from "wagmi";
-import { chains, config } from "./contract/utils/wagmiConfig";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { NavBar } from "./ui-components/nav/NavBar";
-import { Routes, Route } from "react-router-dom";
-import { SchoolDashboard } from "./ui-components/school/SchoolDashboard";
-import { Home } from "./ui-components/home/Home";
-import { ClientDashboard } from "./ui-components/client/ClientDashboard";
-import "@rainbow-me/rainbowkit/styles.css";
-import { Admin } from "./ui-components/admin/Admin";
-import { Footer } from "./ui-components/footer/Footer";
-import { MobileNavBar } from "./ui-components/nav/MobileNavBar";
+import './App.css';
+import { WagmiProvider } from 'wagmi';
+import { chains, config } from './contract/utils/wagmiConfig';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { NavBar } from './ui-components/nav/NavBar';
+import { Routes, Route } from 'react-router-dom';
+import { SchoolDashboard } from './ui-components/school/SchoolDashboard';
+import { Home } from './ui-components/home/Home';
+import { ClientDashboard } from './ui-components/client/ClientDashboard';
+import '@rainbow-me/rainbowkit/styles.css';
+import { Admin } from './ui-components/admin/Admin';
+import { Footer } from './ui-components/footer/Footer';
+import { MobileNavBar } from './ui-components/nav/MobileNavBar';
+import { Receipt } from './ui-components/client/Receipt';
 
 export const App = () => {
   const queryClient = new QueryClient();
@@ -27,7 +28,9 @@ export const App = () => {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="school" element={<SchoolDashboard />} />
-                  <Route path="client" element={<ClientDashboard />} />
+                  <Route path="/client" element={<ClientDashboard />}>
+                    <Route path="receipt" element={<Receipt />} />
+                  </Route>
                   <Route path="admin" element={<Admin />} />
                 </Routes>
               </div>

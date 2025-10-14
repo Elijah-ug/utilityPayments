@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model School {
+  id           String   @id @default(cuid())
+  name         String
+  location     String?
+  tution       String
+  school       String
+  isRegistered Boolean
+  isActive     Boolean
+  schoolId     String?   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Receipt {
+  id      String  @id @default(cuid())
+  time    String
+  amount  String
+  balance String
+  payer   String
+  school  String
+  cleared Boolean
+  student String
+  class   String
+}
+
+model OnChainTxReceipts {
+  id      String  @id @default(cuid())
+  txHash  String
+  gasUsed String?
+  to      String?
+  from    String?
+  time    String?
+}
