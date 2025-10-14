@@ -31,7 +31,7 @@ export const RegisterSchool = () => {
       const register = await schoolRegistration({
         ...wagmiContractConfig,
         functionName: 'registerSchool',
-        args: [schoolAddr, paddedName, parsetTution],
+        args: [schoolAddr, paddedName],
       });
       console.log('waiting for mining');
       // send schools to db
@@ -84,17 +84,7 @@ export const RegisterSchool = () => {
               />
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="tution">Tution</Label>
-              <Input
-                value={tution}
-                onChange={(e) => setTution(e.target.value)}
-                id="tution"
-                type="number"
-                placeholder="Enter school tution"
-                required
-              />
-            </div>
+            
             <Button type="submit" className="w-full">
               Add school
             </Button>

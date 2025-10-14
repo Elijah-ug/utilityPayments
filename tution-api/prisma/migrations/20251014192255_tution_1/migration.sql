@@ -7,7 +7,7 @@ CREATE TABLE "School" (
     "school" TEXT NOT NULL,
     "isRegistered" BOOLEAN NOT NULL,
     "isActive" BOOLEAN NOT NULL,
-    "schoolId" TEXT NOT NULL,
+    "schoolId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
