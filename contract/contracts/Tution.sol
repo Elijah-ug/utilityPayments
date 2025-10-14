@@ -26,7 +26,7 @@ contract Tution is
     }
     struct Payer {
         uint256 balance;
-        uint256 debts;
+        uint256 termPayments;
         address client;
     }
     struct Receipt {
@@ -55,6 +55,7 @@ contract Tution is
     uint32 public newSchoolId;
     uint128 public termIdBySchool;
     uint32 public percentageFee;
+    uint256 public paymentsMade;
 
     bytes32 constant BEGIN_TERM = keccak256("beginTerm");
     bytes32 constant END_TERM = keccak256("endTerm");
@@ -79,11 +80,11 @@ contract Tution is
     }
 
     // register school
-    function registerSchool(address _school, bytes32 _name, uint256 _tution) external onlyOwner {
+    function registerSchool(address _school, bytes32 _name) external onlyOwner {
         require(!school[_school].isRegistered, "Registered");
         school[_school] = School({
             balance: 0,
-            tution: _tution,
+            tution: 0,
             school: _school,
             isRegistered: true,
             isActive: true,
@@ -115,7 +116,6 @@ contract Tution is
         stableToken.safeTransferFrom(msg.sender, address(this), _amount);
         newPayer.balance += _amount;
         newPayer.client = msg.sender;
-
     }
 
     // ====== shcool triggers ====
@@ -147,13 +147,16 @@ contract Tution is
     ) external nonReentrant {
         Payer storage newPayer = payer[msg.sender];
         School storage newSchool = school[_school];
+
         require(newPayer.balance > _amount, "Little balance");
         require(_school != address(0), "Invalid schoolAddr");
         require(newSchool.isRegistered, "Unregistered");
         require(newSchool.isActive, "Innactive");
+        require(newPayer.termPayments <= newSchool.tution, "You're cleared");
+        newPayer.termPayments += _amount;
+        paymentsMade += _amount;
         newPayer.balance -= _amount;
         newSchool.balance += _amount;
-        newPayer.debts = newSchool.tution - _amount;
         receipt[msg.sender] = Receipt({
             time: block.timestamp,
             amount: _amount,
@@ -206,7 +209,7 @@ contract Tution is
                 newTerm.start < block.timestamp &&
                 newTerm.end <= block.timestamp &&
                 newTerm.hasStarted &&
-                !newTerm.hasEnded &&    
+                !newTerm.hasEnded &&
                 checkText == BEGIN_TERM
             ) {
                 checkText = END_TERM;
