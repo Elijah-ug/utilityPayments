@@ -138,6 +138,10 @@ export const FinancialMgt = () => {
         console.log(' ✅ Tution Payment successful:', txDetails);
 
         return txDetails;
+
+      } else if (name === "payment") {
+        console.log(name);
+
       }
     } catch (error) {
       console.log(error);
