@@ -87,7 +87,7 @@ export const FinancialMgt = () => {
         console.log("withdrawReceipt successful:", txDetails);
         // setWithdrawAmount("");
         return txDetails;
-      } else if (name === "paymet") {
+      } else if (name === "payment") {
         console.log(name);
       }
     } catch (error) {}
@@ -184,7 +184,7 @@ export const FinancialMgt = () => {
                   value={studentClass}
                   onChange={(e) => setStudentClass(e.target.value)}
                   id="tabs-demo-class"
-                  type="number"
+                  type="text"
                   placeholder="Enter student's class/level"
                 />
 
