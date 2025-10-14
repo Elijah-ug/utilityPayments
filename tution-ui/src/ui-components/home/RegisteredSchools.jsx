@@ -18,7 +18,7 @@ export const RegisteredSchools = () => {
   const [selectedAddr, setSelectedAddr] = useState('');
   const [copied, setCopied] = useState(false);
   const { data: schools, error, isLoading } = useGetSchoolsQuery();
-  console.log('schools ==>', schools);
+  console.log('registered schools ==>', schools);
 
   const handleCopyAddress = (addr) => {
     setSelectedAddr(addr);
