@@ -41,6 +41,7 @@ export const FinancialMgt = () => {
   });
 
   const { writeContractAsync: transactionHandler, pending } = useWriteContract();
+  console.log("Pending==>", pending)
   const handleFinancialMgt = async (name) => {
     console.log('name==>', name);
     try {
@@ -249,7 +250,7 @@ export const FinancialMgt = () => {
                   onClick={() => handleFinancialMgt('payment')}
                   className="bg-gray-500 hover:bg-gray-400"
                 >
-                  Pay Tution
+                  {pending ? 'Paying...' : 'Pay Tution'}
                 </Button>
               </div>
             </CardContent>
