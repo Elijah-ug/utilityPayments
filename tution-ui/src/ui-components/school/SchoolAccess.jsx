@@ -53,7 +53,7 @@ const parsedEndDate = Math.floor(endDate.getTime() / 1000)
               });
               const withdraw = await waitForTransactionReceipt(config, { hash: withdrawTx });
               if(withdraw.status === "reverted"){
-                console.log("!Failed");
+                console.log("!withdraw Failed ");
               }
       
               const txDetails = {
