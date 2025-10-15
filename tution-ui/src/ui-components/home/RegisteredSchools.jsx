@@ -44,7 +44,7 @@ export const RegisteredSchools = () => {
             <div className="grid gap-2">
               {schools?.length > 0 ? (
                 schools.map((school) => (
-                  <div className="flex flex-col bg-gray-700 p-2 rounded-xs ">
+                  <div key={school.id} className="flex flex-col bg-gray-700 p-2 rounded-xs ">
                     <div className="">
                       <h3>{school.name}</h3>
                     </div>

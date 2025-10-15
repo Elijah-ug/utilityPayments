@@ -5,7 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build": "echo 'No build step needed for backend'",
+    "prisma:generate": "prisma generate",
+"migrate:dev": "prisma migrate dev --name init",
+"migrate:deploy": "prisma migrate deploy",
+"postinstall": "prisma generate && prisma migrate deploy"
   },
   "keywords": [],
   "author": "",

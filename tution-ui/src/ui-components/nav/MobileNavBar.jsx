@@ -13,8 +13,12 @@ import {
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { FaBars } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
+import { useAccount } from "wagmi";
 
 export const MobileNavBar = () => {
+  const {address} = useAccount()
+    const adminAddress = import.meta.env.ADMIN_ADDRESS;
+    const isAdmin = address?.toLowerCase() === adminAddress?.toLowerCase()
   return (
     <div className="sm:hidden flex items-center justify-between p-3">
       <Sheet className="bg-gray-600">
@@ -50,11 +54,11 @@ export const MobileNavBar = () => {
               </SheetClose>
             </NavLink>
 
-            <NavLink to="admin">
+            {isAdmin &&(<NavLink to="admin">
               <SheetClose asChild>
                 <span> Admin Dashboard</span>
               </SheetClose>
-            </NavLink>
+            </NavLink>)}
           </div>
         </SheetContent>
       </Sheet>
