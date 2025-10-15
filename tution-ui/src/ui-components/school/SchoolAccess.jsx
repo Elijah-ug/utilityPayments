@@ -5,15 +5,20 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useWriteContract } from "wagmi";
+import { useAccount, useWriteContract } from "wagmi";
 import { useState } from "react";
 import { wagmiContractConfig } from "@/contract/utils/contractAbs";
 import { parseEther } from "viem";
+import { waitForTransactionReceipt } from "viem/actions";
+import { config } from "@/contract/utils/wagmiConfig";
 
 export const SchoolAccess = () => {
   const [tution, setTution]=useState("")
   // const [startDate, setStartDate]=useState("")
   //   const [endDate, setEndDate]=useState("")
+    const [withdrawAmount, setWithdrawAmount] = useState('');
+    const {address} = useAccount()
+  
 
   const {writeContractAsync, pending} = useWriteContract()
   const handleNewTermUpdate=async(e)=>{
@@ -34,6 +39,35 @@ const parsedEndDate = Math.floor(endDate.getTime() / 1000)
       return term
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleWithdraw=async()=>{
+    try {
+      const parsedWithdraw = parseEther(withdrawAmount.toString());
+      const withdrawTx = await writeContractAsync({
+                ...wagmiContractConfig,
+                functionName: 'schoolWithdrawal',
+                args: [parsedWithdraw],
+                account: address
+              });
+              const withdraw = await waitForTransactionReceipt(config, { hash: withdrawTx });
+              if(withdraw.status === "reverted"){
+                console.log("!Failed");
+              }
+      
+              const txDetails = {
+                txHash: String(withdraw.transactionHash),
+                gasUsed: withdraw.gasUsed?.toString(),
+                to: String(withdraw.to),
+                from: String(withdraw.from),
+              };
+      
+              console.log('withdrawReceipt successful:', txDetails);
+              setWithdrawAmount('');
+              return txDetails;
+    } catch (error) {
+      console.log("Error==>", error)
     }
   }
 
@@ -82,11 +116,12 @@ const parsedEndDate = Math.floor(endDate.getTime() / 1000)
             </CardHeader>
             <CardContent className="grid gap-6 flex-1">
               <div className="grid gap-3">
-                <Input id="tabs-demo-withdraw" type="number" placeholder="Enter amount" />
+                <Input value={withdrawAmount}
+                  onChange={(e) => setWithdrawAmount(e.target.value)} id="tabs-demo-withdraw" type="number" placeholder="Enter amount" />
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="bg-gray-500 hover:bg-gray-400 w-full">Withdraw</Button>
+              <Button onClick={handleWithdraw} className="bg-gray-500 hover:bg-gray-400 w-full">Withdraw</Button>
             </CardFooter>
           </Card>
         </TabsContent>
