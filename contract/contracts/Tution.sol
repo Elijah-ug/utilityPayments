@@ -7,6 +7,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@chainlink/contracts/src/v0.8/automation/interfaces/AutomationCompatibleInterface.sol";
 
+// todos
+// 1. clear term payments after the term ad clearance
 contract Tution is
     Initializable,
     ReentrancyGuardUpgradeable,
@@ -152,7 +154,10 @@ contract Tution is
         require(_school != address(0), "Invalid schoolAddr");
         require(newSchool.isRegistered, "Unregistered");
         require(newSchool.isActive, "Innactive");
-        require(newPayer.termPayments <= newSchool.tution, "You're cleared");
+        bool isInRange = (newPayer.termPayments + _amount) <= newSchool.tution;
+        bool isFlatPay = (newPayer.termPayments + _amount) == newSchool.tution;
+
+        require(isInRange, "Reduce amount");
         newPayer.termPayments += _amount;
         paymentsMade += _amount;
         newPayer.balance -= _amount;
@@ -163,10 +168,13 @@ contract Tution is
             balance: newSchool.tution - _amount,
             payer: msg.sender,
             school: _school,
-            cleared: _amount >= newSchool.tution ? true : false,
+            cleared: isFlatPay,
             student: _student,
             class: _class
         });
+        if (isFlatPay) {
+            newPayer.termPayments = 0;
+        }
     }
 
     // withdraw

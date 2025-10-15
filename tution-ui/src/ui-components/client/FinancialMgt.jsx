@@ -121,7 +121,12 @@ export const FinancialMgt = () => {
           account: address,
         });
 
-        const tutionTx = await waitForTransactionReceipt(config, { hash: payTution });
+        const tutionTx = await waitForTransactionReceipt(publicClient, { hash: payTution });
+        if(tutionTx.status === "reverted"){
+          console.log("Reverted==>", tutionTx)
+           console.error('❌ Transaction failed/reverted');
+           return
+        }
         const txHash = String(tutionTx.transactionHash);
         const gasUsed = tutionTx.gasUsed?.toString();
         const to = String(tutionTx.to);

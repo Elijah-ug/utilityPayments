@@ -9,6 +9,6 @@ export const store = configureStore({
     [schoolApi.reducerPath]: schoolApi.reducer,
     [transactionApi.reducerPath]: transactionApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(schoolApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(schoolApi.middleware, transactionApi.middleware),
 });
 setupListeners(store.dispatch) 

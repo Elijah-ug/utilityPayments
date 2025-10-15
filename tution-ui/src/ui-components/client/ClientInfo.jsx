@@ -38,6 +38,11 @@ export const ClientInfo = () => {
                 <span>Balance:</span>
                 <span>{client && `${formatEther(client.balance)} AFB`}</span>
               </div>
+
+              <div className="flex items-center gap-2">
+                <span>Current Term Payments:</span>
+                <span>{client && `${formatEther(client.termPayments)} AFB`}</span>
+              </div>
             </div>
           </form>
         </CardContent>
