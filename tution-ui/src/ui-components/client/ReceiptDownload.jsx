@@ -11,11 +11,32 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Receipt } from './Receipt';
+import  ReceiptPDF  from './ReceiptPDF';
 import { Download } from 'lucide-react';
 import { MdClose } from 'react-icons/md';
+import { useAccount, useReadContract } from 'wagmi';
+import { wagmiContractConfig } from '@/contract/utils/contractAbs';
+import { hexToString } from 'viem';
 
 export const ReceiptDownload = () => {
+  const { address } = useAccount();
+  const {
+    data: receipt,
+    isPending,
+    error,
+  } = useReadContract({
+    ...wagmiContractConfig,
+    functionName: 'getReceipt',
+    args: [address],
+  });
+  const time = new Date(Number(receipt?.time) * 1000);
+  const date = time.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  // console.log("isPending==>", isPending)
+  console.log('date==>', date);
   return (
     <Dialog>
       <form>
@@ -25,23 +46,16 @@ export const ReceiptDownload = () => {
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] bg-gray-500">
-          {/* <DialogHeader> */}
-            <DialogTitle>Edit profile</DialogTitle>
-            {/* <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re done.
-            </DialogDescription> */}
-          {/* </DialogHeader> */}
+          <DialogTitle>Edit profile</DialogTitle>
+
           <div className="grid gap-4 p-2">
-            {/* <h2>Hello there</h2> */}
-            <Receipt />
+             <ReceiptPDF receipt={receipt} date={date} hexToString={hexToString} isPending={isPending} />
           </div>
           <DialogFooter>
             <DialogClose asChild>
               <MdClose />
-              {/* <Button variant="outline" className="bg-gray-600 hover:bg-gray-600 border-none">Cancel</Button> */}
             </DialogClose>
             <Download className="cursor-pointer" />
-            {/* <Button type="submit" className="bg-gray-500">Save changes</Button> */}
           </DialogFooter>
         </DialogContent>
       </form>

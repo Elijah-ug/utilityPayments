@@ -12,7 +12,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { Admin } from './ui-components/admin/Admin';
 import { Footer } from './ui-components/footer/Footer';
 import { MobileNavBar } from './ui-components/nav/MobileNavBar';
-import { Receipt } from './ui-components/client/Receipt';
+import  ReceiptPDF  from './ui-components/client/ReceiptPDF';
 
 export const App = () => {
   const queryClient = new QueryClient();
@@ -29,7 +29,7 @@ export const App = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="school" element={<SchoolDashboard />} />
                   <Route path="/client" element={<ClientDashboard />}>
-                    <Route path="receipt" element={<Receipt />} />
+                    <Route path="receipt" element={<ReceiptPDF />} />
                   </Route>
                   <Route path="admin" element={<Admin />} />
                 </Routes>
