@@ -165,7 +165,7 @@ contract Tution is
         receipt[msg.sender] = Receipt({
             time: block.timestamp,
             amount: _amount,
-            balance: newSchool.tution - _amount,
+            balance: isInRange ? newSchool.tution - _amount : 0
             payer: msg.sender,
             school: _school,
             cleared: isFlatPay,
