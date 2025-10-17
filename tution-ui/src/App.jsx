@@ -1,5 +1,5 @@
 import './App.css';
-import { WagmiProvider } from 'wagmi';
+import { useAccount, WagmiProvider } from 'wagmi';
 import { chains, config } from './contract/utils/wagmiConfig';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
@@ -12,9 +12,11 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { Admin } from './ui-components/admin/Admin';
 import { Footer } from './ui-components/footer/Footer';
 import { MobileNavBar } from './ui-components/nav/MobileNavBar';
-import  ReceiptPDF  from './ui-components/client/ReceiptPDF';
+import ReceiptPDF from './ui-components/client/ReceiptPDF';
 
 export const App = () => {
+  
+
   const queryClient = new QueryClient();
   return (
     <WagmiProvider config={config}>

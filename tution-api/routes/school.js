@@ -5,6 +5,6 @@ const router = express.Router();
 router.get("/", schools);
 router.get("/:school", school);
 router.post("/", addSchool);
-router.put("/:school", updateSchool);
+router.put("/:schoolId", updateSchool);
 
 export default router;

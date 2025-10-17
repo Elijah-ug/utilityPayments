@@ -42,10 +42,11 @@ export const school = async (req, res) => {
 };
 
 export const updateSchool = async (req, res) => {
-  console.log("waiting");
+  console.log("waiting for update");
   try {
-    const { name, location, tution, school, isRegistered, isActive, schoolId } = req.body;
-    // const id = parseInt(req.params.school);
+    console.log("req.body==>", req.body)
+        const schoolId = req.params.schoolId;
+            const { name, location, tution, school, isRegistered, isActive } = req.body;
     const schoolUpdate = await prisma.school.upsert({
       where: { schoolId },
       update: { name, location, tution, isRegistered, isActive },
@@ -54,7 +55,7 @@ export const updateSchool = async (req, res) => {
     console.log("school updated ✅");
     res.status(200).json(schoolUpdate);
   } catch (error) {
-    console.log("Error==>" + error.message);
+    console.log("Error==>", error);
     res.status(500).json({ error: error });
   }
 };
