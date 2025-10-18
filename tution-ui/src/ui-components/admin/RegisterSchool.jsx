@@ -49,7 +49,7 @@ export const RegisterSchool = () => {
       await newSchool({
         school: schoolAddr,
         name: schoolName,
-        isActive: false,
+        isActive: true,
         isRegistered: true,
       });
       console.log('✅ Transaction confirmed && school added to db:', receipt);
