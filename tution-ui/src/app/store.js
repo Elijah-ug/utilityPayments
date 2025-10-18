@@ -1,4 +1,3 @@
-
 import { configureStore } from '@reduxjs/toolkit';
 import { schoolApi } from '../ui-components//rtkQuery/school';
 import { setupListeners } from '@reduxjs/toolkit/query';
@@ -9,6 +8,7 @@ export const store = configureStore({
     [schoolApi.reducerPath]: schoolApi.reducer,
     [transactionApi.reducerPath]: transactionApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(schoolApi.middleware, transactionApi.middleware),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(schoolApi.middleware, transactionApi.middleware),
 });
-setupListeners(store.dispatch) 
+setupListeners(store.dispatch);
