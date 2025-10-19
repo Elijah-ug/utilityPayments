@@ -7,7 +7,7 @@ CREATE TABLE "School" (
     "school" TEXT NOT NULL,
     "isRegistered" BOOLEAN NOT NULL,
     "isActive" BOOLEAN NOT NULL,
-    "schoolId" TEXT,
+    "schoolId" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -42,4 +42,4 @@ CREATE TABLE "OnChainTxReceipts" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "School_schoolId_key" ON "School"("schoolId");
+CREATE UNIQUE INDEX "School_school_key" ON "School"("school");
