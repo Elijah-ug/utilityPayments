@@ -63,7 +63,7 @@ export const SchoolAccess = () => {
           isActive: school.isActive,
           schoolId: school.schoolId,
         });
-        console.log('School update sent ✅', '&& id ==>', school?.schoolId);
+        console.log('School update sent ✅', '&& id ==>', school.school);
       }
 
       console.log('dates==>', parsedTution, parsedStartDate, parsedEndDate);

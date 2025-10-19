@@ -5,6 +5,7 @@ import { formatEther, hexToString, parseUnits } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
 import { useUpdateSchoolMutation } from '../rtkQuery/school';
 import { useEffect } from 'react';
+import { decodeBytes32String, ethers } from 'ethers';
 
 export const Info = () => {
   const { address } = useAccount();
@@ -27,14 +28,14 @@ export const Info = () => {
       try {
         if (!isPending) {
           await newSchool({
-            name: hexToString(school.name),
+            name: decodeBytes32String(school.name),
             tution: formatEther(school.tution),
             school: school.school,
             isRegistered: school.isRegistered,
             isActive: school.isActive,
             schoolId: school.schoolId,
           });
-          console.log('School update sent ✅', '&& id ==>', id);
+          console.log('School update sent ✅', '&& id ==>', school.school);
         }
       } catch (error) {
         console.error('Update failed ❌', error.message);
