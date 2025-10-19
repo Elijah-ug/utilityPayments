@@ -41,7 +41,7 @@ export const FinancialMgt = () => {
   });
 
   const { writeContractAsync: transactionHandler, pending } = useWriteContract();
-  console.log("Pending==>", pending)
+  console.log('Pending==>', pending);
   const handleFinancialMgt = async (name) => {
     console.log('name==>', name);
     try {
@@ -122,17 +122,17 @@ export const FinancialMgt = () => {
         });
 
         const tutionTx = await waitForTransactionReceipt(publicClient, { hash: payTution });
-        if(tutionTx.status === "reverted"){
-          console.log("Reverted==>", tutionTx)
-           console.error('❌ Transaction failed/reverted');
-           return
+        if (tutionTx.status === 'reverted') {
+          console.log('Reverted==>', tutionTx);
+          console.error('❌ Transaction failed/reverted');
+          return;
         }
         const txHash = String(tutionTx.transactionHash);
         const gasUsed = tutionTx.gasUsed?.toString();
         const to = String(tutionTx.to);
         const from = String(tutionTx.from);
 
-        await addTransaction({ txHash, gasUsed, to, from });
+        await addTransaction({ txHash, gasUsed, to, from, payAmount, studentName, studentClass  });
         const txDetails = { txHash, gasUsed, to, from };
         console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
         setPayAmount('');
@@ -143,10 +143,8 @@ export const FinancialMgt = () => {
         console.log(' ✅ Tution Payment successful:', txDetails);
 
         return txDetails;
-
-      } else if (name === "payment") {
+      } else if (name === 'payment') {
         console.log(name);
-
       }
     } catch (error) {
       console.log(error);

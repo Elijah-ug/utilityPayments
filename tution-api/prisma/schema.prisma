@@ -33,10 +33,13 @@ model Receipt {
 }
 
 model OnChainTxReceipts {
-  id      Int     @id @default(autoincrement())
-  txHash  String
-  gasUsed String?
-  to      String?
-  from    String?
-  time    String?
+  id           Int     @id @default(autoincrement())
+  txHash       String
+  gasUsed      String?
+  to           String?
+  from         String?
+  time         String?
+  payAmount    String?
+  studentName  String?
+  studentClass String?
 }

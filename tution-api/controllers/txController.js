@@ -3,9 +3,9 @@ import { prisma } from "../prisma/client.js";
 export const addTx = async (req, res) => {
   try {
     console.log("Tx added ✅");
-    const { txHash, gasUsed, to, from, time } = req.body;
+    const { txHash, gasUsed, to, from, time, payAmount, studentName, studentClass } = req.body;
     const newTx = await prisma.onChainTxReceipts.create({
-      data: { txHash, gasUsed, to, from, time },
+      data: { txHash, gasUsed, to, from, time, payAmount, studentName, studentClass },
     });
     console.log("Tx added ✅");
     res.status(200).json(newTx);
