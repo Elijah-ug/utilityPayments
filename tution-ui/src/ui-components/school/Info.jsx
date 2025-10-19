@@ -32,12 +32,12 @@ export const Info = () => {
             school: school.school,
             isRegistered: school.isRegistered,
             isActive: school.isActive,
-            schoolId: String(id),
+            schoolId: school.schoolId,
           });
-          console.log('School update sent ✅');
+          console.log('School update sent ✅', '&& id ==>', id);
         }
       } catch (error) {
-        console.error('Update failed ❌', error);
+        console.error('Update failed ❌', error.message);
       }
     };
     updateSchool();
