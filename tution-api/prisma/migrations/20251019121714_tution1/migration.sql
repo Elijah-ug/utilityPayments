@@ -1,9 +1,9 @@
 -- CreateTable
 CREATE TABLE "School" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "location" TEXT,
-    "tution" TEXT NOT NULL,
+    "tution" TEXT,
     "school" TEXT NOT NULL,
     "isRegistered" BOOLEAN NOT NULL,
     "isActive" BOOLEAN NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE "School" (
 
 -- CreateTable
 CREATE TABLE "Receipt" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "time" TEXT NOT NULL,
     "amount" TEXT NOT NULL,
     "balance" TEXT NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE "Receipt" (
 
 -- CreateTable
 CREATE TABLE "OnChainTxReceipts" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "txHash" TEXT NOT NULL,
     "gasUsed" TEXT,
     "to" TEXT,

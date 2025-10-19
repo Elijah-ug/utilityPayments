@@ -45,10 +45,11 @@ export const updateSchool = async (req, res) => {
   console.log("waiting for update");
   try {
     console.log("req.body==>", req.body)
-        const schoolId = req.params.schoolId;
-            const { name, location, tution, school, isRegistered, isActive } = req.body;
+    console.log(req.params)
+        const school = req.params.school;
+            const { name, location, tution, isRegistered, isActive, schoolId } = req.body;
     const schoolUpdate = await prisma.school.upsert({
-      where: { schoolId },
+      where: { school },
       update: { name, location, tution, isRegistered, isActive },
       create: { name, location, tution, school, isRegistered, isActive, schoolId },
     });

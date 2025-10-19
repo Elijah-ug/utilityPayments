@@ -12,10 +12,10 @@ model School {
   name         String
   location     String?
   tution       String?
-  school       String
+  school       String   @unique
   isRegistered Boolean
   isActive     Boolean
-  schoolId     String?  @unique
+  schoolId     String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }

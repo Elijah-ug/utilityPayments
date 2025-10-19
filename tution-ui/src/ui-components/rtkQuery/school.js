@@ -13,12 +13,14 @@ export const schoolApi = createApi({
         body: newSchool,
       }),
     }),
-    // updateSchool: build.mutation({
-    //   query: ({ schoolId, ...updatedData }) => {
-    //     console.log('Sending update to:', schoolId, updatedData); // Add this
-    //     return { url: `/${schoolId}`, method: 'PUT', body: updatedData };
-    //   },
-    // }),
+    updateSchool: build.mutation({
+      query: ({ school, ...updatedData }) => ({
+        // console.log('Sending update to:', schoolId, updatedData); // Add this
+        url: `/${school}`,
+        method: 'PUT',
+        body: updatedData,
+      }),
+    }),
   }),
 });
 export const { useGetSchoolsQuery, useAddSchoolMutation, useUpdateSchoolMutation } = schoolApi;
