@@ -24,26 +24,20 @@ export const Demo = () => {
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias numquam rem veniam voluptatibus officiis
-                assumenda nesciunt ullam odio beatae harum voluptas libero delectus suscipit, quis saepe, eveniet eius?
-                Optio, blanditiis!
+              <p> Schools are registered by providing their wallet address and school name.
+                Registered schools take the responsibility to set the tution fee, start and end dates of the term. A registered school also has the ability to deactivate it's services on the platform
               </p>
             </div>
 
             <div className="grid gap-2">
               <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto natus optio non maxime voluptatibus
-                quasi sed perferendis cupiditate officiis aperiam, ipsum error saepe nesciunt atque facilis ipsam
-                aliquid! Iste, deleniti.
+                Parents/Students don't need to do much other than depositing to the platform to be able to pay tution to a specific school. During payment, they provide School Address, student's Name, Student's Class and Amount to be paid. All this is recorded on-chain for integrity and transparency
               </p>
             </div>
 
             <div className="grid gap-2">
               <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iusto natus optio non maxime voluptatibus
-                quasi sed perferendis cupiditate officiis aperiam, ipsum error saepe nesciunt atque facilis ipsam
-                aliquid! Iste, deleniti.
+                All transactions done at the platform are found at the Transactions Dane page of this site which also link to basescan 
               </p>
             </div>
           </div>
