@@ -58,26 +58,18 @@ export const ReceiptDownload = () => {
           <DialogTitle>Edit profile</DialogTitle>
 
           <div className="grid gap-4 p-2">
-            {/* <ReceiptView
+            <ReceiptView
               receipt={receipt}
               date={date}
               hexToString={hexToString}
               isPending={isPending}
-            /> */}
-            
+            />
           </div>
           <DialogFooter>
             <DialogClose asChild>
               <MdClose />
             </DialogClose>
-            <Button>
-              <PDFDownloadLink
-                document={<memoizedDoc />}
-                fileName={`${new Date().toLocaleString().replace(/[:.,/ ]/g, '_')}` + 'flyer.pdf'}
-              >
-                {({ blob, url, loading, error }) => (loading ? 'Loading...' : 'download receipt')}
-              </PDFDownloadLink>
-            </Button>
+            <ReceiptPDF />
             {/* <Download className="cursor-pointer" >
               fff
             </Download> */}

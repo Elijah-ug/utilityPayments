@@ -6,29 +6,27 @@ export const styles = StyleSheet.create({
     fontFamily: 'Helvetica',
     backgroundColor: '#f9f9f9',
   },
-
+  content: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
   header: {
     textAlign: 'center',
     marginBottom: 15,
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#1e3a8a',
   },
   subtitle: {
-    fontSize: 12,
+    fontSize: 17,
     color: '#555',
   },
 
-  //   divider: {
-  //     borderBottomWidth: 1,
-  //     borderBottomColor: '#ccc',
-  //     marginVertical: 15,
-  //   },
-
   section: {
     flexDirection: 'column',
+    gap: '20px',
     fontSize: 13,
     backgroundColor: '#fff',
     borderRadius: 8,
@@ -39,6 +37,7 @@ export const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+
     marginBottom: 8,
   },
   label: {
@@ -59,10 +58,7 @@ export const styles = StyleSheet.create({
   },
 
   footer: {
-    position: 'absolute',
-    bottom: 30,
-    left: 30,
-    right: 30,
+    paddingTop: 10,
     textAlign: 'center',
   },
   footerText: {

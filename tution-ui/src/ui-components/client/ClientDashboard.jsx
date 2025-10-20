@@ -16,9 +16,7 @@ export const ClientDashboard = () => {
       </div>
       <nav className="flex flex-col items-center justify-center pt-5">
         <ReceiptDownload />
-        <PDFViewer>
-          <ReceiptPDF />
-        </PDFViewer>
+        
       </nav>
     </div>
   );
