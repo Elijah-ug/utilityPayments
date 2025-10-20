@@ -65,14 +65,11 @@ export const ReceiptDownload = () => {
               isPending={isPending}
             />
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex items-center gap-10 ">
             <DialogClose asChild>
               <MdClose />
             </DialogClose>
             <ReceiptPDF />
-            {/* <Download className="cursor-pointer" >
-              fff
-            </Download> */}
           </DialogFooter>
         </DialogContent>
       </form>
