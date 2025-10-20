@@ -13,6 +13,7 @@ import { Admin } from './ui-components/admin/Admin';
 import { Footer } from './ui-components/footer/Footer';
 import { MobileNavBar } from './ui-components/nav/MobileNavBar';
 import ReceiptPDF from './ui-components/client/ReceiptPDF';
+import { PlatformPayments } from './ui-components/public/PlatformPayments';
 
 export const App = () => {
   const queryClient = new QueryClient();
@@ -32,7 +33,7 @@ export const App = () => {
                     {/* <Route path="receipt" element={<ReceiptPDF />} /> */}
                   </Route>
                   <Route path="admin" element={<Admin />} />
-                  <Route path="receipt" element={<ReceiptPDF />} />
+                  <Route path="payments" element={<PlatformPayments />} />
                 </Routes>
               </div>
             </div>
