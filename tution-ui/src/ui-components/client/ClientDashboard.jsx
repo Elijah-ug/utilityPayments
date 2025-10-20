@@ -4,6 +4,8 @@ import { FinancialMgt } from './FinancialMgt';
 import { Link, Outlet } from 'react-router-dom';
 import { Download } from 'lucide-react';
 import { ReceiptDownload } from './ReceiptDownload';
+import { PDFViewer } from '@react-pdf/renderer';
+import ReceiptPDF from './ReceiptPDF';
 
 export const ClientDashboard = () => {
   return (
@@ -14,6 +16,7 @@ export const ClientDashboard = () => {
       </div>
       <nav className="flex flex-col items-center justify-center pt-5">
         <ReceiptDownload />
+        
       </nav>
     </div>
   );

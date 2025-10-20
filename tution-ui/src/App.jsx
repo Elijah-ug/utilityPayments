@@ -15,8 +15,6 @@ import { MobileNavBar } from './ui-components/nav/MobileNavBar';
 import ReceiptPDF from './ui-components/client/ReceiptPDF';
 
 export const App = () => {
-  
-
   const queryClient = new QueryClient();
   return (
     <WagmiProvider config={config}>
@@ -31,9 +29,10 @@ export const App = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="school" element={<SchoolDashboard />} />
                   <Route path="/client" element={<ClientDashboard />}>
-                    <Route path="receipt" element={<ReceiptPDF />} />
+                    {/* <Route path="receipt" element={<ReceiptPDF />} /> */}
                   </Route>
                   <Route path="admin" element={<Admin />} />
+                  <Route path="receipt" element={<ReceiptPDF />} />
                 </Routes>
               </div>
             </div>

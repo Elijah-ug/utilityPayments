@@ -14,6 +14,7 @@ export const NavBar = () => {
         <NavLink to="school">School Dashboard</NavLink>
         <NavLink to="client">Client Dashboard</NavLink>
         {isAdmin && <NavLink to="admin"> Admin Dashboard</NavLink>}
+        <NavLink to="receipt">Receipt</NavLink>
       </div>
 
       <div className="">
