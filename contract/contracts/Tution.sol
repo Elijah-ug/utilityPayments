@@ -29,7 +29,13 @@ contract Tution is
     struct Payer {
         uint256 balance;
         uint256 termPayments;
+        uint256 autoPayments;
+        uint256 debts;
         address client;
+        address school;
+        bool hasAutoPayments;
+        bytes32 studentName;
+        bytes32 studentClass;
     }
     struct Receipt {
         uint256 time;
@@ -61,6 +67,8 @@ contract Tution is
 
     bytes32 constant BEGIN_TERM = keccak256("beginTerm");
     bytes32 constant END_TERM = keccak256("endTerm");
+
+    address[] public autoPayers;
 
     uint256[50] private __gap;
     modifier onlySchool() {
@@ -107,7 +115,7 @@ contract Tution is
     function activateSchool(address _school) external onlyOwner {
         School storage newSchool = school[_school];
         require(newSchool.isRegistered, "Unregistered");
-        require(newSchool.isActive, "Innactive");
+        require(!newSchool.isActive, "Innactive");
         newSchool.isActive = true;
     }
 
@@ -135,6 +143,7 @@ contract Tution is
             start: _start,
             end: _end
         });
+
         termIdBySchool += 1;
         newSchool.tution = _tution;
     }
@@ -150,10 +159,13 @@ contract Tution is
         Payer storage newPayer = payer[msg.sender];
         School storage newSchool = school[_school];
 
-        require(newPayer.balance > _amount, "Little balance");
+        require(newPayer.balance >= _amount, "Little balance");
         require(_school != address(0), "Invalid schoolAddr");
         require(newSchool.isRegistered, "Unregistered");
         require(newSchool.isActive, "Innactive");
+        require(newSchool.tution > 0, "Outdated Term");
+        require(newPayer.termPayments <= newSchool.tution, "You're cleared!");
+
         bool isInRange = (newPayer.termPayments + _amount) <= newSchool.tution;
         bool isFlatPay = (newPayer.termPayments + _amount) == newSchool.tution;
 
@@ -162,19 +174,40 @@ contract Tution is
         paymentsMade += _amount;
         newPayer.balance -= _amount;
         newSchool.balance += _amount;
+        newPayer.school = _school;
+        newPayer.debts = newSchool.tution - newPayer.termPayments;
+        uint256 remaining = newSchool.tution - newPayer.termPayments;
         receipt[msg.sender] = Receipt({
             time: block.timestamp,
             amount: _amount,
-            balance: isInRange ? newSchool.tution - _amount : 0,
+            balance: remaining,
             payer: msg.sender,
             school: _school,
             cleared: isFlatPay,
             student: _student,
             class: _class
         });
-        if (isFlatPay) {
-            newPayer.termPayments = 0;
-        }
+    }
+
+    function paymentAutomation(
+        address _school,
+        uint256 _amount,
+        bytes32 _student,
+        bytes32 _class
+    ) external {
+        require(_school != address(0), "Invalid school address");
+        School storage newSchool = school[_school];
+        Payer storage autoPayer = payer[msg.sender];
+        require(_amount > 0, "Invalid amount");
+        require(_amount == newSchool.tution, "amount != school tution");
+        require(autoPayer.balance >= newSchool.tution, "Low balance");
+        require(!autoPayer.hasAutoPayments, "has AutoPayments");
+        autoPayer.hasAutoPayments = true;
+        autoPayer.autoPayments += _amount;
+        autoPayer.studentName = _student;
+        autoPayer.studentClass = _class;
+
+        autoPayers.push(msg.sender);
     }
 
     // withdraw
@@ -182,7 +215,7 @@ contract Tution is
         School storage newSchool = school[msg.sender];
         require(newSchool.isRegistered, "Unregistered");
         require(newSchool.isActive, "Innactive");
-        require(newSchool.balance > _amount, "Much amount");
+        require(newSchool.balance >= _amount, "Much amount");
         newSchool.balance -= _amount;
         uint256 _fee = (_amount * percentageFee) / 1000;
         uint256 netWithdraw = _amount - _fee;
@@ -198,63 +231,107 @@ contract Tution is
     }
 
     // reset new term
-    function resetStateForNewTerm() internal {}
+    function canselAutoPayments() external {
+        Payer storage newPayer = payer[msg.sender];
+        require(newPayer.hasAutoPayments, "No autopayments found");
+        newPayer.hasAutoPayments = false;
+        uint256 len = autoPayers.length;
+        for (uint256 i = 0; i < len; i++) {
+            if (autoPayers[i] == msg.sender) {
+                autoPayers[i] = autoPayers[len - 1];
+                autoPayers.pop();
+                break;
+            }
+        }
+    }
 
     // automation
     function checkUpkeep(
         bytes calldata
     ) external view override returns (bool upkeepNeeded, bytes memory performData) {
-        bytes32 checkText;
-        bool passCheck;
-        for (uint32 i; i < newSchoolId; i++) {
+        for (uint128 i; i < termIdBySchool; i++) {
             AcademicTerm storage newTerm = academicTerm[i];
             if (newTerm.start <= block.timestamp && !newTerm.hasStarted) {
-                checkText = BEGIN_TERM;
-                passCheck = true;
-                break;
+                upkeepNeeded = true;
+                performData = abi.encode(uint128(i), BEGIN_TERM);
+                return (upkeepNeeded, performData);
             }
             if (
                 newTerm.start < block.timestamp &&
                 newTerm.end <= block.timestamp &&
                 newTerm.hasStarted &&
-                !newTerm.hasEnded &&
-                checkText == BEGIN_TERM
+                !newTerm.hasEnded
             ) {
-                checkText = END_TERM;
-                passCheck = true;
-                break;
+                upkeepNeeded = true;
+                performData = abi.encode(uint128(i), END_TERM);
+                return (upkeepNeeded, performData);
             }
         }
-        upkeepNeeded = passCheck;
-        performData = abi.encode(checkText);
-        return (upkeepNeeded, performData);
+        upkeepNeeded = false;
+        performData = "";
     }
 
     function performUpkeep(bytes calldata performData) external override {
-        bytes32 checkText = abi.decode(performData, (bytes32));
+        (uint128 termIndex, bytes32 action) = abi.decode(performData, (uint128, bytes32));
 
-        for (uint32 i; i < newSchoolId; i++) {
-            AcademicTerm storage newTerm = academicTerm[i];
+        AcademicTerm storage t = academicTerm[termIndex];
+        School storage skul = school[t.school];
+        if (action == BEGIN_TERM) {
+            t.hasStarted = true;
+        } else if (action == END_TERM) {
+            t.hasEnded = true;
+            t.tution = 0;
+            t.hasStarted = false;
+            t.hasEnded = false;
+            t.start = 0;
+            t.end = 0;
+        }
+        // school validation
+        if (skul.school == address(0) || !skul.isRegistered || !skul.isActive) {
+            return;
+        }
+
+        for (uint256 i; i < autoPayers.length; i++) {
+            address autoPayerAddr = autoPayers[i];
+            Payer storage autoPayer = payer[autoPayerAddr];
+
             if (
-                newTerm.start <= block.timestamp && !newTerm.hasStarted && checkText == BEGIN_TERM
+                action == BEGIN_TERM &&
+                skul.school == autoPayer.school &&
+                autoPayer.hasAutoPayments &&
+                autoPayer.termPayments < skul.tution
             ) {
-                newTerm.hasStarted = true;
+                uint256 tution = skul.tution;
+                require(autoPayer.balance >= tution);
+                require(autoPayer.autoPayments >= tution);
+
+                autoPayer.balance -= tution;
+                autoPayer.autoPayments -= tution;
+                autoPayer.termPayments += tution;
+                skul.balance += tution;
+                paymentsMade += tution;
+
+                bool cleared = (autoPayer.termPayments >= skul.tution);
+                uint256 remaining = cleared ? 0 : (skul.tution - autoPayer.termPayments);
+                receipt[autoPayer.client] = Receipt({
+                    time: block.timestamp,
+                    amount: tution,
+                    balance: remaining,
+                    payer: autoPayer.client,
+                    school: skul.school,
+                    cleared: cleared,
+                    student: autoPayer.studentName,
+                    class: autoPayer.studentClass
+                });
+                if (cleared) {
+                    autoPayer.termPayments = 0;
+                }
             }
-            if (
-                newTerm.start < block.timestamp &&
-                newTerm.end <= block.timestamp &&
-                newTerm.hasStarted &&
-                !newTerm.hasEnded &&
-                checkText == END_TERM
-            ) {
-                newTerm.hasEnded = true;
-            }
-            if (newTerm.hasEnded && block.timestamp > newTerm.end + 1 hours) {
-                newTerm.tution = 0;
-                newTerm.hasStarted = false;
-                newTerm.hasEnded = false;
-                newTerm.start = 0;
-                newTerm.end = 0;
+            if (action == END_TERM) {
+                if (autoPayer.termPayments < skul.tution && autoPayer.school == skul.school) {
+                    autoPayer.debts = skul.tution - autoPayer.termPayments;
+                    autoPayer.termPayments = 0;
+                }
             }
         }
     }
@@ -272,7 +349,13 @@ contract Tution is
         return receipt[_user];
     }
 
-    function getacademicTerm(uint128 _termId) external view returns (AcademicTerm memory) {
-        return academicTerm[_termId];
+    function getacademicTerm(address _schoolAddr) external view returns (AcademicTerm memory) {
+        for (uint32 i; i < termIdBySchool; i++) {
+            AcademicTerm memory newTerm = academicTerm[i];
+            if (newTerm.school == _schoolAddr) {
+                return newTerm;
+            }
+        }
+        revert("No matching term found");
     }
 }
