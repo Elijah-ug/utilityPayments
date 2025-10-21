@@ -37,6 +37,9 @@ CREATE TABLE "OnChainTxReceipts" (
     "to" TEXT,
     "from" TEXT,
     "time" TEXT,
+    "payAmount" TEXT,
+    "studentName" TEXT,
+    "studentClass" TEXT,
 
     CONSTRAINT "OnChainTxReceipts_pkey" PRIMARY KEY ("id")
 );
