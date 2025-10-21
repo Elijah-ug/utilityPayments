@@ -52,6 +52,7 @@ export const SchoolAccess = () => {
         ...wagmiContractConfig,
         functionName: 'AcademicTermUpdate',
         args: [parsedTution, parsedStartDate, parsedEndDate],
+        account: address,
       });
       const id = school?.schoolId + 1;
       if (school) {
