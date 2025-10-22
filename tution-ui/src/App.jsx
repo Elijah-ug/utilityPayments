@@ -14,6 +14,7 @@ import { Footer } from './ui-components/footer/Footer';
 import { MobileNavBar } from './ui-components/nav/MobileNavBar';
 import ReceiptPDF from './ui-components/client/ReceiptPDF';
 import { PlatformPayments } from './ui-components/public/PlatformPayments';
+import { ToastContainer } from 'react-toastify';
 
 export const App = () => {
   const queryClient = new QueryClient();
@@ -37,6 +38,16 @@ export const App = () => {
                 </Routes>
               </div>
             </div>
+             <ToastContainer
+              position="top-right"
+              autoClose={4000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              pauseOnHover
+              draggable
+              theme="colored"
+            />
             <Footer />
           </div>
         </RainbowKitProvider>

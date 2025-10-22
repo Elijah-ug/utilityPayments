@@ -13,15 +13,25 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAccount, useReadContract, useWriteContract } from 'wagmi';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { wagmiContractConfig } from '@/contract/utils/contractAbs';
 import { formatEther, hexToString, parseEther } from 'viem';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { config } from '@/contract/utils/wagmiConfig';
 import { useUpdateSchoolMutation } from '../rtkQuery/school';
+import { TermDates } from './TermDates';
+import { toast } from 'react-toastify';
 
 export const SchoolAccess = () => {
   const [tution, setTution] = useState('');
+  const [openStart, setOpenStart] = useState(false);
+  const [openEnd, setOpenEnd] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const [startTimestamp, setStartTimestamp] = useState('');
+  const [endTimestamp, setEndTimestamp] = useState('');
+
   const { address } = useAccount();
   const [newSchool, { isLoading, isSuccess, error: updateError }] = useUpdateSchoolMutation();
   const {
@@ -39,39 +49,45 @@ export const SchoolAccess = () => {
   //   const [endDate, setEndDate]=useState("")
   const [withdrawAmount, setWithdrawAmount] = useState('');
 
+  useEffect(() => {
+    if (startDate && endDate) {
+      const start = Math.floor(startDate.getTime() / 1000);
+      const end = Math.floor(endDate.getTime() / 1000);
+      setStartTimestamp(start);
+      setEndTimestamp(end);
+    }
+  }, [startDate, endDate]);
+  // console.log(' ✅ startTimestamp ==>', startTimestamp);
+  // console.log(' ✅ endTimestamp ==>', endTimestamp);
+
   const { writeContractAsync, pending } = useWriteContract();
   const handleNewTermUpdate = async (e) => {
     e.preventDefault();
     try {
-      const startDate = new Date('2025-10-15');
-      const endDate = new Date('2025-10-16');
-      const parsedStartDate = Math.floor(startDate.getTime() / 1000);
-      const parsedEndDate = Math.floor(endDate.getTime() / 1000);
       const parsedTution = parseEther(tution.toString());
       const term = await writeContractAsync({
         ...wagmiContractConfig,
         functionName: 'AcademicTermUpdate',
-        args: [parsedTution, parsedStartDate, parsedEndDate],
+        args: [parsedTution, startTimestamp, endTimestamp],
         account: address,
       });
-      const id = school?.schoolId + 1;
+
       if (school) {
         await newSchool({
           name: hexToString(school.name),
-          tution: parsedTution,
+          tution: tution,
           school: school.school,
           isRegistered: school.isRegistered,
           isActive: school.isActive,
           schoolId: school.schoolId,
         });
-        console.log('School update sent ✅', '&& id ==>', school.school);
       }
-
-      console.log('dates==>', parsedTution, parsedStartDate, parsedEndDate);
+      toast.success('Academic term updated');
       console.log('Tx hash==>', term);
       return term;
     } catch (error) {
       console.log(error);
+      toast.error('Academic term update Failed');
     }
   };
 
@@ -88,7 +104,7 @@ export const SchoolAccess = () => {
       if (withdraw.status === 'reverted') {
         console.log('!withdraw Failed ');
       }
-
+      toast.success('Withdrawn successfully');
       const txDetails = {
         txHash: String(withdraw.transactionHash),
         gasUsed: withdraw.gasUsed?.toString(),
@@ -101,6 +117,7 @@ export const SchoolAccess = () => {
       return txDetails;
     } catch (error) {
       console.log('Error==>', error);
+      toast.error('withdraw Failed');
     }
   };
 
@@ -133,17 +150,21 @@ export const SchoolAccess = () => {
                     />
                   </div>
 
-                  {/* <div className="grid gap-1">
-                    <Label htmlFor="startdate">Start Date</Label>
-                    <Input value={startDate} onChange={(e)=>setStartDate(e.target.value)} id="startdate" type="text" placeholder="Enter beginning of term date" required />
+                  <div className="">
+                    <TermDates
+                      openStart={openStart}
+                      openEnd={openEnd}
+                      startDate={startDate}
+                      endDate={endDate}
+                      setOpenStart={setOpenStart}
+                      setStartDate={setStartDate}
+                      setEndDate={setEndDate}
+                      setOpenEnd={setOpenEnd}
+                    />
                   </div>
 
-                  <div className="grid gap-1">
-                    <Label htmlFor="enddate">End Date</Label>
-                    <Input value={endDate} onChange={(e)=>setEndDate(e.target.value)} id="enddate" type="text" placeholder="Enter end of term date" required />
-                  </div> */}
                   <Button type="submit" className="bg-gray-500 hover:bg-gray-400">
-                    Deposit
+                    Set New Term
                   </Button>
                 </div>
               </form>

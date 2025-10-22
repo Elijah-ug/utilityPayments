@@ -1,6 +1,7 @@
-import { Info } from "./Info";
-import React from "react";
-import { SchoolAccess } from "./SchoolAccess";
+import { Info } from './Info';
+import React from 'react';
+import { SchoolAccess } from './SchoolAccess';
+import { AcademicTerm } from './AcademicTerm';
 
 export const SchoolDashboard = () => {
   return (
@@ -9,6 +10,7 @@ export const SchoolDashboard = () => {
         <Info />
         <SchoolAccess />
       </div>
+      {/* <AcademicTerm /> */}
     </div>
   );
 };

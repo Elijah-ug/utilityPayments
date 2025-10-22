@@ -2,7 +2,7 @@ import { StyleSheet } from '@react-pdf/renderer';
 
 export const styles = StyleSheet.create({
   page: {
-    padding: 30,
+    padding: 27,
     fontFamily: 'Helvetica',
     backgroundColor: '#f9f9f9',
   },
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   },
   header: {
     textAlign: 'center',
-    marginBottom: 15,
+    marginBottom: 14,
   },
   title: {
     fontSize: 24,
@@ -37,8 +37,7 @@ export const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-
-    marginBottom: 8,
+    marginBottom: 5,
   },
   label: {
     color: '#111827',

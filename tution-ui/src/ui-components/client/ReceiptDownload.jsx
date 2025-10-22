@@ -38,7 +38,7 @@ export const ReceiptDownload = () => {
     month: 'long',
     day: 'numeric',
   });
-  // console.log("isPending==>", isPending)
+  // console.log("isPending==>", receipt)
 
   console.log('date==>', date);
 

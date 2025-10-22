@@ -20,6 +20,7 @@ import { parseEther, stringToHex } from 'viem';
 import { config } from '@/contract/utils/wagmiConfig';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { useAddTransactionMutation } from '../rtkQuery/transaction';
+import { toast } from 'react-toastify';
 
 export const FinancialMgt = () => {
   const [depositAmount, setDepositAmount] = useState('');
@@ -40,8 +41,8 @@ export const FinancialMgt = () => {
     args: [address, contractAddress],
   });
 
-  const { writeContractAsync: transactionHandler, pending } = useWriteContract();
-  console.log('Pending==>', pending);
+  const { writeContractAsync: transactionHandler, isPending } = useWriteContract();
+  console.log('Pending==>', isPending);
   const handleFinancialMgt = async (name) => {
     console.log('name==>', name);
     try {
@@ -73,7 +74,7 @@ export const FinancialMgt = () => {
         const depositHash = await waitForTransactionReceipt(config, { hash: depositTx });
         await refetchAllowance();
         console.log('depositHash: ==> ', depositHash);
-
+        toast.success("Deposited Successfully")
         return depositHash;
       } else if (name === 'withdraw') {
         const parsedWithdraw = parseEther(withdrawAmount.toString());
@@ -94,12 +95,12 @@ export const FinancialMgt = () => {
           to: String(withdraw.to),
           from: String(withdraw.from),
         };
-
+        toast.success("Withdrawn Successfully");
         console.log('withdrawReceipt successful:', txDetails);
         setWithdrawAmount('');
         return txDetails;
       } else if (name === 'payment') {
-        // console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
+        console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
         const parsedTution = parseEther(payAmount.toString());
         const parsedName = stringToHex(studentName, { size: 32 });
         const parsedClass = stringToHex(studentClass, { size: 32 });
@@ -113,28 +114,30 @@ export const FinancialMgt = () => {
         ) {
           return console.log('some invalid input');
         }
-        console.log('wait');
+
         const payTution = await transactionHandler({
           ...wagmiContractConfig,
           functionName: 'tutionPayment',
           args: [parsedTution, schoolAddr, parsedName, parsedClass],
           account: address,
         });
-
+        
         const tutionTx = await waitForTransactionReceipt(publicClient, { hash: payTution });
         if (tutionTx.status === 'reverted') {
-          console.log('Reverted==>', tutionTx);
           console.error('❌ Transaction failed/reverted');
           return;
         }
+        toast.success("Tution payment Successful");
+        console.log('Variables==>', parsedTution, schoolAddr, parsedName, parsedClass);
+        console.log('Reverted==>', tutionTx);
         const txHash = String(tutionTx.transactionHash);
         const gasUsed = tutionTx.gasUsed?.toString();
         const to = String(tutionTx.to);
         const from = String(tutionTx.from);
 
-        await addTransaction({ txHash, gasUsed, to, from, payAmount, studentName, studentClass  });
+        await addTransaction({ txHash, gasUsed, to, from, payAmount, studentName, studentClass });
         const txDetails = { txHash, gasUsed, to, from };
-        console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
+        
         setPayAmount('');
         setSchoolAddr('');
         setStudentClass('');
@@ -143,8 +146,44 @@ export const FinancialMgt = () => {
         console.log(' ✅ Tution Payment successful:', txDetails);
 
         return txDetails;
-      } else if (name === 'payment') {
-        console.log(name);
+      } else if (name === 'auto') {
+        const parsedTution = parseEther(payAmount.toString());
+        const parsedName = stringToHex(studentName, { size: 32 });
+        const parsedClass = stringToHex(studentClass, { size: 32 });
+
+        if (
+          !payAmount ||
+          isNaN(parseFloat(payAmount)) ||
+          !schoolAddr ||
+          !studentName ||
+          !studentClass
+        ) {
+          return console.log('some invalid input');
+        }
+        
+        const automate = await transactionHandler({
+          ...wagmiContractConfig,
+          functionName: 'paymentAutomation',
+          args: [schoolAddr, parsedTution, parsedName, parsedClass],
+          account: address,
+        });
+console.log('Variables==>', parsedTution, schoolAddr, parsedName, parsedClass);
+        const tx = await waitForTransactionReceipt(publicClient, { hash: automate });
+        if (tx.status === 'reverted') {
+          console.log('Reverted==>', tx);
+          console.error('❌ Transaction failed/reverted');
+          return;
+        }
+        console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
+
+        console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
+        setPayAmount('');
+        setSchoolAddr('');
+        setStudentClass('');
+        setStudentName('');
+        await refetchAllowance();
+        console.log(' ✅ Tution Payment successful:', tx);
+        return tx;
       }
     } catch (error) {
       console.log(error);
@@ -158,6 +197,7 @@ export const FinancialMgt = () => {
           <TabsTrigger value="deposit">Deposit</TabsTrigger>
           <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
           <TabsTrigger value="tution-payment">Pay Tution</TabsTrigger>
+          {/* <TabsTrigger value="auto-tution-payment">Auto Mode</TabsTrigger> */}
         </TabsList>
 
         <TabsContent value="deposit" className="h-full">
@@ -179,9 +219,9 @@ export const FinancialMgt = () => {
             <CardFooter>
               <Button
                 onClick={() => handleFinancialMgt('deposit')}
-                className="bg-gray-500 hover:bg-gray-400"
+                className="bg-gray-500 hover:bg-gray-400 w-full"
               >
-                Deposit
+                {isPending ? 'Depositing...' : 'Deposit'}
               </Button>
             </CardFooter>
           </Card>
@@ -206,7 +246,7 @@ export const FinancialMgt = () => {
             <CardFooter>
               <Button
                 onClick={() => handleFinancialMgt('withdraw')}
-                className="bg-gray-500 hover:bg-gray-400"
+                className="bg-gray-500 hover:bg-gray-400 w-full"
               >
                 Withdraw
               </Button>
@@ -255,9 +295,60 @@ export const FinancialMgt = () => {
 
                 <Button
                   onClick={() => handleFinancialMgt('payment')}
-                  className="bg-gray-500 hover:bg-gray-400"
+                  className="bg-gray-500 hover:bg-gray-400 w-full"
                 >
-                  {pending ? 'Paying...' : 'Pay Tution'}
+                  {isPending ? 'Paying...' : 'Pay Tution'}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* automate */}
+        <TabsContent value="auto-tution-payment" className="h-full">
+          <Card className="bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white h-full">
+            {/* <CardHeader>
+              <CardTitle>Pay Tution</CardTitle>
+            </CardHeader> */}
+            <CardContent className="grid gap-4">
+              <div className="grid gap-3">
+                <Input
+                  value={payAmount}
+                  onChange={(e) => setPayAmount(e.target.value)}
+                  id="tabs-demo-pay-tution"
+                  type="number"
+                  placeholder="Set Value cover auto payments"
+                />
+
+                <Input
+                  value={schoolAddr}
+                  onChange={(e) => setSchoolAddr(e.target.value)}
+                  id="tabs-demo-address"
+                  type="text"
+                  placeholder="Enter school wallet address"
+                />
+
+                <Input
+                  value={studentName}
+                  onChange={(e) => setStudentName(e.target.value)}
+                  id="tabs-demo-name"
+                  type="text"
+                  placeholder="Enter student's name"
+                />
+
+                <Input
+                  value={studentClass}
+                  onChange={(e) => setStudentClass(e.target.value)}
+                  id="tabs-demo-class"
+                  type="text"
+                  placeholder="Enter student's class/level"
+                />
+
+                <Button
+                  onClick={() => handleFinancialMgt('auto')}
+                  className="bg-gray-500 hover:bg-gray-400 w-full"
+                >
+                  {isPending ? 'Automation Pending...' : 'Automate Payments'}
                 </Button>
               </div>
             </CardContent>
