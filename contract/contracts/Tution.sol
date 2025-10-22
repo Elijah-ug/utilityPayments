@@ -199,15 +199,25 @@ contract Tution is
         School storage newSchool = school[_school];
         Payer storage autoPayer = payer[msg.sender];
         require(_amount > 0, "Invalid amount");
-        require(_amount == newSchool.tution, "amount != school tution");
+        require(_amount >= newSchool.tution, "amount != school tution");
         require(autoPayer.balance >= newSchool.tution, "Low balance");
-        require(!autoPayer.hasAutoPayments, "has AutoPayments");
+        
         autoPayer.hasAutoPayments = true;
         autoPayer.autoPayments += _amount;
         autoPayer.studentName = _student;
         autoPayer.studentClass = _class;
+        autoPayer.school = _school;
 
-        autoPayers.push(msg.sender);
+        bool exists = false;
+        for (uint256 i = 0; i < autoPayers.length; i++) {
+            if (autoPayers[i] == msg.sender) {
+                exists = true;
+                break;
+            }
+        }
+        if (!exists) {
+            autoPayers.push(msg.sender);
+        }
     }
 
     // withdraw
@@ -299,11 +309,11 @@ contract Tution is
                 action == BEGIN_TERM &&
                 skul.school == autoPayer.school &&
                 autoPayer.hasAutoPayments &&
-                autoPayer.termPayments < skul.tution
+                autoPayer.termPayments < skul.tution &&
+                autoPayer.balance >= skul.tution &&
+                autoPayer.autoPayments >= skul.tution
             ) {
                 uint256 tution = skul.tution;
-                require(autoPayer.balance >= tution);
-                require(autoPayer.autoPayments >= tution);
 
                 autoPayer.balance -= tution;
                 autoPayer.autoPayments -= tution;
