@@ -6,6 +6,7 @@ import { Download } from 'lucide-react';
 import { ReceiptDownload } from './ReceiptDownload';
 import { PDFViewer } from '@react-pdf/renderer';
 import ReceiptPDF from './ReceiptPDF';
+import { AutoFeePaiment } from './AutoFeePaiment';
 
 export const ClientDashboard = () => {
   return (
@@ -16,8 +17,8 @@ export const ClientDashboard = () => {
       </div>
       <nav className="flex flex-col items-center justify-center pt-5">
         <ReceiptDownload />
-        
       </nav>
+      {/* <AutoFeePaiment /> */}
     </div>
   );
 };

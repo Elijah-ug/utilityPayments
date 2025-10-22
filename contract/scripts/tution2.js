@@ -6,7 +6,7 @@ const tutionUpgrade = async () => {
     throw new Error("❌ Missing oldTutionAddr in .env");
   }
 
-  const newTutionContract = ethers.getContractFactory("Tution");
+  const newTutionContract = await ethers.getContractFactory("Tution");
   const upgradedTution = await upgrades.upgradeProxy(
     oldTutionAddr,
     newTutionContract,
@@ -17,3 +17,11 @@ const tutionUpgrade = async () => {
     await upgrades.erc1967.getImplementationAddress(oldTutionAddr);
   console.log("Current implementation:", implAddress);
 };
+tutionUpgrade()
+  .then(() => {
+    console.log("✅ Contract upgraded ");
+  })
+  .catch((error) => {
+    console.log("❌ Error==> " + error);
+    process.exit(1);
+  });

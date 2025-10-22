@@ -20,6 +20,7 @@ import { waitForTransactionReceipt } from 'viem/actions';
 import { config } from '@/contract/utils/wagmiConfig';
 import { useUpdateSchoolMutation } from '../rtkQuery/school';
 import { TermDates } from './TermDates';
+import { toast } from 'react-toastify';
 
 export const SchoolAccess = () => {
   const [tution, setTution] = useState('');
@@ -74,18 +75,19 @@ export const SchoolAccess = () => {
       if (school) {
         await newSchool({
           name: hexToString(school.name),
-          tution: parsedTution,
+          tution: tution,
           school: school.school,
           isRegistered: school.isRegistered,
           isActive: school.isActive,
           schoolId: school.schoolId,
         });
       }
-
+      toast.success('Academic term updated');
       console.log('Tx hash==>', term);
       return term;
     } catch (error) {
       console.log(error);
+      toast.error('Academic term update Failed');
     }
   };
 
@@ -102,7 +104,7 @@ export const SchoolAccess = () => {
       if (withdraw.status === 'reverted') {
         console.log('!withdraw Failed ');
       }
-
+      toast.success('Withdrawn successfully');
       const txDetails = {
         txHash: String(withdraw.transactionHash),
         gasUsed: withdraw.gasUsed?.toString(),
@@ -115,6 +117,7 @@ export const SchoolAccess = () => {
       return txDetails;
     } catch (error) {
       console.log('Error==>', error);
+      toast.error('withdraw Failed');
     }
   };
 

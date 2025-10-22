@@ -2,18 +2,18 @@ import { wagmiContractConfig } from '@/contract/utils/contractAbs';
 import React from 'react';
 import { useAccount, useReadContract } from 'wagmi';
 
-export const AutoFeePaiment = () => {
+export const AcademicTerm = () => {
   const { address } = useAccount();
   const {
-    data: autoPayers,
+    data: term,
     error,
     isLoading,
   } = useReadContract({
     ...wagmiContractConfig,
-    functionName: 'autoPayers',
-    args: [],
-    account: address,
+    functionName: 'getacademicTerm',
+    args: [address],
   });
-  console.log('autoPayers ==> ', autoPayers);
-  return <div>AutoFeePaiment</div>;
+  console.log('term ==> ', term);
+
+  return <div>AcademicTerm</div>;
 };

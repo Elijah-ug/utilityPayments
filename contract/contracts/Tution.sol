@@ -33,7 +33,9 @@ contract Tution is
         uint256 debts;
         address client;
         address school;
+        uint128 payerId;
         bool hasAutoPayments;
+        bool isOnPlatform;
         bytes32 studentName;
         bytes32 studentClass;
     }
@@ -49,26 +51,29 @@ contract Tution is
     }
     struct AcademicTerm {
         uint256 tution;
+        uint256 start;
+        uint256 end;
         address school;
         uint128 termId;
         bool hasStarted;
         bool hasEnded;
-        uint32 start;
-        uint32 end;
     }
     mapping(address => School) public school;
     mapping(address => Payer) public payer;
     mapping(address => Receipt) public receipt;
     mapping(uint128 => AcademicTerm) public academicTerm;
+    mapping(uint128 => address) public payerById;
+    mapping(address => uint128) public idByPayer;   // address -> id (0 = unset)
     uint32 public newSchoolId;
     uint128 public termIdBySchool;
     uint32 public percentageFee;
     uint256 public paymentsMade;
+    uint128 public payerIds;
 
     bytes32 constant BEGIN_TERM = keccak256("beginTerm");
     bytes32 constant END_TERM = keccak256("endTerm");
 
-    address[] public autoPayers;
+    // address[] public autoPayers;
 
     uint256[50] private __gap;
     modifier onlySchool() {
@@ -82,6 +87,7 @@ contract Tution is
         __ReentrancyGuard_init();
         __Ownable_init(msg.sender);
         stableToken = IERC20(_tokenUsed);
+        payerIds = 1;
     }
 
     function updateTxFee(uint32 _percentage) external onlyOwner {
@@ -126,22 +132,37 @@ contract Tution is
         stableToken.safeTransferFrom(msg.sender, address(this), _amount);
         newPayer.balance += _amount;
         newPayer.client = msg.sender;
+        newPayer.isOnPlatform = true;
+        
+        if (idByPayer[msg.sender] == 0) {
+        uint128 id = payerIds;
+        payerById[id] = msg.sender;
+        idByPayer[msg.sender] = id;
+        newPayer.payerId = id;
+        payerIds += 1;
+    } else {
+        // keep payer.payerId in sync
+        newPayer.payerId = idByPayer[msg.sender];
+    }
+
     }
 
     // ====== shcool triggers ====
     // academic term/semister update
-    function AcademicTermUpdate(uint256 _tution, uint32 _start, uint32 _end) external onlySchool {
+    function AcademicTermUpdate(uint256 _tution, uint256 _start, uint256 _end) external onlySchool {
         School storage newSchool = school[msg.sender];
         require(newSchool.isRegistered, "Unregistered");
         require(newSchool.isActive, "Inactive");
-        academicTerm[newSchool.schoolId] = AcademicTerm({
+
+        uint128 termIndex = termIdBySchool;
+        academicTerm[termIndex] = AcademicTerm({
             tution: _tution,
-            school: msg.sender,
-            termId: termIdBySchool,
-            hasStarted: false,
-            hasEnded: false,
             start: _start,
-            end: _end
+            end: _end,
+            school: msg.sender,
+            termId: termIndex,
+            hasStarted: false,
+            hasEnded: false
         });
 
         termIdBySchool += 1;
@@ -201,23 +222,23 @@ contract Tution is
         require(_amount > 0, "Invalid amount");
         require(_amount >= newSchool.tution, "amount != school tution");
         require(autoPayer.balance >= newSchool.tution, "Low balance");
-        
+
         autoPayer.hasAutoPayments = true;
         autoPayer.autoPayments += _amount;
         autoPayer.studentName = _student;
         autoPayer.studentClass = _class;
         autoPayer.school = _school;
 
-        bool exists = false;
-        for (uint256 i = 0; i < autoPayers.length; i++) {
-            if (autoPayers[i] == msg.sender) {
-                exists = true;
-                break;
-            }
-        }
-        if (!exists) {
-            autoPayers.push(msg.sender);
-        }
+        // bool exists = false;
+        // for (uint256 i = 0; i < payerIds; i++) {
+        //     if (autoPayers[i] == msg.sender) {
+        //         exists = true;
+        //         break;
+        //     }
+        // }
+        // if (!exists) {
+        //     autoPayers.push(msg.sender);
+        // }
     }
 
     // withdraw
@@ -241,37 +262,39 @@ contract Tution is
     }
 
     // reset new term
-    function canselAutoPayments() external {
+    function cancelAutoPayments() external {
         Payer storage newPayer = payer[msg.sender];
         require(newPayer.hasAutoPayments, "No autopayments found");
         newPayer.hasAutoPayments = false;
-        uint256 len = autoPayers.length;
-        for (uint256 i = 0; i < len; i++) {
-            if (autoPayers[i] == msg.sender) {
-                autoPayers[i] = autoPayers[len - 1];
-                autoPayers.pop();
-                break;
-            }
-        }
+        // uint256 len = autoPayers.length;
+        // for (uint256 i = 0; i < len; i++) {
+        //     if (autoPayers[i] == msg.sender) {
+        //         autoPayers[i] = autoPayers[len - 1];
+        //         autoPayers.pop();
+        //         break;
+        //     }
+        // }
     }
 
     // automation
     function checkUpkeep(
         bytes calldata
     ) external view override returns (bool upkeepNeeded, bytes memory performData) {
-        for (uint128 i; i < termIdBySchool; i++) {
+        for (uint128 i = 0; i < termIdBySchool; i++) {
             AcademicTerm storage newTerm = academicTerm[i];
+
+            // skip uninitialized terms
+            if (newTerm.school == address(0) || newTerm.tution == 0) {
+                continue;
+            }
+            // begin term
             if (newTerm.start <= block.timestamp && !newTerm.hasStarted) {
                 upkeepNeeded = true;
                 performData = abi.encode(uint128(i), BEGIN_TERM);
                 return (upkeepNeeded, performData);
             }
-            if (
-                newTerm.start < block.timestamp &&
-                newTerm.end <= block.timestamp &&
-                newTerm.hasStarted &&
-                !newTerm.hasEnded
-            ) {
+            // end term
+            if (newTerm.end <= block.timestamp && newTerm.hasStarted && !newTerm.hasEnded) {
                 upkeepNeeded = true;
                 performData = abi.encode(uint128(i), END_TERM);
                 return (upkeepNeeded, performData);
@@ -285,14 +308,21 @@ contract Tution is
         (uint128 termIndex, bytes32 action) = abi.decode(performData, (uint128, bytes32));
 
         AcademicTerm storage t = academicTerm[termIndex];
+        // skip if term not present
+        if (t.school == address(0) || t.tution == 0) {
+            return;
+        }
         School storage skul = school[t.school];
+        if (skul.school == address(0) || !skul.isRegistered || !skul.isActive) {
+            return;
+        }
+
         if (action == BEGIN_TERM) {
             t.hasStarted = true;
         } else if (action == END_TERM) {
             t.hasEnded = true;
             t.tution = 0;
             t.hasStarted = false;
-            t.hasEnded = false;
             t.start = 0;
             t.end = 0;
         }
@@ -301,9 +331,11 @@ contract Tution is
             return;
         }
 
-        for (uint256 i; i < autoPayers.length; i++) {
-            address autoPayerAddr = autoPayers[i];
-            Payer storage autoPayer = payer[autoPayerAddr];
+        for (uint128 i = 1; i < payerIds; i++) {
+            address addr = payerById[i];
+            if(addr == address(0)) continue;
+            
+            Payer storage autoPayer = payer[addr];
 
             if (
                 action == BEGIN_TERM &&

@@ -20,6 +20,7 @@ import { parseEther, stringToHex } from 'viem';
 import { config } from '@/contract/utils/wagmiConfig';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { useAddTransactionMutation } from '../rtkQuery/transaction';
+import { toast } from 'react-toastify';
 
 export const FinancialMgt = () => {
   const [depositAmount, setDepositAmount] = useState('');
@@ -73,7 +74,7 @@ export const FinancialMgt = () => {
         const depositHash = await waitForTransactionReceipt(config, { hash: depositTx });
         await refetchAllowance();
         console.log('depositHash: ==> ', depositHash);
-
+        toast.success("Deposited Successfully")
         return depositHash;
       } else if (name === 'withdraw') {
         const parsedWithdraw = parseEther(withdrawAmount.toString());
@@ -94,7 +95,7 @@ export const FinancialMgt = () => {
           to: String(withdraw.to),
           from: String(withdraw.from),
         };
-
+        toast.success("Withdrawn Successfully");
         console.log('withdrawReceipt successful:', txDetails);
         setWithdrawAmount('');
         return txDetails;
@@ -126,6 +127,7 @@ export const FinancialMgt = () => {
           console.error('❌ Transaction failed/reverted');
           return;
         }
+        toast.success("Tution payment Successful");
         console.log('Variables==>', parsedTution, schoolAddr, parsedName, parsedClass);
         console.log('Reverted==>', tutionTx);
         const txHash = String(tutionTx.transactionHash);
@@ -159,35 +161,29 @@ export const FinancialMgt = () => {
           return console.log('some invalid input');
         }
         
-        const payTution = await transactionHandler({
+        const automate = await transactionHandler({
           ...wagmiContractConfig,
           functionName: 'paymentAutomation',
           args: [schoolAddr, parsedTution, parsedName, parsedClass],
           account: address,
         });
 console.log('Variables==>', parsedTution, schoolAddr, parsedName, parsedClass);
-        const tx = await waitForTransactionReceipt(publicClient, { hash: payTution });
+        const tx = await waitForTransactionReceipt(publicClient, { hash: automate });
         if (tx.status === 'reverted') {
           console.log('Reverted==>', tx);
           console.error('❌ Transaction failed/reverted');
           return;
         }
         console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
-        const txHash = String(tx.transactionHash);
-        const gasUsed = tx.gasUsed?.toString();
-        const to = String(tx.to);
-        const from = String(tx.from);
 
-        await addTransaction({ txHash, gasUsed, to, from, payAmount, studentName, studentClass });
-        const txDetails = { txHash, gasUsed, to, from };
         console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
         setPayAmount('');
         setSchoolAddr('');
         setStudentClass('');
         setStudentName('');
         await refetchAllowance();
-        console.log(' ✅ Tution Payment successful:', txDetails);
-        return txDetails;
+        console.log(' ✅ Tution Payment successful:', tx);
+        return tx;
       }
     } catch (error) {
       console.log(error);
@@ -201,7 +197,7 @@ console.log('Variables==>', parsedTution, schoolAddr, parsedName, parsedClass);
           <TabsTrigger value="deposit">Deposit</TabsTrigger>
           <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
           <TabsTrigger value="tution-payment">Pay Tution</TabsTrigger>
-          <TabsTrigger value="auto-tution-payment">Auto Mode</TabsTrigger>
+          {/* <TabsTrigger value="auto-tution-payment">Auto Mode</TabsTrigger> */}
         </TabsList>
 
         <TabsContent value="deposit" className="h-full">
