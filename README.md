@@ -16,6 +16,7 @@ This platform empowers students, parents, and institutions across Africa by digi
 - Registration: Schools are registered by the platform admin to avoid froud on the platform. We require a school name and school wallet address
 
 - Payment: Tuition is paid directly through the platform using stablecoins (like USDC or LINK), ensuring instant and borderless transactions. Though, for now we're using AfroBlocks (AFB) ERC20 token
+  (Payers head to the client dashboard, there's Deposit, withdraw and pay tution)
 
 Receipt Generation: After payment, users can download an instant PDF receipt for proof of payment.
 
