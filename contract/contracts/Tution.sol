@@ -34,8 +34,18 @@ contract Tution is
         address client;
         address school;
         uint128 payerId;
-        bool hasAutoPayments;
         bool isOnPlatform;
+        bytes32 studentName;
+        bytes32 studentClass;
+    }
+    struct AutoPayer {
+        uint256 balance;
+        uint256 debts;
+        address client;
+        address school;
+        uint128 autoPayerId;
+        bool hasAutoPayments;
+        bool hasPaid;
         bytes32 studentName;
         bytes32 studentClass;
     }
@@ -62,19 +72,16 @@ contract Tution is
     mapping(address => Payer) public payer;
     mapping(address => Receipt) public receipt;
     mapping(uint128 => AcademicTerm) public academicTerm;
-    mapping(uint128 => address) public payerById;
-    mapping(address => uint128) public idByPayer;   // address -> id (0 = unset)
+    mapping(uint128 => AutoPayer) public autoPayers;
     uint32 public newSchoolId;
     uint128 public termIdBySchool;
     uint32 public percentageFee;
     uint256 public paymentsMade;
     uint128 public payerIds;
+    uint128 public autoIds;
 
     bytes32 constant BEGIN_TERM = keccak256("beginTerm");
     bytes32 constant END_TERM = keccak256("endTerm");
-
-    address[] public platformAutoPayers;
-    
 
     uint256[50] private __gap;
     modifier onlySchool() {
@@ -133,20 +140,13 @@ contract Tution is
         stableToken.safeTransferFrom(msg.sender, address(this), _amount);
         newPayer.balance += _amount;
         newPayer.client = msg.sender;
-        newPayer.isOnPlatform = true;
-       
-        
-        if (idByPayer[msg.sender] == 0) {
-        uint128 id = payerIds;
-        payerById[id] = msg.sender;
-        idByPayer[msg.sender] = id;
-        newPayer.payerId = id;
-        payerIds += 1;
-    } else {
-        // keep payer.payerId in sync
-        newPayer.payerId = idByPayer[msg.sender];
-    }
 
+        if (!newPayer.isOnPlatform) {
+            uint128 id = payerIds;
+            newPayer.payerId = id;
+            payerIds += 1;
+            newPayer.isOnPlatform = true;
+        }
     }
 
     // ====== shcool triggers ====
@@ -220,29 +220,33 @@ contract Tution is
     ) external {
         require(_school != address(0), "Invalid school address");
         School storage newSchool = school[_school];
-        Payer storage autoPayer = payer[msg.sender];
         require(_amount > 0, "Invalid amount");
         require(_amount >= newSchool.tution, "amount != school tution");
-        require(autoPayer.balance >= newSchool.tution, "Low balance");
 
-        autoPayer.hasAutoPayments = true;
-        autoPayer.autoPayments += _amount;
-        autoPayer.balance -= _amount;
-        autoPayer.studentName = _student;
-        autoPayer.studentClass = _class;
-        autoPayer.school = _school;
-         platformAutoPayers.push(msg.sender);
+        uint128 payerId = autoIds;
+        autoPayers[payerId] = AutoPayer({
+            balance: _amount,
+            debts: 0,
+            client: msg.sender,
+            school: _school,
+            autoPayerId: payerId,
+            hasAutoPayments: true,
+            hasPaid: false,
+            studentName: _student,
+            studentClass: _class
+        });
+        autoIds += 1;
+        stableToken.safeTransferFrom(msg.sender, address(this), _amount);
+    }
 
-        // bool exists = false;
-        // for (uint256 i = 0; i < payerIds; i++) {
-        //     if (autoPayers[i] == msg.sender) {
-        //         exists = true;
-        //         break;
-        //     }
-        // }
-        // if (!exists) {
-        //     autoPayers.push(msg.sender);
-        // }
+    // cancel auto payments
+    function cancelAutoPayments() external {
+        for (uint128 i = 0; i < autoIds; i++) {
+            AutoPayer storage p = autoPayers[i];
+            if (p.hasAutoPayments && p.debts == 0 && p.client == msg.sender) {
+                p.hasAutoPayments = false;
+            }
+        }
     }
 
     // withdraw
@@ -263,22 +267,13 @@ contract Tution is
         require(newPayer.balance >= _amount, "Much");
         newPayer.balance -= _amount;
         stableToken.safeTransfer(msg.sender, _amount);
-    }
 
-    // reset new term
-    function cancelAutoPayments() external {
-        Payer storage newPayer = payer[msg.sender];
-        require(newPayer.hasAutoPayments, "No autopayments found");
-        newPayer.hasAutoPayments = false;
-        // platformAutoPayers.pop();
-        // uint256 len = autoPayers.length;
-        // for (uint256 i = 0; i < len; i++) {
-        //     if (autoPayers[i] == msg.sender) {
-        //         autoPayers[i] = autoPayers[len - 1];
-        //         autoPayers.pop();
-        //         break;
-        //     }
-        // }
+        for (uint128 i = 0; i < autoIds; i++) {
+            AutoPayer storage p = autoPayers[i];
+            if (!p.hasAutoPayments && p.balance > 0 && p.client == msg.sender) {
+                stableToken.safeTransfer(msg.sender, _amount);
+            }
+        }
     }
 
     // automation
@@ -313,14 +308,9 @@ contract Tution is
         (uint128 termIndex, bytes32 action) = abi.decode(performData, (uint128, bytes32));
 
         AcademicTerm storage t = academicTerm[termIndex];
-        // skip if term not present
-        if (t.school == address(0) || t.tution == 0) {
-            return;
-        }
+       
         School storage skul = school[t.school];
-        if (skul.school == address(0) || !skul.isRegistered || !skul.isActive) {
-            return;
-        }
+       
 
         if (action == BEGIN_TERM) {
             t.hasStarted = true;
@@ -332,56 +322,53 @@ contract Tution is
             t.end = 0;
         }
         // school validation
-        if (skul.school == address(0) || !skul.isRegistered || !skul.isActive) {
-            return;
-        }
+       
 
-        uint256 totalAutoPayers =  platformAutoPayers.length;
-        for (uint128 i = 0; i < totalAutoPayers; i++) {
-            address payerAddr = platformAutoPayers[i];
-            if(payerAddr == address(0)) continue;
-            
-            Payer storage autoPayer = payer[payerAddr];
-
+        for (uint128 i = 0; i < autoIds; i++) {
+            AutoPayer storage autoPayer = autoPayers[i];
             if (
                 action == BEGIN_TERM &&
                 skul.school == autoPayer.school &&
-                autoPayer.hasAutoPayments &&
-                autoPayer.termPayments < skul.tution &&
+                skul.school != address(0) &&
                 autoPayer.balance >= skul.tution &&
-                autoPayer.autoPayments >= skul.tution
+                autoPayer.hasAutoPayments &&
+                !autoPayer.hasPaid
             ) {
                 uint256 tution = skul.tution;
-
+                bool cleared = (autoPayer.balance >= skul.tution);
                 autoPayer.balance -= tution;
-                autoPayer.autoPayments -= tution;
-                autoPayer.termPayments += tution;
                 skul.balance += tution;
                 paymentsMade += tution;
+                autoPayer.hasPaid = true;
 
-                bool cleared = (autoPayer.termPayments >= skul.tution);
-                uint256 remaining = cleared ? 0 : (skul.tution - autoPayer.termPayments);
-                receipt[autoPayer.client] = Receipt({
-                    time: block.timestamp,
-                    amount: tution,
-                    balance: remaining,
-                    payer: autoPayer.client,
-                    school: skul.school,
-                    cleared: cleared,
-                    student: autoPayer.studentName,
-                    class: autoPayer.studentClass
-                });
+                // bool cleared = (autoPayer.balance - tution >= skul.tution); ###changed
                 if (cleared) {
-                    autoPayer.termPayments = 0;
+                    receipt[autoPayer.client] = Receipt({
+                        time: block.timestamp,
+                        amount: tution,
+                        balance: 0,
+                        payer: autoPayer.client,
+                        school: skul.school,
+                        cleared: cleared,
+                        student: autoPayer.studentName,
+                        class: autoPayer.studentClass
+                    });
                 }
             }
-            if (action == END_TERM) {
-                if (autoPayer.termPayments < skul.tution && autoPayer.school == skul.school) {
-                    autoPayer.debts = skul.tution - autoPayer.termPayments;
-                    autoPayer.termPayments = 0;
-                }
+            if (action == END_TERM && autoPayer.hasPaid) {
+                autoPayer.hasPaid = false;
             }
         }
+    }
+
+    function getAutoPayer() external view returns (AutoPayer memory) {
+        for (uint128 i = 0; i < autoIds; i++) {
+            AutoPayer memory p = autoPayers[i];
+            if (p.client == msg.sender) {
+                return p;
+            }
+        }
+        revert("No auto payer found");
     }
 
     // view functions

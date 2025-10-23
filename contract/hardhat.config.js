@@ -8,12 +8,12 @@ module.exports = {
     baseSepolia: {
       url: process.env.BASE_SEPOLIA_RPC_URL,
       accounts: [process.env.PRIVATE_KEY],
-      chainId: 0x14a34
+      chainId: 0x14a34,
     },
     celoAlfajores: {
       url: process.env.CELO_ALFAJORES_RPC_URL,
       accounts: [process.env.PRIVATE_KEY],
-      chainId: 0xaef3
-    }
-  }
+      chainId: 0xaef3,
+    },
+  },
 };

@@ -158,8 +158,19 @@ export const FinancialMgt = () => {
           !studentName ||
           !studentClass
         ) {
+          toast.error('Deposited Successfully');
           return console.log('some invalid input');
         }
+        const approveTx = await transactionHandler({
+          ...tokenContractConfig,
+          functionName: 'approve',
+          args: [contractAddress, parsedTution],
+        });
+
+        console.log('waiting for the Auto tx to be approved');
+        const txHash = await waitForTransactionReceipt(publicClient, { hash: approveTx });
+        await refetchAllowance();
+        console.log('approveTx Auto: ==> ', txHash);
 
         const automate = await transactionHandler({
           ...wagmiContractConfig,
@@ -174,7 +185,8 @@ export const FinancialMgt = () => {
           console.error('❌ Transaction failed/reverted');
           return;
         }
-        console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
+        toast.success('Automated Payments Successfully!');
+        console.log('data==>', tx);
 
         console.log('data==>', payAmount, schoolAddr, studentClass, studentName);
         setPayAmount('');
@@ -197,7 +209,7 @@ export const FinancialMgt = () => {
           <TabsTrigger value="deposit">Deposit</TabsTrigger>
           <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
           <TabsTrigger value="tution-payment">Pay Tution</TabsTrigger>
-          <TabsTrigger value="auto-tution-payment">Auto Mode</TabsTrigger>
+          {/* <TabsTrigger value="auto-tution-payment">Auto Mode</TabsTrigger> */}
         </TabsList>
 
         <TabsContent value="deposit" className="h-full">
@@ -348,7 +360,7 @@ export const FinancialMgt = () => {
                   onClick={() => handleFinancialMgt('auto')}
                   className="bg-gray-500 hover:bg-gray-400 w-full"
                 >
-                  {isPending ? 'Automation Pending...' : 'Automate Payments'}
+                  {isPending ? 'Automating tution payments...' : 'Automate Payments'}
                 </Button>
               </div>
             </CardContent>
