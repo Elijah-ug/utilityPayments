@@ -308,14 +308,9 @@ contract Tution is
         (uint128 termIndex, bytes32 action) = abi.decode(performData, (uint128, bytes32));
 
         AcademicTerm storage t = academicTerm[termIndex];
-        // skip if term not present
-        if (t.school == address(0) || t.tution == 0) {
-            return;
-        }
+       
         School storage skul = school[t.school];
-        if (skul.school == address(0) || !skul.isRegistered || !skul.isActive) {
-            return;
-        }
+       
 
         if (action == BEGIN_TERM) {
             t.hasStarted = true;
@@ -327,27 +322,26 @@ contract Tution is
             t.end = 0;
         }
         // school validation
-        if (skul.school == address(0) || !skul.isRegistered || !skul.isActive) {
-            return;
-        }
+       
 
         for (uint128 i = 0; i < autoIds; i++) {
             AutoPayer storage autoPayer = autoPayers[i];
             if (
                 action == BEGIN_TERM &&
                 skul.school == autoPayer.school &&
+                skul.school != address(0) &&
                 autoPayer.balance >= skul.tution &&
                 autoPayer.hasAutoPayments &&
                 !autoPayer.hasPaid
             ) {
                 uint256 tution = skul.tution;
-
+                bool cleared = (autoPayer.balance >= skul.tution);
                 autoPayer.balance -= tution;
                 skul.balance += tution;
                 paymentsMade += tution;
                 autoPayer.hasPaid = true;
 
-                bool cleared = (autoPayer.balance - tution >= skul.tution);
+                // bool cleared = (autoPayer.balance - tution >= skul.tution); ###changed
                 if (cleared) {
                     receipt[autoPayer.client] = Receipt({
                         time: block.timestamp,

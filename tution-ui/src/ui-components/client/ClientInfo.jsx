@@ -18,35 +18,68 @@ export const ClientInfo = () => {
     args: [],
     account: address,
   });
-  console.log('Client/Student==>', client, isPending, isError, error);
+
+  const {
+    data: autoClient,
+    isPending: autoPending,
+    error: autoError,
+  } = useReadContract({
+    ...wagmiContractConfig,
+    functionName: 'getAutoPayer',
+    args: [],
+    account: address,
+  });
+  console.log('Pending Auto==>', autoPending);
+
+  console.log('Client/Student==>', autoClient);
+  const isSutoClient = autoClient?.client?.toLowerCase() === address?.toLowerCase();
   return (
     <div className="flex items-center justify-center w-full max-w-sm">
-      <Card className="w-full bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white h-[360px]">
-        <CardHeader>
-          <CardTitle>Client Profile </CardTitle>
-        </CardHeader>
+      {isPending || autoPending ? (
+        <div className=""></div>
+      ) : client || autoClient ? (
+        <Card className="w-full bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white h-[360px]">
+          <CardHeader>
+            <CardTitle>Client Profile </CardTitle>
+          </CardHeader>
 
-        <CardContent>
-          <form>
-            <div className="flex flex-col gap-6">
-              <div className="flex items-center gap-2">
-                <span>Address:</span>
-                <span>{`${client?.client.slice(0, 7)}...${client?.client.slice(-5)}`}</span>
-              </div>
+          <CardContent>
+            <form>
+              <div className="flex flex-col gap-6">
+                {autoClient.client.toLowerCase() === address.toLowerCase() ? (
+                  <div className="flex items-center gap-2">
+                    <span>Auto Address:</span>
+                    <span>{`${autoClient?.client.slice(0, 7)}...${autoClient?.client.slice(-5)}`}</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <span>Address:</span>
+                    <span>{`${client?.client.slice(0, 7)}...${client?.client.slice(-5)}`}</span>
+                  </div>
+                )}
 
-              <div className="flex items-center gap-2">
-                <span>Balance:</span>
-                <span>{client && `${formatEther(client.balance)} AFB`}</span>
-              </div>
+                <div className="flex items-center gap-2">
+                  <span>Balance:</span>
+                  <span>
+                    {isSutoClient
+                      ? `${formatEther(autoClient.balance)} AFB`
+                      : `${formatEther(client.balance)} AFB`}
+                  </span>
+                </div>
 
-              <div className="flex items-center gap-2">
-                <span>Current Term Payments:</span>
-                <span>{client && `${formatEther(client.termPayments)} AFB`}</span>
+                {!isSutoClient && (
+                  <div className="flex items-center gap-2">
+                    <span>Current Term Payments:</span>
+                    <span>{`${formatEther(client.termPayments)} AFB`}</span>
+                  </div>
+                )}
               </div>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+            </form>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="">Not A client</div>
+      )}
     </div>
   );
 };
