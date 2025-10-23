@@ -73,7 +73,8 @@ contract Tution is
     bytes32 constant BEGIN_TERM = keccak256("beginTerm");
     bytes32 constant END_TERM = keccak256("endTerm");
 
-    // address[] public autoPayers;
+    address[] public platformAutoPayers;
+    
 
     uint256[50] private __gap;
     modifier onlySchool() {
@@ -133,6 +134,7 @@ contract Tution is
         newPayer.balance += _amount;
         newPayer.client = msg.sender;
         newPayer.isOnPlatform = true;
+       
         
         if (idByPayer[msg.sender] == 0) {
         uint128 id = payerIds;
@@ -225,9 +227,11 @@ contract Tution is
 
         autoPayer.hasAutoPayments = true;
         autoPayer.autoPayments += _amount;
+        autoPayer.balance -= _amount;
         autoPayer.studentName = _student;
         autoPayer.studentClass = _class;
         autoPayer.school = _school;
+         platformAutoPayers.push(msg.sender);
 
         // bool exists = false;
         // for (uint256 i = 0; i < payerIds; i++) {
@@ -266,6 +270,7 @@ contract Tution is
         Payer storage newPayer = payer[msg.sender];
         require(newPayer.hasAutoPayments, "No autopayments found");
         newPayer.hasAutoPayments = false;
+        // platformAutoPayers.pop();
         // uint256 len = autoPayers.length;
         // for (uint256 i = 0; i < len; i++) {
         //     if (autoPayers[i] == msg.sender) {
@@ -331,11 +336,12 @@ contract Tution is
             return;
         }
 
-        for (uint128 i = 1; i < payerIds; i++) {
-            address addr = payerById[i];
-            if(addr == address(0)) continue;
+        uint256 totalAutoPayers =  platformAutoPayers.length;
+        for (uint128 i = 0; i < totalAutoPayers; i++) {
+            address payerAddr = platformAutoPayers[i];
+            if(payerAddr == address(0)) continue;
             
-            Payer storage autoPayer = payer[addr];
+            Payer storage autoPayer = payer[payerAddr];
 
             if (
                 action == BEGIN_TERM &&
@@ -392,7 +398,7 @@ contract Tution is
     }
 
     function getacademicTerm(address _schoolAddr) external view returns (AcademicTerm memory) {
-        for (uint32 i; i < termIdBySchool; i++) {
+        for (uint128 i; i < termIdBySchool; i++) {
             AcademicTerm memory newTerm = academicTerm[i];
             if (newTerm.school == _schoolAddr) {
                 return newTerm;
