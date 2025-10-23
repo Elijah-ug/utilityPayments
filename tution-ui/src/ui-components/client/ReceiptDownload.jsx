@@ -50,9 +50,11 @@ export const ReceiptDownload = () => {
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button variant="outline" className="bg-gray-500">
-            Open Dialog
-          </Button>
+          {receipt?.payer.toLowerCase() === address?.toLowerCase() && (
+            <Button variant="outline" className="bg-gray-500">
+              Open Receipt
+            </Button>
+          )}
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px] bg-gray-500">
           <DialogTitle>Edit profile</DialogTitle>
@@ -69,7 +71,7 @@ export const ReceiptDownload = () => {
             <DialogClose asChild>
               <MdClose />
             </DialogClose>
-            <ReceiptPDF />
+            {receipt?.payer.toLowerCase() === address?.toLowerCase() && <ReceiptPDF />}
           </DialogFooter>
         </DialogContent>
       </form>

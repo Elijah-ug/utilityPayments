@@ -13,7 +13,7 @@ export const AcademicTerm = () => {
     functionName: 'getacademicTerm',
     args: [address],
   });
-  console.log('term ==> ', term);
+  console.log('getacademicTerm ==> ', term);
 
   return <div>AcademicTerm</div>;
 };

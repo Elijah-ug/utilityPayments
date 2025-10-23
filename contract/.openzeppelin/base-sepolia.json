@@ -85,6 +85,11 @@
       "address": "0x29A3Fd5221Ed28e5b0532b00EdDC3608FdeDfc5e",
       "txHash": "0x19e445f8f74893845843b5c6787e8bf6e55075423256a7136f8541426886ceba",
       "kind": "transparent"
+    },
+    {
+      "address": "0x3Bc141Ae7451ABdB7ec04266BC60163FC6499c66",
+      "txHash": "0x1a673081ade1b97b24fdc56748d93a69d73ce258e4ed32fcd77f488a108ee038",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -6577,6 +6582,497 @@
           "t_uint64": {
             "label": "uint64",
             "numberOfBytes": "8"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_contract(IERC20)824": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_struct(Payer)2094_storage)": {
+            "label": "mapping(address => struct Tution.Payer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(Receipt)2111_storage)": {
+            "label": "mapping(address => struct Tution.Receipt)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(School)2071_storage)": {
+            "label": "mapping(address => struct Tution.School)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint128)": {
+            "label": "mapping(address => uint128)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint128,t_address)": {
+            "label": "mapping(uint128 => address)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint128,t_struct(AcademicTerm)2126_storage)": {
+            "label": "mapping(uint128 => struct Tution.AcademicTerm)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AcademicTerm)2126_storage": {
+            "label": "struct Tution.AcademicTerm",
+            "members": [
+              {
+                "label": "tution",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "end",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "termId",
+                "type": "t_uint128",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "hasStarted",
+                "type": "t_bool",
+                "offset": 16,
+                "slot": "4"
+              },
+              {
+                "label": "hasEnded",
+                "type": "t_bool",
+                "offset": 17,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(Payer)2094_storage": {
+            "label": "struct Tution.Payer",
+            "members": [
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "termPayments",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "autoPayments",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "debts",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "client",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "payerId",
+                "type": "t_uint128",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "hasAutoPayments",
+                "type": "t_bool",
+                "offset": 16,
+                "slot": "6"
+              },
+              {
+                "label": "isOnPlatform",
+                "type": "t_bool",
+                "offset": 17,
+                "slot": "6"
+              },
+              {
+                "label": "studentName",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "studentClass",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "8"
+              }
+            ],
+            "numberOfBytes": "288"
+          },
+          "t_struct(Receipt)2111_storage": {
+            "label": "struct Tution.Receipt",
+            "members": [
+              {
+                "label": "time",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "payer",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "cleared",
+                "type": "t_bool",
+                "offset": 20,
+                "slot": "4"
+              },
+              {
+                "label": "student",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "class",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "6"
+              }
+            ],
+            "numberOfBytes": "224"
+          },
+          "t_struct(School)2071_storage": {
+            "label": "struct Tution.School",
+            "members": [
+              {
+                "label": "balance",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tution",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "school",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "isRegistered",
+                "type": "t_bool",
+                "offset": 20,
+                "slot": "2"
+              },
+              {
+                "label": "isActive",
+                "type": "t_bool",
+                "offset": 21,
+                "slot": "2"
+              },
+              {
+                "label": "schoolId",
+                "type": "t_uint32",
+                "offset": 22,
+                "slot": "2"
+              },
+              {
+                "label": "name",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_uint128": {
+            "label": "uint128",
+            "numberOfBytes": "16"
+          },
+          "t_uint32": {
+            "label": "uint32",
+            "numberOfBytes": "4"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.ReentrancyGuard": [
+            {
+              "contract": "ReentrancyGuardUpgradeable",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol:43",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "50aa4be3dacd9858056bf22576b0ceec27acae6e0ddc381d5ea75482fc84998a": {
+      "address": "0x542f420fFCde555f7C350AC9Df8FfA2e417E8aE4",
+      "txHash": "0x50ea384d181dc5e7e097d7c711c490e88491fc73e96eaf8ece6797181b8f36e6",
+      "layout": {
+        "solcVersion": "0.8.28",
+        "storage": [
+          {
+            "label": "stableToken",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_contract(IERC20)824",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:18"
+          },
+          {
+            "label": "school",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_address,t_struct(School)2071_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:61"
+          },
+          {
+            "label": "payer",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_struct(Payer)2094_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:62"
+          },
+          {
+            "label": "receipt",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_address,t_struct(Receipt)2111_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:63"
+          },
+          {
+            "label": "academicTerm",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint128,t_struct(AcademicTerm)2126_storage)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:64"
+          },
+          {
+            "label": "payerById",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint128,t_address)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:65"
+          },
+          {
+            "label": "idByPayer",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_address,t_uint128)",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:66"
+          },
+          {
+            "label": "newSchoolId",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint32",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:67"
+          },
+          {
+            "label": "termIdBySchool",
+            "offset": 4,
+            "slot": "7",
+            "type": "t_uint128",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:68"
+          },
+          {
+            "label": "percentageFee",
+            "offset": 20,
+            "slot": "7",
+            "type": "t_uint32",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:69"
+          },
+          {
+            "label": "paymentsMade",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:70"
+          },
+          {
+            "label": "payerIds",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint128",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:71"
+          },
+          {
+            "label": "platformAutoPayers",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_array(t_address)dyn_storage",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:76"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "Tution",
+            "src": "contracts/Tution.sol:78"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)90_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)30_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(ReentrancyGuardStorage)180_storage": {
+            "label": "struct ReentrancyGuardUpgradeable.ReentrancyGuardStorage",
+            "members": [
+              {
+                "label": "_status",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]",
+            "numberOfBytes": "32"
           },
           "t_array(t_uint256)50_storage": {
             "label": "uint256[50]",

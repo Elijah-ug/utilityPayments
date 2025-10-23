@@ -10,7 +10,7 @@ export const SchoolDashboard = () => {
         <Info />
         <SchoolAccess />
       </div>
-      {/* <AcademicTerm /> */}
+      <AcademicTerm />
     </div>
   );
 };
