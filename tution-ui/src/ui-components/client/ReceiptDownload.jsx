@@ -39,8 +39,9 @@ export const ReceiptDownload = () => {
     day: 'numeric',
   });
   // console.log("isPending==>", receipt)
+  const hasReceipt =  receipt?.payer !== undefined && receipt?.payer.toLowerCase() === address?.toLowerCase() &&  address !== undefined;
 
-  console.log('date==>', date);
+  
 
   const memoizedDoc = useMemo(
     () => <ReceiptPDF receipt={receipt} date={date} isPending={isPending} />,
@@ -50,7 +51,7 @@ export const ReceiptDownload = () => {
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          {receipt?.payer.toLowerCase() === address?.toLowerCase() && (
+          {hasReceipt && (
             <Button variant="outline" className="bg-gray-500">
               Open Receipt
             </Button>
@@ -65,13 +66,14 @@ export const ReceiptDownload = () => {
               date={date}
               hexToString={hexToString}
               isPending={isPending}
+              hasReceipt={hasReceipt}
             />
           </div>
           <DialogFooter className="flex items-center gap-10 ">
             <DialogClose asChild>
               <MdClose />
             </DialogClose>
-            {receipt?.payer.toLowerCase() === address?.toLowerCase() && <ReceiptPDF />}
+            {hasReceipt && <ReceiptPDF />}
           </DialogFooter>
         </DialogContent>
       </form>

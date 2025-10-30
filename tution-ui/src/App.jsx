@@ -15,6 +15,7 @@ import { MobileNavBar } from './ui-components/nav/MobileNavBar';
 import ReceiptPDF from './ui-components/client/ReceiptPDF';
 import { PlatformPayments } from './ui-components/public/PlatformPayments';
 import { ToastContainer } from 'react-toastify';
+import { SchoolTutionPayments } from './ui-components/school/SchoolTutionPayments';
 
 export const App = () => {
   const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ export const App = () => {
                   </Route>
                   <Route path="admin" element={<Admin />} />
                   <Route path="payments" element={<PlatformPayments />} />
+                  <Route path="school-tx-history" element={<SchoolTutionPayments />} />
                 </Routes>
               </div>
             </div>

@@ -3,6 +3,7 @@ import { useGetAllTransactionsQuery } from '../rtkQuery/transaction';
 
 export const PlatformPayments = () => {
   const { data: transactions, isLoading, error } = useGetAllTransactionsQuery();
+  console.log(transactions);
   return (
     <div className="flex flex-col gap-1 sm:gap-5 sm:items-center ">
       {isLoading ? (
@@ -18,7 +19,9 @@ export const PlatformPayments = () => {
                 href={`https://sepolia.basescan.org/tx/${tx.txHash}`}
                 target="_blank"
               >
-                <span className="lg:hidden" >{tx.txHash.slice(0,8)}...{tx.txHash.slice(-6)}</span>
+                <span className="lg:hidden">
+                  {tx.txHash.slice(0, 8)}...{tx.txHash.slice(-6)}
+                </span>
                 <span className="hidden lg:block">{tx.txHash}</span>
               </a>
               {/* <span >{tx.txHash.slice(0,8)}...{tx.txHash.slice(-6)}</span> */}
@@ -29,9 +32,7 @@ export const PlatformPayments = () => {
               <span className="lg:hidden">
                 {tx.from.slice(0, 8)}...{tx.from.slice(-6)}
               </span>
-              <span className="hidden lg:block">
-                {tx.from}
-              </span>
+              <span className="hidden lg:block">{tx.from}</span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -39,14 +40,12 @@ export const PlatformPayments = () => {
               <span className="lg:hidden">
                 {tx.to.slice(0, 8)}...{tx.to.slice(-6)}
               </span>
-              <span className="hidden lg:block">
-                {tx.to}
-              </span>
+              <span className="hidden lg:block">{tx.to}</span>
             </div>
 
             <div className="flex items-center gap-2">
               <span>Amount:</span>
-              <span>{tx.payAmount ? tx.payAmount + " AFB" : 'N/A'}</span>
+              <span>{tx.payAmount ? tx.payAmount + ' AFB' : 'N/A'}</span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -64,7 +63,7 @@ export const PlatformPayments = () => {
 
       {!isLoading && transactions && (
         <div className="mt-10 flex  gap-1 text-sm text-violet-400">
-            <span className='italic text-amber-500'> Note:</span>
+          <span className="italic text-amber-500"> Note:</span>
           <span>To view the transaction details on basescan, click the transaction hash</span>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardAction,
@@ -7,10 +7,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useWriteContract } from "wagmi";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useWriteContract } from 'wagmi';
 
 export const Demo = () => {
   const { writeContractAsync: register, pending: registerPending } = useWriteContract();
@@ -24,20 +24,42 @@ export const Demo = () => {
         <CardContent>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <p> Schools are registered by providing their wallet address and school name.
-                Registered schools take the responsibility to set the tution fee, start and end dates of the term. A registered school also has the ability to deactivate it's services on the platform
+              <p>
+                {' '}
+                Schools are registered by providing their wallet address and school name. Registered
+                schools take the responsibility to set the tution fee, start and end dates of the
+                term. A registered school also has the ability to deactivate it's services on the
+                platform
               </p>
             </div>
 
             <div className="grid gap-2">
               <p>
-                Parents/Students don't need to do much other than depositing to the platform to be able to pay tution to a specific school. During payment, they provide School Address, student's Name, Student's Class and Amount to be paid. All this is recorded on-chain for integrity and transparency
+                Parents/Students don't need to do much other than depositing to the platform to be
+                able to pay tution to a specific school. During payment, they provide School
+                Address, student's Name, Student's Class and Amount to be paid. All this is recorded
+                on-chain for integrity and transparency
               </p>
             </div>
 
             <div className="grid gap-2">
               <p>
-                All transactions done at the platform are found at the Transactions Dane page of this site which also link to basescan 
+                All transactions done at the platform are found at the Transactions Dane page of
+                this site which also link to basescan
+              </p>
+            </div>
+            <div className="grid gap-2">
+              <span>NOTE:</span>
+              <p>
+                All transactions are done using AfroBlocks(AFB) token deployed on base sepolia.
+                check it on
+                <a
+                  className="text-green-400 ml-2"
+                  href="https://sepolia.basescan.org/address/0xd2d8eb06e3f91f0c15257762b29cbb101518fed0"
+                  target="_blank"
+                >
+                  basescan AFB
+                </a>
               </p>
             </div>
           </div>

@@ -34,13 +34,21 @@ export const Summary = () => {
 
         <Card className="w-full max-w-sm bg-gray-600 backdrop-blur-sm border-gray-200/40 shadow-sm shadow-gray-500 text-white">
           <CardHeader>
-            <CardTitle>Challenges </CardTitle>
+            <CardTitle>Vision & Mission </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-2">
-              <p>Low blockchain literacy among users and institutions.</p>
-              <p>Limited internet access in some regions affects adoption.</p>
-              <p>Regulatory uncertainty around digital payment systems.</p>
+              <div className="">
+                <span className="text-lg font-bold text-amber-500">Vision: </span>{' '}
+                <p>
+                  To build a fully automated, transparent, and borderless tution payment ecosystem
+                  for Africa and beyond.
+                </p>
+              </div>
+              <div className="">
+                <span className="text-lg font-bold text-amber-500">Mission: </span>{' '}
+                <p>To accelerate crypto adoption in day to day payments</p>
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { formatEther, hexToString } from 'viem';
 
-export const ReceiptView = ({ receipt, date, hexToString, isPending }) => {
+export const ReceiptView = ({ receipt, date, hexToString, isPending, hasReceipt }) => {
+  console.log('address==>', hasReceipt);
   return (
-    <div className='text-blue-700'>
+    <div className="text-blue-700">
       <h3>Wired here</h3>
       {isPending ? (
         <h3>Loading...</h3>
@@ -12,7 +13,9 @@ export const ReceiptView = ({ receipt, date, hexToString, isPending }) => {
           <div className="flex flex-col gap-3">
             <div className="">
               <span>Payer</span>
-              <span>{`${receipt.payer.slice(0, 7)}...${receipt?.payer.slice(-5)}`}</span>
+              <span>
+                { `${receipt.payer.slice(0, 7)}...${receipt?.payer.slice(-5)}`}
+              </span>
             </div>
 
             <div className="">
